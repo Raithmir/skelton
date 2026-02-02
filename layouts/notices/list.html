@@ -1,0 +1,36 @@
+{{ define "main" }}
+<h1>Community Notices</h1>
+
+<div class="notices-list">
+  {{ range .Pages.ByDate.Reverse }}
+    {{ if not .Draft }}
+    {{ $now := now }}
+    {{ $expiry := .Params.expiryDate }}
+    {{ if or (not $expiry) (time $expiry).After $now }}
+    <article class="notice priority-{{ .Params.priority | lower }}">
+      <h2>{{ .Title }}</h2>
+      <div class="notice-meta">
+        <span class="date">{{ .Date.Format "January 2, 2006" }}</span>
+        {{ with .Params.priority }}
+          <span class="priority priority-{{ . | lower }}">{{ . }}</span>
+        {{ end }}
+        {{ with .Params.category }}
+          <span class="category">{{ . }}</span>
+        {{ end }}
+      </div>
+      <div class="content">
+        {{ .Content }}
+      </div>
+    </article>
+    {{ end }}
+    {{ end }}
+  {{ end }}
+</div>
+
+<style>
+.priority-urgent { color: red; font-weight: bold; }
+.priority-high { color: orange; font-weight: bold; }
+.priority-normal { color: green; }
+.priority-low { color: gray; }
+</style>
+{{ end }}

@@ -1,0 +1,30 @@
+{{ define "main" }}
+<h1>Local Businesses</h1>
+
+<div class="businesses-list">
+  {{ $categories := slice }}
+  {{ range .Pages }}
+    {{ $categories = $categories | append .Params.category }}
+  {{ end }}
+  {{ $categories = $categories | uniq }}
+
+  {{ range $categories }}
+    <h2>{{ . }}</h2>
+    {{ range where $.Pages "Params.category" . }}
+      {{ if not .Draft }}
+      <article class="business">
+        <h3>{{ .Title }}</h3>
+        {{ with .Params.address }}<p><strong>Address:</strong> {{ . }}</p>{{ end }}
+        {{ with .Params.phone }}<p><strong>Phone:</strong> {{ . }}</p>{{ end }}
+        {{ with .Params.website }}<p><strong>Website:</strong> <a href="{{ . }}" target="_blank">{{ . }}</a></p>{{ end }}
+        {{ with .Params.hours }}<p><strong>Hours:</strong> {{ . }}</p>{{ end }}
+        <div class="description">
+          {{ .Summary }}
+        </div>
+        <a href="{{ .Permalink }}">More details →</a>
+      </article>
+      {{ end }}
+    {{ end }}
+  {{ end }}
+</div>
+{{ end }}

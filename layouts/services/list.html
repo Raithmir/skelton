@@ -1,0 +1,29 @@
+{{ define "main" }}
+<h1>Local Services</h1>
+
+<div class="services-list">
+  {{ $categories := slice }}
+  {{ range .Pages }}
+    {{ $categories = $categories | append .Params.category }}
+  {{ end }}
+  {{ $categories = $categories | uniq }}
+
+  {{ range $categories }}
+    <h2>{{ . }}</h2>
+    {{ range where $.Pages "Params.category" . }}
+      {{ if not .Draft }}
+      <article class="service">
+        <h3>{{ .Title }}</h3>
+        {{ with .Params.contact }}<p><strong>Contact:</strong> {{ . }}</p>{{ end }}
+        {{ with .Params.phone }}<p><strong>Phone:</strong> <a href="tel:{{ . }}">{{ . }}</a></p>{{ end }}
+        {{ with .Params.email }}<p><strong>Email:</strong> <a href="mailto:{{ . }}">{{ . }}</a></p>{{ end }}
+        {{ with .Params.website }}<p><strong>Website:</strong> <a href="{{ . }}" target="_blank">Visit website</a></p>{{ end }}
+        <div class="description">
+          {{ .Content }}
+        </div>
+      </article>
+      {{ end }}
+    {{ end }}
+  {{ end }}
+</div>
+{{ end }}

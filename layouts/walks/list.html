@@ -1,0 +1,26 @@
+{{ define "main" }}
+<h1>Walking Routes</h1>
+
+<div class="walks-list">
+  {{ range .Pages }}
+    {{ if not .Draft }}
+    <article class="walk">
+      <h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+      {{ with .Params.image }}
+        <img src="{{ . }}" alt="{{ $.Title }}" style="max-width: 100%; height: auto;">
+      {{ end }}
+      <div class="walk-meta">
+        <p><strong>Distance:</strong> {{ .Params.distance }}</p>
+        <p><strong>Difficulty:</strong> {{ .Params.difficulty }}</p>
+        <p><strong>Duration:</strong> {{ .Params.duration }}</p>
+        <p><strong>Start Point:</strong> {{ .Params.startPoint }}</p>
+      </div>
+      <div class="description">
+        {{ .Summary }}
+      </div>
+      <a href="{{ .Permalink }}">View route details →</a>
+    </article>
+    {{ end }}
+  {{ end }}
+</div>
+{{ end }}

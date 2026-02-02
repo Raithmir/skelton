@@ -2,20 +2,37 @@
 <h1>Community Events</h1>
 
 <div class="events-list">
-  {{ range .Pages }}
+  {{ range .Pages.ByDate.Reverse }}
     {{ if not .Draft }}
+    {{ if ge (.Params.eventDate | time) now }}
     <article class="event">
       <h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
-      <p class="event-meta">
-        <strong>Date:</strong> {{ .Params.eventDate | time.Format "Monday, Jan 2, 2006" }}<br>
-        <strong>Time:</strong> {{ .Params.eventTime }}<br>
-        <strong>Location:</strong> {{ .Params.location }}
-      </p>
+      <div class="event-meta">
+        <p><strong>Date:</strong> {{ .Params.eventDate | time.Format "Monday, January 2, 2006" }}</p>
+        <p><strong>Time:</strong> {{ .Params.eventTime }}</p>
+        <p><strong>Location:</strong> {{ .Params.location }}</p>
+        {{ with .Params.organizer }}<p><strong>Organizer:</strong> {{ . }}</p>{{ end }}
+      </div>
       <div class="description">
         {{ .Summary }}
       </div>
-      <a href="{{ .Permalink }}">Read more →</a>
+      <a href="{{ .Permalink }}">Full details →</a>
     </article>
+    {{ end }}
+    {{ end }}
+  {{ end }}
+</div>
+
+<h2>Past Events</h2>
+<div class="past-events">
+  {{ range .Pages.ByDate.Reverse }}
+    {{ if not .Draft }}
+    {{ if lt (.Params.eventDate | time) now }}
+    <article class="event past">
+      <h3>{{ .Title }}</h3>
+      <p>{{ .Params.eventDate | time.Format "Jan 2, 2006" }}</p>
+    </article>
+    {{ end }}
     {{ end }}
   {{ end }}
 </div>
