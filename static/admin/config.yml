@@ -2,7 +2,6 @@ backend:
   name: github
   repo: Raithmir/skelton # Change this
   branch: main
-  base_url: https://skeltongate.homes
 
 media_folder: "static/images/uploads"
 public_folder: "/images/uploads"
