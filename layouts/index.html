@@ -1,0 +1,37 @@
+{{ define "main" }}
+<h1>Welcome to Skelton Gate Community</h1>
+
+<section class="featured-notices">
+  <h2>Important Notices</h2>
+  {{ range first 3 (where site.RegularPages "Section" "notices") }}
+    <article>
+      <h3>{{ .Title }}</h3>
+      {{ .Summary }}
+      <a href="{{ .Permalink }}">Read more</a>
+    </article>
+  {{ end }}
+</section>
+
+<section class="upcoming-events">
+  <h2>Upcoming Events</h2>
+  {{ range first 5 (where site.RegularPages "Section" "events") }}
+    <article>
+      <h3>{{ .Title }}</h3>
+      <p>{{ .Params.eventDate | time.Format "Jan 2" }} at {{ .Params.eventTime }}</p>
+      <p>{{ .Params.location }}</p>
+    </article>
+  {{ end }}
+  <a href="/events/">See all events →</a>
+</section>
+
+<section class="local-businesses">
+  <h2>Local Businesses</h2>
+  {{ range first 6 (where site.RegularPages "Section" "businesses") }}
+    <article>
+      <h3>{{ .Title }}</h3>
+      <p>{{ .Params.category }}</p>
+    </article>
+  {{ end }}
+  <a href="/businesses/">Browse directory →</a>
+</section>
+{{ end }}
