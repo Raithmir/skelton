@@ -1,0 +1,8 @@
+{{- $events := slice -}}
+{{- range where .Site.RegularPages "Section" "events" -}}
+  {{- if ge (.Params.eventDate | time) now -}}
+    {{- $event := dict "title" .Title "start" (.Params.eventDate | time.Format "2006-01-02T15:04:05") "url" .Permalink -}}
+    {{- $events = $events | append $event -}}
+  {{- end -}}
+{{- end -}}
+{{- $events | jsonify -}}

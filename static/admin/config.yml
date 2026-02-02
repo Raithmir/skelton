@@ -1,0 +1,105 @@
+backend:
+  name: github
+  repo: your-username/community-site # Change this
+  branch: main
+
+media_folder: "static/images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  # Events
+  - name: "events"
+    label: "Events"
+    folder: "content/events"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Event Date", name: "eventDate", widget: "datetime"}
+      - {label: "Event Time", name: "eventTime", widget: "string"}
+      - {label: "Location", name: "location", widget: "string"}
+      - {label: "Organizer", name: "organizer", widget: "string", required: false}
+      - {label: "Description", name: "body", widget: "markdown"}
+      - {label: "Featured Event", name: "featured", widget: "boolean", default: false}
+      - {label: "Tags", name: "tags", widget: "list", required: false}
+      - {label: "Draft", name: "draft", widget: "boolean", default: true}
+
+  # Business Directory
+  - name: "businesses"
+    label: "Businesses"
+    folder: "content/businesses"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Business Name", name: "title", widget: "string"}
+      - {label: "Category", name: "category", widget: "select", 
+         options: ["Restaurant", "Cafe", "Shop", "Service", "Healthcare", "Other"]}
+      - {label: "Address", name: "address", widget: "string"}
+      - {label: "Phone", name: "phone", widget: "string", required: false}
+      - {label: "Website", name: "website", widget: "string", required: false}
+      - {label: "Hours", name: "hours", widget: "text", required: false}
+      - {label: "Description", name: "body", widget: "markdown"}
+      - {label: "Image", name: "image", widget: "image", required: false}
+      - {label: "Tags", name: "tags", widget: "list", required: false}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false}
+
+  # Walking Routes
+  - name: "walks"
+    label: "Walking Routes"
+    folder: "content/walks"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Route Name", name: "title", widget: "string"}
+      - {label: "Distance", name: "distance", widget: "string"}
+      - {label: "Difficulty", name: "difficulty", widget: "select",
+         options: ["Easy", "Moderate", "Challenging"]}
+      - {label: "Duration", name: "duration", widget: "string"}
+      - {label: "Start Point", name: "startPoint", widget: "string"}
+      - {label: "Description", name: "body", widget: "markdown"}
+      - {label: "Highlights", name: "highlights", widget: "list", required: false}
+      - {label: "Route Map", name: "image", widget: "image", required: false}
+      - {label: "GPX File", name: "gpxFile", widget: "file", required: false}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false}
+
+  # Notices
+  - name: "notices"
+    label: "Notices"
+    folder: "content/notices"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Priority", name: "priority", widget: "select",
+         options: ["Low", "Normal", "High", "Urgent"]}
+      - {label: "Category", name: "category", widget: "string", required: false}
+      - {label: "Expiry Date", name: "expiryDate", widget: "datetime", required: false}
+      - {label: "Content", name: "body", widget: "markdown"}
+      - {label: "Draft", name: "draft", widget: "boolean", default: true}
+
+  # Services Directory
+  - name: "services"
+    label: "Services"
+    folder: "content/services"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Service Name", name: "title", widget: "string"}
+      - {label: "Category", name: "category", widget: "string"}
+      - {label: "Contact Person", name: "contact", widget: "string", required: false}
+      - {label: "Phone", name: "phone", widget: "string", required: false}
+      - {label: "Email", name: "email", widget: "string", required: false}
+      - {label: "Website", name: "website", widget: "string", required: false}
+      - {label: "Description", name: "body", widget: "markdown"}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false}
+
+  # Pages
+  - name: "pages"
+    label: "Pages"
+    folder: "content/pages"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Content", name: "body", widget: "markdown"}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false}
