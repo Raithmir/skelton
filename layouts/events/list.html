@@ -1,0 +1,22 @@
+{{ define "main" }}
+<h1>Community Events</h1>
+
+<div class="events-list">
+  {{ range .Pages }}
+    {{ if not .Draft }}
+    <article class="event">
+      <h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+      <p class="event-meta">
+        <strong>Date:</strong> {{ .Params.eventDate | time.Format "Monday, Jan 2, 2006" }}<br>
+        <strong>Time:</strong> {{ .Params.eventTime }}<br>
+        <strong>Location:</strong> {{ .Params.location }}
+      </p>
+      <div class="description">
+        {{ .Summary }}
+      </div>
+      <a href="{{ .Permalink }}">Read more →</a>
+    </article>
+    {{ end }}
+  {{ end }}
+</div>
+{{ end }}

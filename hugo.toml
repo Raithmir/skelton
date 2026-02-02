@@ -1,4 +1,29 @@
-baseURL = 'https://example.org/'
-languageCode = 'en-us'
-title = 'My New Hugo Site'
+baseURL = 'https://skeltongate.homes'
+languageCode = 'en-gb'
+title = 'Skelton Gate Community'
 theme = 'ananke'
+[menu]
+  [[menu.main]]
+    name = "Events"
+    url = "/events/"
+    weight = 1
+  
+  [[menu.main]]
+    name = "Businesses"
+    url = "/businesses/"
+    weight = 2
+  
+  [[menu.main]]
+    name = "Walking Routes"
+    url = "/walks/"
+    weight = 3
+  
+  [[menu.main]]
+    name = "Notices"
+    url = "/notices/"
+    weight = 4
+  
+  [[menu.main]]
+    name = "Services"
+    url = "/services/"
+    weight = 5
