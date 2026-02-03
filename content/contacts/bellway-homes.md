@@ -1,17 +1,20 @@
 ---
-title: "Bellway Homes Customer Care"
+title: Avant Homes
 date: 2026-02-03
-type: "contact"
-layout: "simple"
-category: "builders"
-organization: "Bellway Homes"
-contactPerson: "Customer Care Team"
-phone: "01132 878 900"
-email: "customercare.yorkshire@bellway.co.uk"
-website: "https://www.bellway.co.uk"
-address: "Bellway Yorkshire, Knaresborough Road, Harrogate, HG2 7TE"
-hours: "Monday-Friday: 9am-5pm"
-description: "For snagging issues, warranty claims, and after-sales support for Bellway-built properties. Contact within 2 years of purchase for warranty-related matters."
-tags: ["builder", "warranty", "snagging"]
+type: contact
+layout: simple
+category: builders
+organization: Bellway Homes
+contactPerson: Sales Team
+phone: 01202 081042
+email: ''
+website: https://www.avanthomes.co.uk/new-build-homes/west-yorkshire/leeds/greenlock-place
+address: Pontefract Lane, Leeds, West Yorkshire, LS9 0FB
+hours: 'Monday, Thursday-Sunday: 9am-5pm'
+description: Avant Homes
+tags:
+  - builder
+  - warranty
+  - snagging
 draft: false
 ---
