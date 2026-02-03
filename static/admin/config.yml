@@ -16,18 +16,18 @@ collections:
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
-      - {label: "Title", name: "title", widget: "string"}
-      - {label: "Date", name: "date", widget: "datetime", default: "{{now}}"}
+      - {label: "Title", name: "title", widget: "string", hint: "Event name as it will appear on the website"}
+      - {label: "Date", name: "date", widget: "datetime", default: "{{now}}", hint: "Creation date (auto-filled)"}
       - {label: "Type", name: "type", widget: "hidden", default: "event"}
       - {label: "Layout", name: "layout", widget: "hidden", default: "simple"}
-      - {label: "Event Date", name: "eventDate", widget: "datetime"}
-      - {label: "Event Time", name: "eventTime", widget: "string"}
-      - {label: "Location", name: "location", widget: "string"}
-      - {label: "Organizer", name: "organizer", widget: "string", required: false}
-      - {label: "Description", name: "body", widget: "markdown"}
-      - {label: "Featured Event", name: "featured", widget: "boolean", default: false}
+      - {label: "Event Date", name: "eventDate", widget: "datetime", hint: "When the event takes place (used for calendar and sorting)"}
+      - {label: "Event Time", name: "eventTime", widget: "string", hint: "e.g., '7:00 PM' or '2:00 PM - 4:00 PM'"}
+      - {label: "Location", name: "location", widget: "string", hint: "e.g., 'Community Hall' or 'Skelton Gate Green'"}
+      - {label: "Organizer", name: "organizer", widget: "string", required: false, hint: "Person or group organizing the event"}
+      - {label: "Description", name: "body", widget: "markdown", hint: "Full event details, agenda, how to join, etc."}
+      - {label: "Featured Event", name: "featured", widget: "boolean", default: false, hint: "Show prominently on homepage"}
       - {label: "Tags", name: "tags", widget: "list", required: false, default: ["community-event"]}
-      - {label: "Draft", name: "draft", widget: "boolean", default: true}
+      - {label: "Draft", name: "draft", widget: "boolean", default: true, hint: "Set to false to publish on website"}
 
   # Business Directory
   - name: "businesses"
@@ -293,24 +293,33 @@ collections:
     folder: "content/bin-collection"
     create: true
     slug: "{{slug}}"
+    editor:
+      preview: false
     fields:
-      - {label: "Waste Type", name: "title", widget: "string"}
+      - {label: "Waste Type", name: "title", widget: "string", hint: "e.g., 'General Waste', 'Recycling', 'Garden Waste'"}
       - {label: "Date", name: "date", widget: "datetime", default: "{{now}}"}
       - {label: "Type", name: "type", widget: "hidden", default: "bin-collection"}
       - {label: "Layout", name: "layout", widget: "hidden", default: "simple"}
-      - {label: "Zone", name: "zone", widget: "string"}
+      - {label: "Zone", name: "zone", widget: "string", hint: "e.g., 'Zone A', 'Zone B' - check which zone your area belongs to"}
       - {label: "Waste Type", name: "wasteType", widget: "select",
-         options: ["general", "recycling", "garden", "food"]}
+         options: ["general", "recycling", "garden", "food"],
+         hint: "Type of waste collected"}
       - {label: "Collection Day", name: "collectionDay", widget: "select",
-         options: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]}
-      - {label: "Collection Week", name: "collectionWeek", widget: "string"}
-      - {label: "Next Collection", name: "nextCollection", widget: "datetime"}
+         options: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+         hint: "Day of the week bins are collected"}
+      - {label: "Collection Week", name: "collectionWeek", widget: "string",
+         hint: "e.g., 'Weekly', 'Fortnightly', 'Week 1', 'Week 2'"}
+      - {label: "Next Collection", name: "nextCollection", widget: "datetime",
+         hint: "⚠️ IMPORTANT: Update this date after each collection! This drives the homepage widget."}
       - {label: "Bin Color", name: "color", widget: "select",
-         options: ["black", "blue", "green", "brown"]}
-      - {label: "Notes", name: "notes", widget: "string", required: false}
+         options: ["black", "blue", "green", "brown"],
+         hint: "Color of the bin - used for visual coding on website"}
+      - {label: "Notes", name: "notes", widget: "string", required: false,
+         hint: "e.g., 'Subscription required', 'March-November only'"}
       - {label: "Description", name: "description", widget: "text", required: false}
       - {label: "Tags", name: "tags", widget: "list", required: false}
-      - {label: "Draft", name: "draft", widget: "boolean", default: false}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false,
+         hint: "Set to true to hide from website"}
 
   # Pages
   - name: "pages"
