@@ -1,35 +1,181 @@
 # Main Navigation Menu
 # https://blowfish.page/docs/configuration/#menus
 
+# Top-level navigation item
 [[main]]
   name = "Home"
   pageRef = "/"
   weight = 1
+  [main.params]
+    enabled = true
+
+# About dropdown parent
+[[main]]
+  name = "About"
+  identifier = "about"
+  weight = 2
+  [main.params]
+    enabled = true
+
+[[main]]
+  name = "About Skelton Gate"
+  pageRef = "/about"
+  parent = "about"
+  weight = 1
+  [main.params]
+    enabled = true
+
+[[main]]
+  name = "Skelton Lake Services"
+  pageRef = "/skelton-lake-services"
+  parent = "about"
+  weight = 2
+  [main.params]
+    enabled = true
+
+# Community dropdown parent
+[[main]]
+  name = "Community"
+  identifier = "community"
+  weight = 3
+  [main.params]
+    enabled = true
 
 [[main]]
   name = "Events"
   pageRef = "/events"
-  weight = 2
-
-[[main]]
-  name = "Businesses"
-  pageRef = "/businesses"
-  weight = 3
-
-[[main]]
-  name = "Walking Routes"
-  pageRef = "/walks"
-  weight = 4
+  parent = "community"
+  weight = 1
+  [main.params]
+    enabled = true
 
 [[main]]
   name = "Notices"
   pageRef = "/notices"
-  weight = 5
+  parent = "community"
+  weight = 2
+  [main.params]
+    enabled = true
 
 [[main]]
-  name = "Services"
+  name = "Walking Routes"
+  pageRef = "/walks"
+  parent = "community"
+  weight = 3
+  [main.params]
+    enabled = true
+
+# Directory dropdown parent
+[[main]]
+  name = "Directory"
+  identifier = "directory"
+  weight = 4
+  [main.params]
+    enabled = true
+
+[[main]]
+  name = "Local Businesses"
+  pageRef = "/businesses"
+  parent = "directory"
+  weight = 1
+  [main.params]
+    enabled = true
+
+[[main]]
+  name = "Local Services"
   pageRef = "/services"
+  parent = "directory"
+  weight = 2
+  [main.params]
+    enabled = true
+
+[[main]]
+  name = "Contacts"
+  pageRef = "/contacts"
+  parent = "directory"
+  weight = 3
+  [main.params]
+    enabled = true
+
+# Resources dropdown parent
+[[main]]
+  name = "Resources"
+  identifier = "resources"
+  weight = 5
+  [main.params]
+    enabled = true
+
+[[main]]
+  name = "Welcome Pack"
+  pageRef = "/welcome-pack"
+  parent = "resources"
+  weight = 1
+  [main.params]
+    enabled = true
+
+[[main]]
+  name = "Local Amenities"
+  pageRef = "/amenities"
+  parent = "resources"
+  weight = 2
+  [main.params]
+    enabled = true
+
+[[main]]
+  name = "Transport & Travel"
+  pageRef = "/transport"
+  parent = "resources"
+  weight = 3
+  [main.params]
+    enabled = true
+
+[[main]]
+  name = "Schools & Childcare"
+  pageRef = "/schools"
+  parent = "resources"
+  weight = 4
+  [main.params]
+    enabled = true
+
+[[main]]
+  name = "Healthcare"
+  pageRef = "/healthcare"
+  parent = "resources"
+  weight = 5
+  [main.params]
+    enabled = true
+
+[[main]]
+  name = "Broadband Providers"
+  pageRef = "/broadband"
+  parent = "resources"
   weight = 6
+  [main.params]
+    enabled = true
+
+[[main]]
+  name = "Useful Links"
+  pageRef = "/links"
+  parent = "resources"
+  weight = 7
+  [main.params]
+    enabled = true
+
+[[main]]
+  name = "Bin Collection"
+  pageRef = "/bin-collection"
+  parent = "resources"
+  weight = 8
+  [main.params]
+    enabled = true
+
+[[main]]
+  name = "FAQs"
+  pageRef = "/faqs"
+  parent = "resources"
+  weight = 9
+  [main.params]
+    enabled = true
 
 # Footer menu (optional)
 # [[footer]]

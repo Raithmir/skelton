@@ -1,0 +1,68 @@
+{{ define "main" }}
+<article class="max-w-full">
+  <header class="mb-8">
+    <h1 class="text-4xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">Frequently Asked Questions</h1>
+    <p class="text-lg text-neutral-700 dark:text-neutral-300">
+      Find answers to common questions about living at Skelton Gate.
+    </p>
+  </header>
+
+  {{ $faqs := where .Pages ".Params.draft" "!=" true }}
+  {{ $faqsByCategory := $faqs.GroupByParam "category" }}
+
+  {{ if gt (len $faqs) 0 }}
+    <!-- Category Navigation -->
+    <nav class="mb-8 p-4 rounded-lg bg-neutral-100 dark:bg-neutral-800">
+      <p class="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">Jump to category:</p>
+      <div class="flex flex-wrap gap-2">
+        {{ range $faqsByCategory }}
+          {{ $category := default "General" .Key | title }}
+          {{ $categorySlug := anchorize $category }}
+          <a href="#{{ $categorySlug }}" class="px-3 py-2 rounded bg-primary-600 text-white hover:bg-primary-700 transition-colors text-sm font-medium">
+            {{ $category }} ({{ len .Pages }})
+          </a>
+        {{ end }}
+      </div>
+    </nav>
+
+    <!-- FAQs by Category -->
+    <div class="space-y-12">
+      {{ range $faqsByCategory }}
+        {{ $category := default "General" .Key | title }}
+        {{ $categorySlug := anchorize $category }}
+        <section id="{{ $categorySlug }}">
+          <h2 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-6 pb-2 border-b-2 border-primary-600">
+            {{ $category }}
+          </h2>
+
+          <div class="space-y-4">
+            {{ range .Pages }}
+              <details class="group rounded-lg bg-neutral-100 dark:bg-neutral-800 overflow-hidden">
+                <summary class="cursor-pointer p-5 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors flex items-center justify-between">
+                  <h3 class="text-lg font-semibold text-neutral-900 dark:text-neutral-100 pr-4">
+                    {{ .Title }}
+                  </h3>
+                  <svg class="w-5 h-5 text-neutral-600 dark:text-neutral-400 flex-shrink-0 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                  </svg>
+                </summary>
+                <div class="px-5 pb-5 pt-2">
+                  <div class="prose dark:prose-invert max-w-none">
+                    {{ .Content }}
+                  </div>
+                </div>
+              </details>
+            {{ end }}
+          </div>
+        </section>
+      {{ end }}
+    </div>
+
+  {{ else }}
+    <div class="rounded-lg bg-neutral-100 dark:bg-neutral-800 p-8 text-center">
+      <p class="text-neutral-600 dark:text-neutral-400 text-lg">No FAQs available yet.</p>
+      <p class="text-neutral-500 dark:text-neutral-500 text-sm mt-2">Check back soon as we add answers to common questions!</p>
+    </div>
+  {{ end }}
+</article>
+{{ end }}

@@ -113,6 +113,205 @@ collections:
       - {label: "Tags", name: "tags", widget: "list", required: false}
       - {label: "Draft", name: "draft", widget: "boolean", default: false}
 
+  # Contacts
+  - name: "contacts"
+    label: "Contacts"
+    folder: "content/contacts"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Contact Name", name: "title", widget: "string"}
+      - {label: "Date", name: "date", widget: "datetime", default: "{{now}}"}
+      - {label: "Type", name: "type", widget: "hidden", default: "contact"}
+      - {label: "Layout", name: "layout", widget: "hidden", default: "simple"}
+      - {label: "Category", name: "category", widget: "select",
+         options: ["management", "builders", "council", "utilities", "emergency"]}
+      - {label: "Organization", name: "organization", widget: "string"}
+      - {label: "Contact Person", name: "contactPerson", widget: "string", required: false}
+      - {label: "Phone", name: "phone", widget: "string", required: false}
+      - {label: "Email", name: "email", widget: "string", required: false}
+      - {label: "Website", name: "website", widget: "string", required: false}
+      - {label: "Address", name: "address", widget: "string", required: false}
+      - {label: "Hours", name: "hours", widget: "string", required: false}
+      - {label: "Description", name: "description", widget: "text", required: false}
+      - {label: "Tags", name: "tags", widget: "list", required: false}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false}
+
+  # FAQs
+  - name: "faqs"
+    label: "FAQs"
+    folder: "content/faqs"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Question", name: "title", widget: "string"}
+      - {label: "Date", name: "date", widget: "datetime", default: "{{now}}"}
+      - {label: "Type", name: "type", widget: "hidden", default: "faq"}
+      - {label: "Layout", name: "layout", widget: "hidden", default: "simple"}
+      - {label: "Category", name: "category", widget: "select",
+         options: ["snagging", "parking", "maintenance", "utilities", "management", "general"]}
+      - {label: "Featured", name: "featured", widget: "boolean", default: false}
+      - {label: "Weight", name: "weight", widget: "number", default: 0, value_type: "int"}
+      - {label: "Answer", name: "body", widget: "markdown"}
+      - {label: "Tags", name: "tags", widget: "list", required: false}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false}
+
+  # Broadband Providers
+  - name: "broadband"
+    label: "Broadband Providers"
+    folder: "content/broadband"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Provider Name", name: "title", widget: "string"}
+      - {label: "Date", name: "date", widget: "datetime", default: "{{now}}"}
+      - {label: "Type", name: "type", widget: "hidden", default: "broadband"}
+      - {label: "Layout", name: "layout", widget: "hidden", default: "simple"}
+      - {label: "Provider", name: "provider", widget: "string"}
+      - {label: "Technology", name: "technology", widget: "select",
+         options: ["FTTP", "FTTC", "ADSL", "Cable", "5G"]}
+      - {label: "Max Speed", name: "maxSpeed", widget: "string"}
+      - {label: "Availability", name: "availability", widget: "select",
+         options: ["Available", "Limited", "Coming Soon"]}
+      - {label: "Phone", name: "phone", widget: "string", required: false}
+      - {label: "Website", name: "website", widget: "string", required: false}
+      - {label: "Price Range", name: "priceRange", widget: "string", required: false}
+      - {label: "Contract Length", name: "contractLength", widget: "string", required: false}
+      - {label: "Features", name: "features", widget: "list", required: false}
+      - {label: "Description", name: "description", widget: "text", required: false}
+      - {label: "Tags", name: "tags", widget: "list", required: false}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false}
+
+  # Local Amenities
+  - name: "amenities"
+    label: "Local Amenities"
+    folder: "content/amenities"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Amenity Name", name: "title", widget: "string"}
+      - {label: "Date", name: "date", widget: "datetime", default: "{{now}}"}
+      - {label: "Type", name: "type", widget: "hidden", default: "amenity"}
+      - {label: "Layout", name: "layout", widget: "hidden", default: "simple"}
+      - {label: "Category", name: "category", widget: "select",
+         options: ["supermarket", "shop", "restaurant", "cafe", "entertainment", "leisure"]}
+      - {label: "Address", name: "address", widget: "string"}
+      - {label: "Postcode", name: "postcode", widget: "string"}
+      - {label: "Phone", name: "phone", widget: "string", required: false}
+      - {label: "Website", name: "website", widget: "string", required: false}
+      - {label: "Hours", name: "hours", widget: "string", required: false}
+      - {label: "Distance", name: "distance", widget: "string"}
+      - {label: "Features", name: "features", widget: "list", required: false}
+      - {label: "Description", name: "description", widget: "text", required: false}
+      - {label: "Tags", name: "tags", widget: "list", required: false}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false}
+
+  # Transport & Travel
+  - name: "transport"
+    label: "Transport & Travel"
+    folder: "content/transport"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Service Name", name: "title", widget: "string"}
+      - {label: "Date", name: "date", widget: "datetime", default: "{{now}}"}
+      - {label: "Type", name: "type", widget: "hidden", default: "transport"}
+      - {label: "Layout", name: "layout", widget: "hidden", default: "simple"}
+      - {label: "Category", name: "category", widget: "select",
+         options: ["bus", "train", "park-and-ride", "taxi"]}
+      - {label: "Route Number", name: "routeNumber", widget: "string", required: false}
+      - {label: "Operator", name: "operator", widget: "string", required: false}
+      - {label: "Destination", name: "destination", widget: "string", required: false}
+      - {label: "Frequency", name: "frequency", widget: "string", required: false}
+      - {label: "Operating Hours", name: "operatingHours", widget: "string", required: false}
+      - {label: "Nearest Stop", name: "nearestStop", widget: "string", required: false}
+      - {label: "Distance", name: "distance", widget: "string", required: false}
+      - {label: "Website", name: "website", widget: "string", required: false}
+      - {label: "Phone", name: "phone", widget: "string", required: false}
+      - {label: "Description", name: "description", widget: "text", required: false}
+      - {label: "Tags", name: "tags", widget: "list", required: false}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false}
+
+  # Schools & Childcare
+  - name: "schools"
+    label: "Schools & Childcare"
+    folder: "content/schools"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "School Name", name: "title", widget: "string"}
+      - {label: "Date", name: "date", widget: "datetime", default: "{{now}}"}
+      - {label: "Type", name: "type", widget: "hidden", default: "school"}
+      - {label: "Layout", name: "layout", widget: "hidden", default: "simple"}
+      - {label: "Category", name: "category", widget: "select",
+         options: ["nursery", "primary", "secondary", "childcare"]}
+      - {label: "Age Range", name: "ageRange", widget: "string", required: false}
+      - {label: "Address", name: "address", widget: "string"}
+      - {label: "Postcode", name: "postcode", widget: "string"}
+      - {label: "Phone", name: "phone", widget: "string", required: false}
+      - {label: "Email", name: "email", widget: "string", required: false}
+      - {label: "Website", name: "website", widget: "string", required: false}
+      - {label: "Head Teacher", name: "headTeacher", widget: "string", required: false}
+      - {label: "Ofsted Rating", name: "ofstedRating", widget: "select", required: false,
+         options: ["Outstanding", "Good", "Requires Improvement", "Inadequate"]}
+      - {label: "Distance", name: "distance", widget: "string", required: false}
+      - {label: "Admissions", name: "admissions", widget: "text", required: false}
+      - {label: "Description", name: "description", widget: "text", required: false}
+      - {label: "Tags", name: "tags", widget: "list", required: false}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false}
+
+  # Healthcare
+  - name: "healthcare"
+    label: "Healthcare"
+    folder: "content/healthcare"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Provider Name", name: "title", widget: "string"}
+      - {label: "Date", name: "date", widget: "datetime", default: "{{now}}"}
+      - {label: "Type", name: "type", widget: "hidden", default: "healthcare"}
+      - {label: "Layout", name: "layout", widget: "hidden", default: "simple"}
+      - {label: "Category", name: "category", widget: "select",
+         options: ["gp", "dentist", "pharmacy", "optician", "hospital", "urgent-care"]}
+      - {label: "Address", name: "address", widget: "string"}
+      - {label: "Postcode", name: "postcode", widget: "string"}
+      - {label: "Phone", name: "phone", widget: "string", required: false}
+      - {label: "Email", name: "email", widget: "string", required: false}
+      - {label: "Website", name: "website", widget: "string", required: false}
+      - {label: "Hours", name: "hours", widget: "string", required: false}
+      - {label: "Distance", name: "distance", widget: "string", required: false}
+      - {label: "Accepting Patients", name: "acceptingPatients", widget: "boolean", default: false}
+      - {label: "NHS Service", name: "nhsService", widget: "boolean", default: true}
+      - {label: "Services", name: "services", widget: "list", required: false}
+      - {label: "Description", name: "description", widget: "text", required: false}
+      - {label: "Tags", name: "tags", widget: "list", required: false}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false}
+
+  # Bin Collection
+  - name: "bin-collection"
+    label: "Bin Collection"
+    folder: "content/bin-collection"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Waste Type", name: "title", widget: "string"}
+      - {label: "Date", name: "date", widget: "datetime", default: "{{now}}"}
+      - {label: "Type", name: "type", widget: "hidden", default: "bin-collection"}
+      - {label: "Layout", name: "layout", widget: "hidden", default: "simple"}
+      - {label: "Zone", name: "zone", widget: "string"}
+      - {label: "Waste Type", name: "wasteType", widget: "select",
+         options: ["general", "recycling", "garden", "food"]}
+      - {label: "Collection Day", name: "collectionDay", widget: "select",
+         options: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]}
+      - {label: "Collection Week", name: "collectionWeek", widget: "string"}
+      - {label: "Next Collection", name: "nextCollection", widget: "datetime"}
+      - {label: "Bin Color", name: "color", widget: "select",
+         options: ["black", "blue", "green", "brown"]}
+      - {label: "Notes", name: "notes", widget: "string", required: false}
+      - {label: "Description", name: "description", widget: "text", required: false}
+      - {label: "Tags", name: "tags", widget: "list", required: false}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false}
+
   # Pages
   - name: "pages"
     label: "Pages"
