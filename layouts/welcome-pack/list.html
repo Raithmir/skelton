@@ -1,0 +1,16 @@
+{{ define "main" }}
+<article class="max-w-full">
+  <header class="mb-8">
+    <h1 class="text-4xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">{{ .Title }}</h1>
+    {{ if .Params.description }}
+    <p class="text-lg text-neutral-700 dark:text-neutral-300">{{ .Params.description }}</p>
+    {{ end }}
+  </header>
+
+  <div class="prose dark:prose-invert max-w-none">
+    {{ .Content }}
+  </div>
+
+  {{ partial "documents.html" . }}
+</article>
+{{ end }}

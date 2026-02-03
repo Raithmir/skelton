@@ -153,6 +153,14 @@ collections:
       - {label: "Featured", name: "featured", widget: "boolean", default: false}
       - {label: "Weight", name: "weight", widget: "number", default: 0, value_type: "int"}
       - {label: "Answer", name: "body", widget: "markdown"}
+      - label: "Attachments"
+        name: "attachments"
+        widget: "list"
+        required: false
+        hint: "Upload PDFs or documents related to this FAQ (e.g., builder brochures, guides)"
+        fields:
+          - {label: "File", name: "file", widget: "file"}
+          - {label: "Title", name: "title", widget: "string", hint: "e.g., 'Bellway Home User Guide'"}
       - {label: "Tags", name: "tags", widget: "list", required: false}
       - {label: "Draft", name: "draft", widget: "boolean", default: false}
 
@@ -331,3 +339,71 @@ collections:
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Content", name: "body", widget: "markdown"}
       - {label: "Draft", name: "draft", widget: "boolean", default: false}
+
+  # Single Pages (file collection)
+  - name: "single_pages"
+    label: "Single Pages"
+    files:
+      - label: "About Skelton Gate"
+        name: "about"
+        file: "content/about/_index.md"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Description", name: "description", widget: "string", required: false}
+          - {label: "Layout", name: "layout", widget: "string", default: "simple"}
+          - {label: "Show Date", name: "showDate", widget: "boolean", default: false}
+          - {label: "Show Author", name: "showAuthor", widget: "boolean", default: false}
+          - {label: "Show Reading Time", name: "showReadingTime", widget: "boolean", default: false}
+          - {label: "Content", name: "body", widget: "markdown"}
+          - label: "Documents"
+            name: "documents"
+            widget: "list"
+            required: false
+            hint: "Upload PDFs or documents (e.g., builder brochures, development plans)"
+            fields:
+              - {label: "File", name: "file", widget: "file"}
+              - {label: "Title", name: "title", widget: "string", hint: "e.g., 'Bellway Development Brochure'"}
+
+      - label: "Skelton Lake Services"
+        name: "skelton-lake-services"
+        file: "content/skelton-lake-services/_index.md"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Description", name: "description", widget: "string", required: false}
+          - {label: "Layout", name: "layout", widget: "string", default: "simple"}
+          - {label: "Show Date", name: "showDate", widget: "boolean", default: false}
+          - {label: "Show Author", name: "showAuthor", widget: "boolean", default: false}
+          - {label: "Show Reading Time", name: "showReadingTime", widget: "boolean", default: false}
+          - {label: "Content", name: "body", widget: "markdown"}
+
+      - label: "Welcome Pack"
+        name: "welcome-pack"
+        file: "content/welcome-pack/_index.md"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Description", name: "description", widget: "string", required: false}
+          - {label: "Layout", name: "layout", widget: "string", default: "simple"}
+          - {label: "Show Date", name: "showDate", widget: "boolean", default: false}
+          - {label: "Show Author", name: "showAuthor", widget: "boolean", default: false}
+          - {label: "Show Reading Time", name: "showReadingTime", widget: "boolean", default: false}
+          - {label: "Content", name: "body", widget: "markdown"}
+          - label: "Documents"
+            name: "documents"
+            widget: "list"
+            required: false
+            hint: "Upload PDFs or documents (e.g., builder handbooks, warranty guides, welcome materials)"
+            fields:
+              - {label: "File", name: "file", widget: "file"}
+              - {label: "Title", name: "title", widget: "string", hint: "e.g., 'New Homeowner Guide'"}
+
+      - label: "Useful Links"
+        name: "links"
+        file: "content/links/_index.md"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Description", name: "description", widget: "string", required: false}
+          - {label: "Layout", name: "layout", widget: "string", default: "simple"}
+          - {label: "Show Date", name: "showDate", widget: "boolean", default: false}
+          - {label: "Show Author", name: "showAuthor", widget: "boolean", default: false}
+          - {label: "Show Reading Time", name: "showReadingTime", widget: "boolean", default: false}
+          - {label: "Content", name: "body", widget: "markdown"}
