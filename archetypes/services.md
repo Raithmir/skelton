@@ -1,13 +1,13 @@
 ---
 title: "{{ replace .Name "-" " " | title }}"
 date: {{ .Date }}
-type: "business"
+type: "service"
 layout: "simple"
-category: "" # restaurant, shop, service, etc.
-address: ""
+category: "" # personal, professional, home, etc.
+contact: ""
 phone: ""
+email: ""
 website: ""
-hours: ""
 description: ""
 tags: []
 draft: false

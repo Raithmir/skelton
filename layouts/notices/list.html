@@ -1,36 +1,169 @@
 {{ define "main" }}
-<h1>Community Notices</h1>
+<article class="max-w-full">
+  <header class="mb-8">
+    <h1 class="text-4xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">Community Notices</h1>
+    <p class="text-lg text-neutral-700 dark:text-neutral-300">
+      Important announcements and updates for the Skelton Gate community. Stay informed about what's happening.
+    </p>
+  </header>
 
-<div class="notices-list">
-  {{ range .Pages.ByDate.Reverse }}
+  {{ $now := now }}
+  {{ $activeNotices := slice }}
+
+  <!-- Filter active notices (not expired, not draft) -->
+  {{ range .Pages }}
     {{ if not .Draft }}
-    {{ $now := now }}
-    {{ $expiry := .Params.expiryDate }}
-    {{ if or (not $expiry) (time $expiry).After $now }}
-    <article class="notice priority-{{ .Params.priority | lower }}">
-      <h2>{{ .Title }}</h2>
-      <div class="notice-meta">
-        <span class="date">{{ .Date.Format "January 2, 2006" }}</span>
-        {{ with .Params.priority }}
-          <span class="priority priority-{{ . | lower }}">{{ . }}</span>
-        {{ end }}
-        {{ with .Params.category }}
-          <span class="category">{{ . }}</span>
-        {{ end }}
-      </div>
-      <div class="content">
-        {{ .Content }}
-      </div>
-    </article>
-    {{ end }}
+      {{ $expiry := .Params.expiryDate }}
+      {{ if or (not $expiry) (ge (time $expiry) $now) }}
+        {{ $activeNotices = $activeNotices | append . }}
+      {{ end }}
     {{ end }}
   {{ end }}
-</div>
 
-<style>
-.priority-urgent { color: red; font-weight: bold; }
-.priority-high { color: orange; font-weight: bold; }
-.priority-normal { color: green; }
-.priority-low { color: gray; }
-</style>
+  <!-- Sort by date (most recent first) -->
+  {{ $activeNotices = sort $activeNotices "Date" "desc" }}
+
+  {{ if gt (len $activeNotices) 0 }}
+    <!-- Priority Filter Navigation -->
+    <nav class="mb-8 p-4 rounded-lg bg-neutral-100 dark:bg-neutral-800">
+      <p class="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">Filter by priority:</p>
+      <div class="flex flex-wrap gap-2">
+        <button onclick="filterNotices('all')" class="filter-btn px-3 py-2 rounded bg-primary-600 text-white hover:bg-primary-700 transition-colors text-sm font-medium">
+          All Notices ({{ len $activeNotices }})
+        </button>
+        {{ $urgent := where $activeNotices ".Params.priority" "in" (slice "urgent" "Urgent") }}
+        {{ if gt (len $urgent) 0 }}
+          <button onclick="filterNotices('urgent')" class="filter-btn px-3 py-2 rounded bg-neutral-200 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-300 dark:hover:bg-neutral-600 transition-colors text-sm font-medium">
+            Urgent ({{ len $urgent }})
+          </button>
+        {{ end }}
+        {{ $high := where $activeNotices ".Params.priority" "in" (slice "high" "High") }}
+        {{ if gt (len $high) 0 }}
+          <button onclick="filterNotices('high')" class="filter-btn px-3 py-2 rounded bg-neutral-200 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-300 dark:hover:bg-neutral-600 transition-colors text-sm font-medium">
+            High ({{ len $high }})
+          </button>
+        {{ end }}
+        {{ $normal := where $activeNotices ".Params.priority" "in" (slice "normal" "Normal") }}
+        {{ if gt (len $normal) 0 }}
+          <button onclick="filterNotices('normal')" class="filter-btn px-3 py-2 rounded bg-neutral-200 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-300 dark:hover:bg-neutral-600 transition-colors text-sm font-medium">
+            Normal ({{ len $normal }})
+          </button>
+        {{ end }}
+        {{ $low := where $activeNotices ".Params.priority" "in" (slice "low" "Low") }}
+        {{ if gt (len $low) 0 }}
+          <button onclick="filterNotices('low')" class="filter-btn px-3 py-2 rounded bg-neutral-200 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-300 dark:hover:bg-neutral-600 transition-colors text-sm font-medium">
+            Low ({{ len $low }})
+          </button>
+        {{ end }}
+      </div>
+    </nav>
+
+    <!-- Notices List -->
+    <div class="space-y-6">
+      {{ range $activeNotices }}
+        {{ $priorityLower := default "normal" .Params.priority | lower }}
+        {{ $priorityColor := "bg-neutral-100 dark:bg-neutral-800 border-neutral-300 dark:border-neutral-700" }}
+        {{ $priorityBadge := "bg-neutral-200 text-neutral-800 dark:bg-neutral-700 dark:text-neutral-200" }}
+
+        {{ if eq $priorityLower "urgent" }}
+          {{ $priorityColor = "bg-red-50 dark:bg-red-950 border-red-300 dark:border-red-700" }}
+          {{ $priorityBadge = "bg-red-600 text-white" }}
+        {{ else if eq $priorityLower "high" }}
+          {{ $priorityColor = "bg-orange-50 dark:bg-orange-950 border-orange-300 dark:border-orange-700" }}
+          {{ $priorityBadge = "bg-orange-600 text-white" }}
+        {{ else if eq $priorityLower "normal" }}
+          {{ $priorityColor = "bg-green-50 dark:bg-green-950 border-green-300 dark:border-green-700" }}
+          {{ $priorityBadge = "bg-green-600 text-white" }}
+        {{ else if eq $priorityLower "low" }}
+          {{ $priorityColor = "bg-neutral-50 dark:bg-neutral-900 border-neutral-300 dark:border-neutral-700" }}
+          {{ $priorityBadge = "bg-neutral-500 text-white" }}
+        {{ end }}
+
+        <article class="notice-card rounded-lg border-2 {{ $priorityColor }} p-6 hover:shadow-lg transition-shadow" data-priority="{{ $priorityLower }}">
+          <!-- Notice Header -->
+          <div class="flex items-start justify-between mb-4">
+            <div class="flex-1">
+              <h3 class="text-2xl font-semibold text-neutral-900 dark:text-neutral-100 mb-2">
+                {{ .Title }}
+              </h3>
+
+              <div class="flex flex-wrap items-center gap-3 text-sm">
+                <!-- Date -->
+                <div class="flex items-center text-neutral-600 dark:text-neutral-400">
+                  <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                  </svg>
+                  <span>{{ .Date.Format "January 2, 2006" }}</span>
+                </div>
+
+                <!-- Priority Badge -->
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold {{ $priorityBadge }}">
+                  {{ if eq $priorityLower "urgent" }}
+                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                    </svg>
+                  {{ end }}
+                  {{ .Params.priority | default "Normal" | title }}
+                </span>
+
+                <!-- Category -->
+                {{ if .Params.category }}
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200">
+                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/>
+                    </svg>
+                    {{ .Params.category }}
+                  </span>
+                {{ end }}
+
+                <!-- Expiry Date -->
+                {{ if .Params.expiryDate }}
+                  <span class="text-neutral-500 dark:text-neutral-500 text-xs">
+                    Expires: {{ time.Format "Jan 2, 2006" .Params.expiryDate }}
+                  </span>
+                {{ end }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Notice Content -->
+          <div class="prose dark:prose-invert max-w-none">
+            {{ .Content }}
+          </div>
+        </article>
+      {{ end }}
+    </div>
+
+  {{ else }}
+    <div class="rounded-lg bg-neutral-100 dark:bg-neutral-800 p-8 text-center">
+      <p class="text-neutral-600 dark:text-neutral-400 text-lg">No active notices at this time.</p>
+      <p class="text-neutral-500 dark:text-neutral-500 text-sm mt-2">Check back later for community updates and announcements.</p>
+    </div>
+  {{ end }}
+</article>
+
+<!-- Filter Script -->
+<script>
+  function filterNotices(priority) {
+    const cards = document.querySelectorAll('.notice-card');
+    const buttons = document.querySelectorAll('.filter-btn');
+
+    // Update button styles
+    buttons.forEach(btn => {
+      btn.classList.remove('bg-primary-600', 'text-white');
+      btn.classList.add('bg-neutral-200', 'dark:bg-neutral-700', 'text-neutral-700', 'dark:text-neutral-300');
+    });
+    event.target.classList.remove('bg-neutral-200', 'dark:bg-neutral-700', 'text-neutral-700', 'dark:text-neutral-300');
+    event.target.classList.add('bg-primary-600', 'text-white');
+
+    // Filter cards
+    cards.forEach(card => {
+      if (priority === 'all' || card.dataset.priority === priority) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+</script>
 {{ end }}

@@ -1,29 +1,165 @@
 {{ define "main" }}
-<h1>Local Services</h1>
+<article class="max-w-full">
+  <header class="mb-8">
+    <h1 class="text-4xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">Local Services</h1>
+    <p class="text-lg text-neutral-700 dark:text-neutral-300">
+      Find trusted local service providers in the Skelton Gate community. Browse our directory by category.
+    </p>
+  </header>
 
-<div class="services-list">
-  {{ $categories := slice }}
-  {{ range .Pages }}
-    {{ $categories = $categories | append .Params.category }}
-  {{ end }}
-  {{ $categories = $categories | uniq }}
+  {{ $services := where .Pages ".Params.draft" "!=" true }}
+  {{ $servicesByCategory := dict }}
 
-  {{ range $categories }}
-    <h2>{{ . }}</h2>
-    {{ range where $.Pages "Params.category" . }}
-      {{ if not .Draft }}
-      <article class="service">
-        <h3>{{ .Title }}</h3>
-        {{ with .Params.contact }}<p><strong>Contact:</strong> {{ . }}</p>{{ end }}
-        {{ with .Params.phone }}<p><strong>Phone:</strong> <a href="tel:{{ . }}">{{ . }}</a></p>{{ end }}
-        {{ with .Params.email }}<p><strong>Email:</strong> <a href="mailto:{{ . }}">{{ . }}</a></p>{{ end }}
-        {{ with .Params.website }}<p><strong>Website:</strong> <a href="{{ . }}" target="_blank">Visit website</a></p>{{ end }}
-        <div class="description">
-          {{ .Content }}
-        </div>
-      </article>
-      {{ end }}
+  <!-- Group services by category -->
+  {{ range $services }}
+    {{ $category := default "Uncategorized" .Params.category }}
+    {{ $category = $category | title }}
+    {{ $existing := index $servicesByCategory $category }}
+    {{ if $existing }}
+      {{ $servicesByCategory = merge $servicesByCategory (dict $category (append $existing .)) }}
+    {{ else }}
+      {{ $servicesByCategory = merge $servicesByCategory (dict $category (slice .)) }}
     {{ end }}
   {{ end }}
-</div>
+
+  {{ if gt (len $services) 0 }}
+    <!-- Category Navigation -->
+    <nav class="mb-8 p-4 rounded-lg bg-neutral-100 dark:bg-neutral-800">
+      <p class="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">Jump to category:</p>
+      <div class="flex flex-wrap gap-2">
+        {{ range $category, $items := $servicesByCategory }}
+          {{ $categorySlug := anchorize $category }}
+          <a href="#{{ $categorySlug }}" class="px-3 py-2 rounded bg-primary-600 text-white hover:bg-primary-700 transition-colors text-sm font-medium">
+            {{ $category }} ({{ len $items }})
+          </a>
+        {{ end }}
+      </div>
+    </nav>
+
+    <!-- Services by Category -->
+    <div class="space-y-12">
+      {{ range $category, $items := $servicesByCategory }}
+        {{ $categorySlug := anchorize $category }}
+        <section id="{{ $categorySlug }}">
+          <h2 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-6 pb-2 border-b-2 border-primary-600">
+            {{ $category }}
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {{ range $items }}
+              <article class="rounded-lg bg-neutral-100 dark:bg-neutral-800 p-6 hover:shadow-lg transition-shadow">
+                <!-- Title -->
+                <h3 class="text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-3">
+                  {{ .Title }}
+                </h3>
+
+                <!-- Description -->
+                {{ if .Params.description }}
+                  <p class="text-neutral-700 dark:text-neutral-300 text-sm mb-4 line-clamp-3">
+                    {{ .Params.description }}
+                  </p>
+                {{ else if .Summary }}
+                  <div class="prose dark:prose-invert prose-sm mb-4 line-clamp-3">
+                    {{ .Summary }}
+                  </div>
+                {{ end }}
+
+                <!-- Contact Information -->
+                <div class="space-y-2 mb-4">
+                  {{ if .Params.contact }}
+                    <div class="flex items-start text-neutral-600 dark:text-neutral-400 text-sm">
+                      <svg class="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/>
+                      </svg>
+                      <span><strong>Contact:</strong> {{ .Params.contact }}</span>
+                    </div>
+                  {{ end }}
+
+                  {{ if .Params.phone }}
+                    <div class="flex items-center text-neutral-600 dark:text-neutral-400 text-sm">
+                      <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+                      </svg>
+                      <a href="tel:{{ .Params.phone }}" class="hover:text-primary-600 dark:hover:text-primary-400 font-medium">
+                        {{ .Params.phone }}
+                      </a>
+                    </div>
+                  {{ end }}
+
+                  {{ if .Params.email }}
+                    <div class="flex items-center text-neutral-600 dark:text-neutral-400 text-sm">
+                      <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                      </svg>
+                      <a href="mailto:{{ .Params.email }}" class="hover:text-primary-600 dark:hover:text-primary-400 truncate font-medium">
+                        {{ .Params.email }}
+                      </a>
+                    </div>
+                  {{ end }}
+
+                  {{ if .Params.website }}
+                    <div class="flex items-center text-neutral-600 dark:text-neutral-400 text-sm">
+                      <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M4.083 9h1.946c.089-1.546.383-2.97.837-4.118A6.004 6.004 0 004.083 9zM10 2a8 8 0 100 16 8 8 0 000-16zm0 2c-.076 0-.232.032-.465.262-.238.234-.497.623-.737 1.182-.389.907-.673 2.142-.766 3.556h3.936c-.093-1.414-.377-2.649-.766-3.556-.24-.56-.5-.948-.737-1.182C10.232 4.032 10.076 4 10 4zm3.971 5c-.089-1.546-.383-2.97-.837-4.118A6.004 6.004 0 0115.917 9h-1.946zm-2.003 2H8.032c.093 1.414.377 2.649.766 3.556.24.56.5.948.737 1.182.233.23.389.262.465.262.076 0 .232-.032.465-.262.238-.234.498-.623.737-1.182.389-.907.673-2.142.766-3.556zm1.166 4.118c.454-1.147.748-2.572.837-4.118h1.946a6.004 6.004 0 01-2.783 4.118zm-6.268 0C6.412 13.97 6.118 12.546 6.03 11H4.083a6.004 6.004 0 002.783 4.118z" clip-rule="evenodd"/>
+                      </svg>
+                      <a href="{{ .Params.website }}" target="_blank" rel="noopener noreferrer" class="hover:text-primary-600 dark:hover:text-primary-400 truncate font-medium">
+                        Visit Website
+                      </a>
+                    </div>
+                  {{ end }}
+
+                  {{ if .Params.availability }}
+                    <div class="flex items-center text-neutral-600 dark:text-neutral-400 text-sm">
+                      <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                      </svg>
+                      <span>{{ .Params.availability }}</span>
+                    </div>
+                  {{ end }}
+                </div>
+
+                <!-- Tags -->
+                {{ if .Params.tags }}
+                  <div class="flex flex-wrap gap-1 mb-4">
+                    {{ range .Params.tags }}
+                      <span class="inline-block px-2 py-1 text-xs rounded bg-neutral-200 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300">
+                        {{ . }}
+                      </span>
+                    {{ end }}
+                  </div>
+                {{ end }}
+
+                <!-- Full Content (if short) or View More Link -->
+                {{ if .Content }}
+                  {{ $wordCount := .WordCount }}
+                  {{ if lt $wordCount 100 }}
+                    <div class="prose dark:prose-invert prose-sm text-sm mb-4 pt-4 border-t border-neutral-300 dark:border-neutral-700">
+                      {{ .Content }}
+                    </div>
+                  {{ else }}
+                    <div class="mt-4 pt-4 border-t border-neutral-300 dark:border-neutral-700">
+                      <a href="{{ .Permalink }}" class="text-primary-600 dark:text-primary-400 hover:underline text-sm font-medium inline-flex items-center">
+                        View full details
+                        <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                      </a>
+                    </div>
+                  {{ end }}
+                {{ end }}
+              </article>
+            {{ end }}
+          </div>
+        </section>
+      {{ end }}
+    </div>
+
+  {{ else }}
+    <div class="rounded-lg bg-neutral-100 dark:bg-neutral-800 p-8 text-center">
+      <p class="text-neutral-600 dark:text-neutral-400 text-lg">No services listed yet.</p>
+      <p class="text-neutral-500 dark:text-neutral-500 text-sm mt-2">Check back soon as we add more local service providers!</p>
+    </div>
+  {{ end }}
+</article>
 {{ end }}

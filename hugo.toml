@@ -1,7 +1,22 @@
 baseURL = 'https://skeltongate.homes'
 languageCode = 'en-gb'
 title = 'Skelton Gate Community'
-theme = 'ananke'
+
+[module]
+  [[module.imports]]
+    path = "github.com/nunocoracao/blowfish/v2"
+
+# Output formats for calendar JSON
+[outputFormats.calendar]
+  name = "calendar"
+  baseName = "calendar"
+  mediaType = "application/json"
+  isPlainText = true
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+  section = ["HTML", "RSS", "calendar"]
+  page = ["HTML"]
 [menu]
   [[menu.main]]
     name = "Events"

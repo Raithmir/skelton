@@ -17,13 +17,16 @@ collections:
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
       - {label: "Title", name: "title", widget: "string"}
+      - {label: "Date", name: "date", widget: "datetime", default: "{{now}}"}
+      - {label: "Type", name: "type", widget: "hidden", default: "event"}
+      - {label: "Layout", name: "layout", widget: "hidden", default: "simple"}
       - {label: "Event Date", name: "eventDate", widget: "datetime"}
       - {label: "Event Time", name: "eventTime", widget: "string"}
       - {label: "Location", name: "location", widget: "string"}
       - {label: "Organizer", name: "organizer", widget: "string", required: false}
       - {label: "Description", name: "body", widget: "markdown"}
       - {label: "Featured Event", name: "featured", widget: "boolean", default: false}
-      - {label: "Tags", name: "tags", widget: "list", required: false}
+      - {label: "Tags", name: "tags", widget: "list", required: false, default: ["community-event"]}
       - {label: "Draft", name: "draft", widget: "boolean", default: true}
 
   # Business Directory
@@ -34,7 +37,10 @@ collections:
     slug: "{{slug}}"
     fields:
       - {label: "Business Name", name: "title", widget: "string"}
-      - {label: "Category", name: "category", widget: "select", 
+      - {label: "Date", name: "date", widget: "datetime", default: "{{now}}"}
+      - {label: "Type", name: "type", widget: "hidden", default: "business"}
+      - {label: "Layout", name: "layout", widget: "hidden", default: "simple"}
+      - {label: "Category", name: "category", widget: "select",
          options: ["Restaurant", "Cafe", "Shop", "Service", "Healthcare", "Other"]}
       - {label: "Address", name: "address", widget: "string"}
       - {label: "Phone", name: "phone", widget: "string", required: false}
@@ -53,6 +59,9 @@ collections:
     slug: "{{slug}}"
     fields:
       - {label: "Route Name", name: "title", widget: "string"}
+      - {label: "Date", name: "date", widget: "datetime", default: "{{now}}"}
+      - {label: "Type", name: "type", widget: "hidden", default: "walk"}
+      - {label: "Layout", name: "layout", widget: "hidden", default: "simple"}
       - {label: "Distance", name: "distance", widget: "string"}
       - {label: "Difficulty", name: "difficulty", widget: "select",
          options: ["Easy", "Moderate", "Challenging"]}
@@ -62,6 +71,7 @@ collections:
       - {label: "Highlights", name: "highlights", widget: "list", required: false}
       - {label: "Route Map", name: "image", widget: "image", required: false}
       - {label: "GPX File", name: "gpxFile", widget: "file", required: false}
+      - {label: "Tags", name: "tags", widget: "list", required: false}
       - {label: "Draft", name: "draft", widget: "boolean", default: false}
 
   # Notices
@@ -72,11 +82,15 @@ collections:
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
       - {label: "Title", name: "title", widget: "string"}
+      - {label: "Date", name: "date", widget: "datetime", default: "{{now}}"}
+      - {label: "Type", name: "type", widget: "hidden", default: "notice"}
+      - {label: "Layout", name: "layout", widget: "hidden", default: "simple"}
       - {label: "Priority", name: "priority", widget: "select",
          options: ["Low", "Normal", "High", "Urgent"]}
       - {label: "Category", name: "category", widget: "string", required: false}
       - {label: "Expiry Date", name: "expiryDate", widget: "datetime", required: false}
       - {label: "Content", name: "body", widget: "markdown"}
+      - {label: "Tags", name: "tags", widget: "list", required: false}
       - {label: "Draft", name: "draft", widget: "boolean", default: true}
 
   # Services Directory
@@ -87,12 +101,16 @@ collections:
     slug: "{{slug}}"
     fields:
       - {label: "Service Name", name: "title", widget: "string"}
+      - {label: "Date", name: "date", widget: "datetime", default: "{{now}}"}
+      - {label: "Type", name: "type", widget: "hidden", default: "service"}
+      - {label: "Layout", name: "layout", widget: "hidden", default: "simple"}
       - {label: "Category", name: "category", widget: "string"}
       - {label: "Contact Person", name: "contact", widget: "string", required: false}
       - {label: "Phone", name: "phone", widget: "string", required: false}
       - {label: "Email", name: "email", widget: "string", required: false}
       - {label: "Website", name: "website", widget: "string", required: false}
       - {label: "Description", name: "body", widget: "markdown"}
+      - {label: "Tags", name: "tags", widget: "list", required: false}
       - {label: "Draft", name: "draft", widget: "boolean", default: false}
 
   # Pages

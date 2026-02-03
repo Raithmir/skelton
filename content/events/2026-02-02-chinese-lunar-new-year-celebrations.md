@@ -1,8 +1,13 @@
 ---
 title: Chinese Lunar New Year Celebrations
+date: 2026-02-02
+type: "event"
+layout: "simple"
 eventDate: 2026-02-21T10:00:00.000+00:00
 eventTime: 10:00-17:00
 location: Temple Newsam House
+organizer: "Leeds Chinese Community School"
+tags: ["community-event", "cultural", "festival"]
 featured: false
 draft: false
 ---

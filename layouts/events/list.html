@@ -1,39 +1,173 @@
 {{ define "main" }}
-<h1>Community Events</h1>
+<article class="max-w-full">
+  <header class="mb-8">
+    <h1 class="text-4xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">Community Events</h1>
+    <p class="text-lg text-neutral-700 dark:text-neutral-300">
+      Discover what's happening in Skelton Gate. Browse upcoming events in the calendar below or view the full list.
+    </p>
+  </header>
 
-<div class="events-list">
-  {{ range .Pages.ByDate.Reverse }}
-    {{ if not .Draft }}
-    {{ if ge (.Params.eventDate | time) now }}
-    <article class="event">
-      <h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
-      <div class="event-meta">
-        <p><strong>Date:</strong> {{ .Params.eventDate | time.Format "Monday, January 2, 2006" }}</p>
-        <p><strong>Time:</strong> {{ .Params.eventTime }}</p>
-        <p><strong>Location:</strong> {{ .Params.location }}</p>
-        {{ with .Params.organizer }}<p><strong>Organizer:</strong> {{ . }}</p>{{ end }}
-      </div>
-      <div class="description">
-        {{ .Summary }}
-      </div>
-      <a href="{{ .Permalink }}">Full details →</a>
-    </article>
-    {{ end }}
-    {{ end }}
-  {{ end }}
-</div>
+  <!-- Calendar Section -->
+  <section class="mb-12">
+    <div class="rounded-lg bg-neutral-100 dark:bg-neutral-800 p-6">
+      <h2 class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">Event Calendar</h2>
+      <div id="calendar" class="bg-white dark:bg-neutral-900 rounded p-4"></div>
+    </div>
+  </section>
 
-<h2>Past Events</h2>
-<div class="past-events">
-  {{ range .Pages.ByDate.Reverse }}
-    {{ if not .Draft }}
-    {{ if lt (.Params.eventDate | time) now }}
-    <article class="event past">
-      <h3>{{ .Title }}</h3>
-      <p>{{ .Params.eventDate | time.Format "Jan 2, 2006" }}</p>
-    </article>
+  <!-- Upcoming Events List -->
+  <section class="mb-12">
+    <h2 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-6">Upcoming Events</h2>
+
+    {{ $upcomingEvents := slice }}
+    {{ range .Pages }}
+      {{ if not .Draft }}
+        {{ if .Params.eventDate }}
+          {{ $eventDate := time.AsTime .Params.eventDate }}
+          {{ if ge $eventDate now }}
+            {{ $upcomingEvents = $upcomingEvents | append . }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
     {{ end }}
+    {{ $upcomingEvents = sort $upcomingEvents ".Params.eventDate" }}
+
+    {{ if gt (len $upcomingEvents) 0 }}
+      <div class="space-y-6">
+        {{ range $upcomingEvents }}
+          <article class="rounded-lg bg-neutral-100 dark:bg-neutral-800 overflow-hidden hover:shadow-lg transition-shadow">
+            <div class="p-6 md:flex md:items-start md:gap-6">
+              <!-- Date Badge -->
+              <div class="flex-shrink-0 mb-4 md:mb-0">
+                <div class="bg-primary-600 text-white rounded-lg p-4 text-center min-w-[6rem]">
+                  <div class="text-3xl font-bold">{{ time.Format "2" .Params.eventDate }}</div>
+                  <div class="text-sm uppercase">{{ time.Format "January" .Params.eventDate }}</div>
+                  <div class="text-sm">{{ time.Format "2006" .Params.eventDate }}</div>
+                </div>
+              </div>
+
+              <!-- Event Details -->
+              <div class="flex-1">
+                <h3 class="text-2xl font-semibold text-neutral-900 dark:text-neutral-100 mb-3">
+                  <a href="{{ .Permalink }}" class="hover:text-primary-600 dark:hover:text-primary-400">
+                    {{ .Title }}
+                  </a>
+                </h3>
+
+                <div class="space-y-2 mb-4">
+                  {{ if .Params.eventTime }}
+                    <div class="flex items-center text-neutral-700 dark:text-neutral-300">
+                      <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                      </svg>
+                      <span>{{ .Params.eventTime }}</span>
+                    </div>
+                  {{ end }}
+
+                  {{ if .Params.location }}
+                    <div class="flex items-center text-neutral-700 dark:text-neutral-300">
+                      <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                      </svg>
+                      <span>{{ .Params.location }}</span>
+                    </div>
+                  {{ end }}
+
+                  {{ if .Params.organizer }}
+                    <div class="flex items-center text-neutral-700 dark:text-neutral-300">
+                      <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/>
+                      </svg>
+                      <span>{{ .Params.organizer }}</span>
+                    </div>
+                  {{ end }}
+                </div>
+
+                <div class="prose dark:prose-invert max-w-none mb-4">
+                  {{ .Summary }}
+                </div>
+
+                <a href="{{ .Permalink }}" class="inline-flex items-center text-primary-600 dark:text-primary-400 hover:underline font-medium">
+                  Full details
+                  <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </article>
+        {{ end }}
+      </div>
+    {{ else }}
+      <div class="rounded-lg bg-neutral-100 dark:bg-neutral-800 p-8 text-center">
+        <p class="text-neutral-600 dark:text-neutral-400 text-lg">No upcoming events scheduled at this time.</p>
+        <p class="text-neutral-500 dark:text-neutral-500 text-sm mt-2">Check back soon for new community events!</p>
+      </div>
     {{ end }}
-  {{ end }}
-</div>
+  </section>
+
+  <!-- Past Events Section -->
+  <section>
+    <h2 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-6">Past Events</h2>
+
+    {{ $pastEvents := slice }}
+    {{ range .Pages }}
+      {{ if not .Draft }}
+        {{ if .Params.eventDate }}
+          {{ $eventDate := time.AsTime .Params.eventDate }}
+          {{ if lt $eventDate now }}
+            {{ $pastEvents = $pastEvents | append . }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+    {{ $pastEvents = sort $pastEvents ".Params.eventDate" "desc" }}
+
+    {{ if gt (len $pastEvents) 0 }}
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {{ range $pastEvents }}
+          <article class="rounded-lg bg-neutral-100 dark:bg-neutral-800 p-4 opacity-75 hover:opacity-100 transition-opacity">
+            <h3 class="font-semibold text-neutral-900 dark:text-neutral-100 mb-2">
+              <a href="{{ .Permalink }}" class="hover:text-primary-600 dark:hover:text-primary-400">
+                {{ .Title }}
+              </a>
+            </h3>
+            <p class="text-sm text-neutral-600 dark:text-neutral-400">
+              {{ time.Format "January 2, 2006" .Params.eventDate }}
+            </p>
+          </article>
+        {{ end }}
+      </div>
+    {{ else }}
+      <p class="text-neutral-600 dark:text-neutral-400">No past events recorded.</p>
+    {{ end }}
+  </section>
+</article>
+
+<!-- FullCalendar Integration -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,listMonth'
+      },
+      events: '/events/calendar.json',
+      eventClick: function(info) {
+        info.jsEvent.preventDefault();
+        if (info.event.url) {
+          window.location.href = info.event.url;
+        }
+      },
+      eventColor: '#0ea5e9',
+      height: 'auto'
+    });
+    calendar.render();
+  });
+</script>
 {{ end }}

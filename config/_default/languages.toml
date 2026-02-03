@@ -1,0 +1,20 @@
+# Language Configuration
+# https://blowfish.page/docs/configuration/#languages
+
+[en]
+  languageCode = "en-GB"
+  languageName = "English (UK)"
+  displayName = "EN"
+  isoCode = "en"
+  weight = 1
+  rtl = false
+
+[en.params]
+  dateFormat = "2 January 2006"
+  mainSections = ["events", "notices", "businesses", "walks", "services"]
+  description = "Community website for Skelton Gate, featuring local events, businesses, walking routes, and community notices"
+
+[en.author]
+  name = "Skelton Gate Community"
+  # email = ""
+  # links = []

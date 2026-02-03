@@ -1,37 +1,257 @@
 {{ define "main" }}
-<h1>Welcome to Skelton Gate Community</h1>
+<div class="relative">
+  <!-- Hero Section -->
+  <section class="mb-10">
+    <div class="rounded-lg bg-primary-100 dark:bg-primary-900 p-8 md:p-12">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4 text-neutral-900 dark:text-neutral-100">
+        Welcome to Skelton Gate Community
+      </h1>
+      <p class="text-xl text-neutral-700 dark:text-neutral-300 max-w-3xl">
+        Your local community hub for events, businesses, walking routes, and community notices in Skelton Gate.
+      </p>
+    </div>
+  </section>
 
-<section class="featured-notices">
-  <h2>Important Notices</h2>
-  {{ range first 3 (where site.RegularPages "Section" "notices") }}
-    <article>
-      <h3>{{ .Title }}</h3>
-      {{ .Summary }}
-      <a href="{{ .Permalink }}">Read more</a>
-    </article>
-  {{ end }}
-</section>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Main Content Area (Left 2 columns) -->
+    <div class="lg:col-span-2 space-y-10">
 
-<section class="upcoming-events">
-  <h2>Upcoming Events</h2>
-  {{ range first 5 (where site.RegularPages "Section" "events") }}
-    <article>
-      <h3>{{ .Title }}</h3>
-      <p>{{ .Params.eventDate | time.Format "Jan 2" }} at {{ .Params.eventTime }}</p>
-      <p>{{ .Params.location }}</p>
-    </article>
-  {{ end }}
-  <a href="/events/">See all events →</a>
-</section>
+      <!-- Priority Notices Section -->
+      <section class="notices-section">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100">Important Notices</h2>
+          <a href="/notices/" class="text-primary-600 dark:text-primary-400 hover:underline">View all →</a>
+        </div>
 
-<section class="local-businesses">
-  <h2>Local Businesses</h2>
-  {{ range first 6 (where site.RegularPages "Section" "businesses") }}
-    <article>
-      <h3>{{ .Title }}</h3>
-      <p>{{ .Params.category }}</p>
-    </article>
-  {{ end }}
-  <a href="/businesses/">Browse directory →</a>
-</section>
+        <div class="space-y-4">
+          {{ $notices := where site.RegularPages "Section" "notices" }}
+          {{ $notices = where $notices ".Params.draft" "!=" true }}
+          {{ $activeNotices := slice }}
+          {{ range $notices }}
+            {{ $expired := false }}
+            {{ if .Params.expiryDate }}
+              {{ $expiryDate := time.AsTime .Params.expiryDate }}
+              {{ if lt $expiryDate now }}
+                {{ $expired = true }}
+              {{ end }}
+            {{ end }}
+            {{ if not $expired }}
+              {{ $activeNotices = $activeNotices | append . }}
+            {{ end }}
+          {{ end }}
+
+          {{ range first 3 $activeNotices }}
+            {{ $priorityClass := "bg-neutral-100 dark:bg-neutral-800 border-l-4 border-neutral-400" }}
+            {{ if eq (lower .Params.priority) "urgent" }}
+              {{ $priorityClass = "bg-red-50 dark:bg-red-900/20 border-l-4 border-red-600" }}
+            {{ else if eq (lower .Params.priority) "high" }}
+              {{ $priorityClass = "bg-orange-50 dark:bg-orange-900/20 border-l-4 border-orange-500" }}
+            {{ else if eq (lower .Params.priority) "normal" }}
+              {{ $priorityClass = "bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500" }}
+            {{ else if eq (lower .Params.priority) "low" }}
+              {{ $priorityClass = "bg-gray-50 dark:bg-gray-800 border-l-4 border-gray-400" }}
+            {{ end }}
+
+            <article class="rounded-lg {{ $priorityClass }} p-6 transition-shadow hover:shadow-md">
+              <div class="flex items-start justify-between">
+                <div class="flex-1">
+                  <div class="flex items-center gap-2 mb-2">
+                    <h3 class="text-xl font-semibold text-neutral-900 dark:text-neutral-100">
+                      <a href="{{ .Permalink }}" class="hover:text-primary-600 dark:hover:text-primary-400">
+                        {{ .Title }}
+                      </a>
+                    </h3>
+                    <span class="px-2 py-1 text-xs font-semibold rounded uppercase {{ if eq (lower .Params.priority) "urgent" }}bg-red-600 text-white{{ else if eq (lower .Params.priority) "high" }}bg-orange-600 text-white{{ else }}bg-neutral-600 text-white{{ end }}">
+                      {{ .Params.priority }}
+                    </span>
+                  </div>
+                  <div class="prose dark:prose-invert max-w-none">
+                    {{ .Summary }}
+                  </div>
+                  <div class="mt-3">
+                    <a href="{{ .Permalink }}" class="text-primary-600 dark:text-primary-400 hover:underline text-sm font-medium">
+                      Read more →
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </article>
+          {{ else }}
+            <p class="text-neutral-600 dark:text-neutral-400">No active notices at this time.</p>
+          {{ end }}
+        </div>
+      </section>
+
+      <!-- Upcoming Events Section -->
+      <section class="events-section">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100">Upcoming Events</h2>
+          <a href="/events/" class="text-primary-600 dark:text-primary-400 hover:underline">View calendar →</a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {{ $events := where site.RegularPages "Section" "events" }}
+          {{ $events = where $events ".Params.draft" "!=" true }}
+          {{ $upcomingEvents := slice }}
+          {{ range $events }}
+            {{ if .Params.eventDate }}
+              {{ $eventDate := time.AsTime .Params.eventDate }}
+              {{ if ge $eventDate now }}
+                {{ $upcomingEvents = $upcomingEvents | append . }}
+              {{ end }}
+            {{ end }}
+          {{ end }}
+          {{ $upcomingEvents = sort $upcomingEvents ".Params.eventDate" }}
+
+          {{ range first 4 $upcomingEvents }}
+            <article class="rounded-lg bg-neutral-100 dark:bg-neutral-800 overflow-hidden transition-shadow hover:shadow-lg">
+              <div class="p-6">
+                <div class="flex items-start gap-4">
+                  <div class="flex-shrink-0 text-center">
+                    <div class="bg-primary-600 text-white rounded-lg p-3 min-w-[4rem]">
+                      <div class="text-2xl font-bold">{{ time.Format "2" .Params.eventDate }}</div>
+                      <div class="text-xs uppercase">{{ time.Format "Jan" .Params.eventDate }}</div>
+                    </div>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <h3 class="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-2">
+                      <a href="{{ .Permalink }}" class="hover:text-primary-600 dark:hover:text-primary-400">
+                        {{ .Title }}
+                      </a>
+                    </h3>
+                    {{ if .Params.eventTime }}
+                      <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-1">
+                        <svg class="inline w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                        </svg>
+                        {{ .Params.eventTime }}
+                      </p>
+                    {{ end }}
+                    {{ if .Params.location }}
+                      <p class="text-sm text-neutral-600 dark:text-neutral-400 truncate">
+                        <svg class="inline w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                        </svg>
+                        {{ .Params.location }}
+                      </p>
+                    {{ end }}
+                  </div>
+                </div>
+              </div>
+            </article>
+          {{ else }}
+            <p class="text-neutral-600 dark:text-neutral-400 col-span-2">No upcoming events scheduled.</p>
+          {{ end }}
+        </div>
+      </section>
+
+      <!-- Local Businesses Section -->
+      <section class="businesses-section">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100">Local Businesses</h2>
+          <a href="/businesses/" class="text-primary-600 dark:text-primary-400 hover:underline">Browse directory →</a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {{ range first 6 (where site.RegularPages "Section" "businesses") }}
+            <article class="rounded-lg bg-neutral-100 dark:bg-neutral-800 p-4 hover:shadow-md transition-shadow">
+              <h3 class="font-semibold text-neutral-900 dark:text-neutral-100 mb-1">
+                <a href="{{ .Permalink }}" class="hover:text-primary-600 dark:hover:text-primary-400">
+                  {{ .Title }}
+                </a>
+              </h3>
+              {{ if .Params.category }}
+                <p class="text-sm text-neutral-600 dark:text-neutral-400 capitalize">{{ .Params.category }}</p>
+              {{ end }}
+            </article>
+          {{ else }}
+            <p class="text-neutral-600 dark:text-neutral-400 col-span-3">No businesses listed yet.</p>
+          {{ end }}
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Sidebar (Right column) -->
+    <aside class="lg:col-span-1 space-y-6">
+
+      <!-- Quick Links Widget -->
+      <div class="rounded-lg bg-neutral-100 dark:bg-neutral-800 p-6">
+        <h3 class="text-xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">Quick Links</h3>
+        <nav class="space-y-3">
+          {{ $sections := dict "events" "Events" "businesses" "Businesses" "walks" "Walking Routes" "notices" "Notices" "services" "Services" }}
+          {{ range $section, $title := $sections }}
+            {{ $count := len (where site.RegularPages "Section" $section) }}
+            <a href="/{{ $section }}/" class="flex items-center justify-between p-3 rounded hover:bg-primary-100 dark:hover:bg-primary-900 transition-colors group">
+              <span class="font-medium text-neutral-900 dark:text-neutral-100 group-hover:text-primary-600 dark:group-hover:text-primary-400">
+                {{ $title }}
+              </span>
+              <span class="px-2 py-1 text-xs font-semibold rounded bg-primary-600 text-white">
+                {{ $count }}
+              </span>
+            </a>
+          {{ end }}
+        </nav>
+      </div>
+
+      <!-- Upcoming Events Mini-List -->
+      <div class="rounded-lg bg-neutral-100 dark:bg-neutral-800 p-6">
+        <h3 class="text-xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">Next Events</h3>
+        <div class="space-y-3">
+          {{ $events := where site.RegularPages "Section" "events" }}
+          {{ $events = where $events ".Params.draft" "!=" true }}
+          {{ $upcomingEvents := slice }}
+          {{ range $events }}
+            {{ if .Params.eventDate }}
+              {{ $eventDate := time.AsTime .Params.eventDate }}
+              {{ if ge $eventDate now }}
+                {{ $upcomingEvents = $upcomingEvents | append . }}
+              {{ end }}
+            {{ end }}
+          {{ end }}
+          {{ $upcomingEvents = sort $upcomingEvents ".Params.eventDate" }}
+
+          {{ range first 5 $upcomingEvents }}
+            <div class="border-l-2 border-primary-600 pl-3">
+              <a href="{{ .Permalink }}" class="block hover:text-primary-600 dark:hover:text-primary-400">
+                <p class="font-medium text-sm text-neutral-900 dark:text-neutral-100 line-clamp-2">{{ .Title }}</p>
+                <p class="text-xs text-neutral-600 dark:text-neutral-400 mt-1">
+                  {{ time.Format "Jan 2, 2006" .Params.eventDate }}
+                </p>
+              </a>
+            </div>
+          {{ else }}
+            <p class="text-sm text-neutral-600 dark:text-neutral-400">No upcoming events</p>
+          {{ end }}
+        </div>
+        <a href="/events/" class="block mt-4 text-sm text-primary-600 dark:text-primary-400 hover:underline">
+          View full calendar →
+        </a>
+      </div>
+
+      <!-- Walking Routes Widget -->
+      <div class="rounded-lg bg-neutral-100 dark:bg-neutral-800 p-6">
+        <h3 class="text-xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">Walking Routes</h3>
+        <div class="space-y-3">
+          {{ range first 3 (where site.RegularPages "Section" "walks") }}
+            <div class="border-l-2 border-green-600 pl-3">
+              <a href="{{ .Permalink }}" class="block hover:text-primary-600 dark:hover:text-primary-400">
+                <p class="font-medium text-sm text-neutral-900 dark:text-neutral-100">{{ .Title }}</p>
+                <div class="flex items-center gap-2 mt-1 text-xs text-neutral-600 dark:text-neutral-400">
+                  {{ if .Params.distance }}<span>{{ .Params.distance }}</span>{{ end }}
+                  {{ if and .Params.distance .Params.difficulty }}<span>•</span>{{ end }}
+                  {{ if .Params.difficulty }}<span class="capitalize">{{ .Params.difficulty }}</span>{{ end }}
+                </div>
+              </a>
+            </div>
+          {{ end }}
+        </div>
+        <a href="/walks/" class="block mt-4 text-sm text-primary-600 dark:text-primary-400 hover:underline">
+          View all routes →
+        </a>
+      </div>
+
+    </aside>
+  </div>
+</div>
 {{ end }}

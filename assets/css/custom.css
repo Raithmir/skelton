@@ -1,0 +1,186 @@
+/* Custom CSS for Skelton Gate Community Site */
+/* Blowfish Theme Customizations */
+
+/* Priority Notice Color Coding */
+.notice-urgent {
+  @apply bg-red-50 dark:bg-red-900/20 border-l-4 border-red-600;
+}
+
+.notice-high {
+  @apply bg-orange-50 dark:bg-orange-900/20 border-l-4 border-orange-500;
+}
+
+.notice-normal {
+  @apply bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500;
+}
+
+.notice-low {
+  @apply bg-gray-50 dark:bg-gray-800 border-l-4 border-gray-400;
+}
+
+/* Walk Difficulty Badges */
+.difficulty-easy {
+  @apply bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200;
+}
+
+.difficulty-moderate {
+  @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200;
+}
+
+.difficulty-challenging {
+  @apply bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200;
+}
+
+.difficulty-hard {
+  @apply bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200;
+}
+
+/* Event Date Badges */
+.event-date-badge {
+  @apply bg-primary-600 text-white rounded-lg p-3 text-center min-w-[4rem];
+}
+
+/* FullCalendar Customizations */
+#calendar {
+  font-family: inherit;
+}
+
+.fc-theme-standard .fc-scrollgrid {
+  border-color: var(--tw-border-opacity);
+}
+
+.fc .fc-button-primary {
+  background-color: rgb(14 165 233) !important; /* primary-600 */
+  border-color: rgb(14 165 233) !important;
+}
+
+.fc .fc-button-primary:hover {
+  background-color: rgb(2 132 199) !important; /* primary-700 */
+  border-color: rgb(2 132 199) !important;
+}
+
+.fc .fc-button-primary:disabled {
+  background-color: rgb(125 211 252) !important; /* primary-300 */
+  border-color: rgb(125 211 252) !important;
+}
+
+/* Dark mode FullCalendar adjustments */
+.dark #calendar {
+  color: rgb(229 231 235); /* neutral-200 */
+}
+
+.dark .fc-theme-standard td,
+.dark .fc-theme-standard th {
+  border-color: rgb(64 64 64); /* neutral-700 */
+}
+
+.dark .fc .fc-col-header-cell-cushion {
+  color: rgb(229 231 235);
+}
+
+.dark .fc .fc-daygrid-day-number {
+  color: rgb(229 231 235);
+}
+
+.dark .fc .fc-list-event-title {
+  color: rgb(229 231 235);
+}
+
+/* Business/Service Contact Info Styling */
+.contact-info svg {
+  @apply flex-shrink-0;
+}
+
+.contact-info a {
+  @apply hover:text-primary-600 dark:hover:text-primary-400 transition-colors;
+}
+
+/* Category Badge Styling */
+.category-badge {
+  @apply inline-flex items-center px-2 py-1 rounded text-xs font-semibold bg-neutral-200 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200;
+}
+
+/* Priority Badge Styling */
+.priority-badge-urgent {
+  @apply bg-red-600 text-white;
+}
+
+.priority-badge-high {
+  @apply bg-orange-600 text-white;
+}
+
+.priority-badge-normal {
+  @apply bg-green-600 text-white;
+}
+
+.priority-badge-low {
+  @apply bg-neutral-600 text-white;
+}
+
+/* Line Clamp Utilities (for text truncation) */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Smooth Transitions */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Custom Scrollbar (for webkit browsers) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-neutral-200 dark:bg-neutral-800;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-neutral-400 dark:bg-neutral-600 rounded;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-neutral-500 dark:bg-neutral-500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .event-date-badge {
+    min-width: 3rem;
+    padding: 0.5rem;
+  }
+
+  .event-date-badge .text-3xl {
+    font-size: 1.5rem;
+  }
+}
+
+/* Print styles */
+@media print {
+  #calendar,
+  .no-print {
+    display: none;
+  }
+
+  .notice-urgent,
+  .notice-high,
+  .notice-normal,
+  .notice-low {
+    border-left: 4px solid #000;
+    page-break-inside: avoid;
+  }
+}

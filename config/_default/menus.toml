@@ -1,0 +1,38 @@
+# Main Navigation Menu
+# https://blowfish.page/docs/configuration/#menus
+
+[[main]]
+  name = "Home"
+  pageRef = "/"
+  weight = 1
+
+[[main]]
+  name = "Events"
+  pageRef = "/events"
+  weight = 2
+
+[[main]]
+  name = "Businesses"
+  pageRef = "/businesses"
+  weight = 3
+
+[[main]]
+  name = "Walking Routes"
+  pageRef = "/walks"
+  weight = 4
+
+[[main]]
+  name = "Notices"
+  pageRef = "/notices"
+  weight = 5
+
+[[main]]
+  name = "Services"
+  pageRef = "/services"
+  weight = 6
+
+# Footer menu (optional)
+# [[footer]]
+#   name = "Privacy"
+#   pageRef = "/privacy"
+#   weight = 1
