@@ -44,7 +44,7 @@ When you first move in, here are the essential tasks to complete:
 
 ### Builder Information
 
-- **Bellway Homes:** 0113 XXX XXXX
+- **Avant Homes:** 0113 XXX XXXX
 - **Customer Care:** For snagging and warranty issues
 - **After-Sales Support:** Available during warranty period
 
@@ -108,7 +108,7 @@ Skelton Gate has access to full-fibre broadband (FTTP):
 
 ### Transport Links
 
-- **M1 Motorway:** Direct access via Junction 44/45
+- **M1 Motorway:** Direct access via Junction 45
 - **Bus Services:** Regular routes to Leeds city centre
 - **Train Stations:** Nearby stations in Cross Gates and Garforth
 - Full details on our [Transport & Travel](/transport) page
