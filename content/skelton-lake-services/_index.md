@@ -1,19 +1,15 @@
 ---
-title: "Skelton Lake Services"
-description: "Information about the nearby Skelton Lake motorway services"
-layout: "simple"
+title: Skelton Lake Services
+description: Information about the nearby Skelton Lake motorway services
+layout: simple
 showDate: false
 showAuthor: false
 showReadingTime: false
 ---
 
-{{< alert >}}
-**Note:** This is placeholder content. Information will be updated soon.
-{{< /alert >}}
-
 ## Location & Access
 
-Skelton Lake Services is a motorway service area located within walking distance of the Skelton Gate estate, positioned between Junctions 44 and 45 of the M1 motorway. The services are easily accessible for residents seeking convenient shopping and dining options.
+Skelton Lake Services is a motorway service area located within walking distance of the Skelton Gate estate, positioned off Junction 45 of the M1 motorway. The services are easily accessible for residents seeking convenient shopping and dining options.
 
 **Address:**
 Skelton Lake Services
@@ -21,7 +17,7 @@ M1 Motorway
 Leeds
 LS9 0AR
 
-**Walking Distance:** Approximately 15-20 minutes from the main Skelton Gate residential areas via designated pedestrian paths.
+**Walking Distance:** Approximately 15 minutes from the main Skelton Gate residential areas via designated pedestrian paths.
 
 **Driving Access:** Direct access from the M1 northbound and southbound carriageways.
 
@@ -30,17 +26,20 @@ LS9 0AR
 Skelton Lake Services offers a range of amenities including:
 
 ### Food & Drink
+
 - **McDonald's** - Fast food restaurant with drive-thru
 - **Starbucks** - Coffee shop and light refreshments
 - **Greggs** - Bakery and sandwich shop
 - **Food Court** - Various hot food options and snacks
 
 ### Retail
-- **WHSmith** - Books, magazines, newspapers, and travel essentials
-- **Convenience Store** - Groceries, toiletries, and everyday items
-- **Fuel Station** - BP petrol station with diesel, unleaded, and premium fuels
+
+- **M**&S Food
+- **Fuel Station** - Texaco petrol station with diesel, unleaded, and premium fuels
+- **Spar** - Located at Texaco
 
 ### Other Services
+
 - **Cash Machine** - ATM available 24/7
 - **Restrooms** - Clean, accessible facilities
 - **Parking** - Free parking for service area customers
@@ -58,8 +57,8 @@ Please note that opening hours may vary on public holidays.
 
 **General Enquiries:**
 Phone: 0113 XXX XXXX
-Email: info@skeltonlakeservices.co.uk
-Website: www.skeltonlakeservices.co.uk
+Email: info@skeltonlakeservices
+Website: https://extraservices.co.uk/locations/leeds-skelton-lake-services-m1-j45/
 
 **Fuel Station:**
 Phone: 0113 XXX XXXX
@@ -69,12 +68,15 @@ Phone: 0113 XXX XXXX
 ## Getting There from Skelton Gate
 
 ### On Foot
-The safest pedestrian route from Skelton Gate follows the designated footpaths along the estate perimeter and crosses via the pedestrian bridge. The walk takes approximately 15-20 minutes.
+
+The safest pedestrian route from Skelton Gate follows the designated footpaths along the estate perimeter and crosses via the pedestrian bridge. The walk takes approximately 15 minutes.
 
 ### By Car
-Exit the estate via the main entrance, follow signs to M1 Junction 44/45, and follow signs for Skelton Lake Services.
+
+Exit the estate via the main entrance, follow signs to M1 Junction 45, and follow signs for Skelton Lake Services.
 
 ### By Bicycle
+
 Cycle paths connect the estate to the services area. Please use designated cycle routes and ensure you have appropriate lighting for evening travel.
 
 ---
