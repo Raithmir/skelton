@@ -4,7 +4,7 @@ date: 2026-02-09T10:43:00
 type: service
 layout: simple
 category: plumbing
-contact: Chris Anderson
+contact: Chris Moran
 phone: '0123456789'
 email: kongpandh@icloud.com
 website: https://www.facebook.com/KongPlumbingandHeating
