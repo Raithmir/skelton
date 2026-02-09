@@ -9,18 +9,7 @@ showReadingTime: false
 
 This page provides quick access to external websites and resources that may be useful for residents of Skelton Gate.
 
-## Local Council
-
-### Garforth and Swillington Independents
-
-#### Mark Dobson - Local Councillor
-
-- **Website:** https://democracy.leeds.gov.uk/mgUserInfo.aspx?UID=1358
-- **Mobile:&#160;** 07974 963 280
-- **Business Tel. :&#160;** 0113 3780900
-- **Email:&#160;** [mark.dobson@leeds.gov.uk](mailto:mark.dobson@leeds.gov.uk "Send email to Councillor Mark Dobson")
-
-#### Council Services
+## Local Council Services
 
 - **Report a Problem:** [Report issues online](https://www.leeds.gov.uk/report-it)
 - **Council Tax:** [Manage your account](https://www.leeds.gov.uk/council-tax)
