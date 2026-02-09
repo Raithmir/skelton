@@ -3,7 +3,7 @@ title: Ebony Gibbs Hairdresser
 date: 2026-02-09T10:54:00
 type: service
 layout: simple
-category: hairdresser
+category: hairdressing
 contact: Ebony
 phone: ''
 email: ''
