@@ -15,7 +15,7 @@ title = 'Skelton Gate Community'
 
 [outputs]
   home = ["HTML", "RSS", "JSON"]
-  section = ["HTML", "RSS", "calendar"]
+  section = ["HTML", "RSS"]
   page = ["HTML"]
 [menu]
   [[menu.main]]
