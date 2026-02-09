@@ -7,21 +7,20 @@ showAuthor: false
 showReadingTime: false
 ---
 
-{{< alert >}}
-**Note:** This is placeholder content. Information will be updated soon.
-{{< /alert >}}
-
 This page provides quick access to external websites and resources that may be useful for residents of Skelton Gate.
 
 ## Local Council
 
-### Leeds City Council
+### Garforth and Swillington Independents
 
-- **Website:** [www.leeds.gov.uk](https://www.leeds.gov.uk)
-- **Contact:** 0113 222 4444
-- **Services:** Council tax, bin collections, planning, housing, parks
+#### Mark Dobson - Local Councillor
 
-### Council Services
+- **Website:** https://democracy.leeds.gov.uk/mgUserInfo.aspx?UID=1358
+- **Mobile:&#160;** 07974 963 280
+- **Business Tel. :&#160;** 0113 3780900
+- **Email:&#160;** [mark.dobson@leeds.gov.uk](mailto:mark.dobson@leeds.gov.uk "Send email to Councillor Mark Dobson")
+
+#### Council Services
 
 - **Report a Problem:** [Report issues online](https://www.leeds.gov.uk/report-it)
 - **Council Tax:** [Manage your account](https://www.leeds.gov.uk/council-tax)
@@ -108,7 +107,6 @@ This page provides quick access to external websites and resources that may be u
 
 ### Builders & Warranties
 
-- **Bellway Homes:** [www.bellway.co.uk](https://www.bellway.co.uk)
 - **NHBC (Warranty):** [www.nhbc.co.uk](https://www.nhbc.co.uk)
 - **Property Searches:** [www.gov.uk/search-property-information-land-registry](https://www.gov.uk/search-property-information-land-registry)
 
@@ -158,7 +156,7 @@ This page provides quick access to external websites and resources that may be u
 - **Volunteering:** [www.leedsinvolvement.org.uk](https://www.leedsinvolvement.org.uk)
 - **Community Groups:** Check local noticeboards and social media
 
----
+***
 
 ## Have a Useful Link to Share?
 
