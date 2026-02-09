@@ -149,6 +149,6 @@ This page provides quick access to external websites and resources that may be u
 
 ## Have a Useful Link to Share?
 
-If you know of a helpful website or resource that would benefit other residents, please contact the management company via our [Contacts](/contacts) page.
+If you know of a helpful website or resource that would benefit other residents, please contact us.
 
 **Disclaimer:** External links are provided for convenience. We are not responsible for the content of external websites.
