@@ -1,5 +1,5 @@
 ---
-title: Colton Mill
+title: Colton Mill Medical
 date: 2026-02-09T15:27:00
 type: healthcare
 layout: simple
