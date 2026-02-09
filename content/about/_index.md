@@ -35,8 +35,6 @@ Recent improvements include:
 
 - Enhanced landscaping and green spaces
 - Improved pedestrian pathways
-- Additional parking facilities
-- Community garden areas
 
 ## Future Plans
 
@@ -60,6 +58,6 @@ Current facilities available to residents include:
 - **Community Noticeboards** - Keeping residents informed of local news
 - **Street Parking** - Designated parking areas throughout the development
 
----
+***
 
 For any questions about the development or to get involved with community initiatives, please see our [Contacts](/contacts) page.
