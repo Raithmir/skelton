@@ -34,7 +34,7 @@ Skelton Lake Services offers a range of amenities including:
 
 ### Retail
 
-- **M**&S Food
+- **M&S Food**
 - **Fuel Station** - Texaco petrol station with diesel, unleaded, and premium fuels
 - **Spar** - Located at Texaco
 
