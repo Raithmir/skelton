@@ -1,5 +1,5 @@
 ---
-title: Boots Oulton
+title: Boots - Oulton
 date: 2026-02-09T15:42:00
 type: healthcare
 layout: simple
