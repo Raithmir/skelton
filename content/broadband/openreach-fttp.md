@@ -18,6 +18,6 @@ features:
   - No copper phone line needed
 description: Openreach provides the fibre infrastructure to most properties at Skelton Gate. Choose from multiple ISPs including BT, Sky, TalkTalk, Plusnet, and others. Compare prices and packages on ISP comparison sites.
 tags:
-  - fttp
+  - broadband
 draft: false
 ---
