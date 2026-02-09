@@ -48,9 +48,9 @@
                 </h3>
 
                 {{ if .Params.description }}
-                  <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-3">
-                    {{ .Params.description }}
-                  </p>
+                  <div class="prose prose-sm dark:prose-invert max-w-none mb-3 text-neutral-600 dark:text-neutral-400">
+                    {{ .Params.description | markdownify }}
+                  </div>
                 {{ end }}
 
                 {{ if .Params.availability }}

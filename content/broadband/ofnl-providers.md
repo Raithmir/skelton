@@ -15,9 +15,9 @@ features: []
 description: |-
   Avant Homes are supplied by OFNL (Open Fibre Networks Limited), an independent residential broadband provider supplying new build estates.
 
-  Various providers are available on the network, see https://www.ofnl.co.uk/residential-internet-service-providers/ for a list. The linked spreadsheet provides some comparison between the providers, and recommendations. Best viewed on a PC, check the comments fields for reasonings.
+  Various providers are available on the network, see the [OFNL provider list](https://www.ofnl.co.uk/residential-internet-service-providers/) and [comparison spreadsheet](https://docs.google.com/spreadsheets/d/10sAxBrCDieaGZLLuLhXZhgSD0kIgznsEqTzqyScuhIg/edit?usp=sharing) for recommendations. Best viewed on a PC, check the comments fields for reasonings.
 
-  If you don't want to review that, then InternetTY (https://internetty.uk/home-broadband/ofnl-broadband/) are a good option and used by a lot of people on the estate.
+  If you don't want to review that, then [InternetTY](https://internetty.uk/home-broadband/ofnl-broadband/) are a good option and used by a lot of people on the estate.
 tags:
   - broadband
 draft: false
