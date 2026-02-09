@@ -16,6 +16,8 @@ phone: ''
 description: |-
   From Skelton Lakes - Monday to Friday
   0645, 0705 then every 20 minutes until 1748, 1848, 1915 and 1945
+
+  £5 day ticket, £2.50 single.
 tags: []
 draft: false
 ---
