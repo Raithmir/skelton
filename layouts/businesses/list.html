@@ -8,29 +8,18 @@
   </header>
 
   {{ $businesses := where .Pages ".Params.draft" "!=" true }}
-  {{ $businessesByCategory := dict }}
-
-  <!-- Group businesses by category -->
-  {{ range $businesses }}
-    {{ $category := default "Uncategorized" .Params.category }}
-    {{ $category = $category | title }}
-    {{ $existing := index $businessesByCategory $category }}
-    {{ if $existing }}
-      {{ $businessesByCategory = merge $businessesByCategory (dict $category (append $existing .)) }}
-    {{ else }}
-      {{ $businessesByCategory = merge $businessesByCategory (dict $category (slice .)) }}
-    {{ end }}
-  {{ end }}
+  {{ $businessesByCategory := $businesses.GroupByParam "category" }}
 
   {{ if gt (len $businesses) 0 }}
     <!-- Category Navigation -->
     <nav class="mb-8 p-4 rounded-lg bg-neutral-100 dark:bg-neutral-800">
       <p class="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">Jump to category:</p>
       <div class="flex flex-wrap gap-2">
-        {{ range $category, $items := $businessesByCategory }}
+        {{ range $businessesByCategory }}
+          {{ $category := default "Uncategorized" .Key | title }}
           {{ $categorySlug := anchorize $category }}
           <a href="#{{ $categorySlug }}" class="px-3 py-2 rounded bg-primary-600 text-white hover:bg-primary-700 transition-colors text-sm font-medium">
-            {{ $category }} ({{ len $items }})
+            {{ $category }} ({{ len .Pages }})
           </a>
         {{ end }}
       </div>
@@ -38,7 +27,8 @@
 
     <!-- Businesses by Category -->
     <div class="space-y-12">
-      {{ range $category, $items := $businessesByCategory }}
+      {{ range $businessesByCategory }}
+        {{ $category := default "Uncategorized" .Key | title }}
         {{ $categorySlug := anchorize $category }}
         <section id="{{ $categorySlug }}">
           <h2 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-6 pb-2 border-b-2 border-primary-600">
@@ -46,7 +36,7 @@
           </h2>
 
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {{ range $items }}
+            {{ range .Pages }}
               <article class="rounded-lg bg-neutral-100 dark:bg-neutral-800 p-6 hover:shadow-lg transition-shadow">
                 <h3 class="text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-3">
                   <a href="{{ .Permalink }}" class="hover:text-primary-600 dark:hover:text-primary-400">
