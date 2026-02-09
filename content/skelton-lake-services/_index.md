@@ -55,21 +55,16 @@ Please note that opening hours may vary on public holidays.
 
 ## Contact Information
 
-**General Enquiries:**
-Phone: 0113 XXX XXXX
-Email: info@skeltonlakeservices
-Website: https://extraservices.co.uk/locations/leeds-skelton-lake-services-m1-j45/
+**Website:**
+https://extraservices.co.uk/locations/leeds-skelton-lake-services-m1-j45/
 
-**Fuel Station:**
-Phone: 0113 XXX XXXX
-
----
+***
 
 ## Getting There from Skelton Gate
 
 ### On Foot
 
-The safest pedestrian route from Skelton Gate follows the designated footpaths along the estate perimeter and crosses via the pedestrian bridge. The walk takes approximately 15 minutes.
+The safest pedestrian route from Skelton Gate follows the designated footpaths along the estate perimeter. The walk takes approximately 15 minutes.
 
 ### By Car
 
@@ -79,6 +74,6 @@ Exit the estate via the main entrance, follow signs to M1 Junction 45, and follo
 
 Cycle paths connect the estate to the services area. Please use designated cycle routes and ensure you have appropriate lighting for evening travel.
 
----
+***
 
 For other local amenities and shops closer to the estate, please visit our [Local Amenities](/amenities) page.
