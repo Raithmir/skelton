@@ -1,14 +1,19 @@
 ---
-title: Ironing Service
-date: 2026-02-02
-type: "service"
-layout: "simple"
-category: personal
-contact: Test Person
-phone: "0123456789"
-email: test@email.com
-description: "Professional ironing service for your clothes"
-tags: ["personal", "laundry"]
+title: Kong Plumbing & Heating
+date: 2026-02-09T10:43:00
+type: service
+layout: simple
+category: plumbing
+contact: Chris
+phone: '0123456789'
+email: kongpandh@icloud.com
+website: https://www.facebook.com/KongPlumbingandHeating
+tags:
+  - plumbing
+  - bathroom
+  - tiling
 draft: false
+description: Professional ironing service for your clothes
 ---
-Iron your clothes.
+
+Plumbing & Heating, Bathrooms, tiling, servicing. Leeds & surrounding areas.
