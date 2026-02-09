@@ -42,21 +42,8 @@ Future enhancements for the Skelton Gate community may include:
 
 - **Community Hub** - A dedicated space for resident meetings and activities
 - **Playground Upgrades** - Modernisation of existing play areas for children
-- **Cycling Infrastructure** - Improved bike paths connecting to the local network
-- **Wildlife Corridors** - Protected areas to encourage biodiversity
-- **EV Charging Points** - Installation of electric vehicle charging stations
 
 The management company and residents' association continue to work together to improve the estate for all residents.
-
-## Community Facilities
-
-Current facilities available to residents include:
-
-- **Green Spaces** - Multiple parks and open areas throughout the estate
-- **Walking Paths** - Well-maintained pathways connecting different areas
-- **Children's Play Areas** - Safe, modern playgrounds
-- **Community Noticeboards** - Keeping residents informed of local news
-- **Street Parking** - Designated parking areas throughout the development
 
 ***
 
