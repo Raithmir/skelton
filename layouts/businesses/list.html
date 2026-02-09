@@ -37,12 +37,19 @@
 
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {{ range .Pages }}
-              <article class="rounded-lg bg-neutral-100 dark:bg-neutral-800 p-6 hover:shadow-lg transition-shadow">
-                <h3 class="text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-3">
-                  <a href="{{ .Permalink }}" class="hover:text-primary-600 dark:hover:text-primary-400">
-                    {{ .Title }}
-                  </a>
-                </h3>
+              <article class="rounded-lg bg-neutral-100 dark:bg-neutral-800 overflow-hidden hover:shadow-lg transition-shadow">
+                {{ if .Params.image }}
+                  <div class="w-full h-48 bg-white dark:bg-neutral-700 flex items-center justify-center p-4">
+                    <img src="{{ .Params.image | relURL }}" alt="{{ .Title }}" class="max-w-full max-h-full object-contain">
+                  </div>
+                {{ end }}
+
+                <div class="p-6">
+                  <h3 class="text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-3">
+                    <a href="{{ .Permalink }}" class="hover:text-primary-600 dark:hover:text-primary-400">
+                      {{ .Title }}
+                    </a>
+                  </h3>
 
                 {{ if .Params.description }}
                   <p class="text-neutral-700 dark:text-neutral-300 text-sm mb-4 line-clamp-3">
@@ -96,13 +103,14 @@
                   {{ end }}
                 </div>
 
-                <div class="mt-4 pt-4 border-t border-neutral-300 dark:border-neutral-700">
-                  <a href="{{ .Permalink }}" class="text-primary-600 dark:text-primary-400 hover:underline text-sm font-medium inline-flex items-center">
-                    View details
-                    <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20">
-                      <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                    </svg>
-                  </a>
+                  <div class="mt-4 pt-4 border-t border-neutral-300 dark:border-neutral-700">
+                    <a href="{{ .Permalink }}" class="text-primary-600 dark:text-primary-400 hover:underline text-sm font-medium inline-flex items-center">
+                      View details
+                      <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                      </svg>
+                    </a>
+                  </div>
                 </div>
               </article>
             {{ end }}

@@ -47,6 +47,12 @@
                   {{ .Title }}
                 </h3>
 
+                {{ if .Params.description }}
+                  <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-3">
+                    {{ .Params.description }}
+                  </p>
+                {{ end }}
+
                 {{ if .Params.availability }}
                   {{ $availClass := "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200" }}
                   {{ if eq .Params.availability "Limited" }}
