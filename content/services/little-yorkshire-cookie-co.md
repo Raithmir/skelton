@@ -3,7 +3,7 @@ title: Little Yorkshire Cookie Co
 date: 2026-02-09T11:05:00
 type: service
 layout: simple
-category: cookies
+category: sweets
 contact: Emma Tymon
 phone: ''
 email: ''
