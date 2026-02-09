@@ -8,6 +8,7 @@ address: Goole
 phone: 07919 926248
 website: https://www.facebook.com/CJTaylorFlooring82
 hours: ''
+image: /images/uploads/480551484_1359226002114359_7998226398918767848_n.jpg
 draft: false
 description: MOT and servicing
 ---
