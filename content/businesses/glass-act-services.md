@@ -8,7 +8,7 @@ address: Rothwell, Leeds
 phone: 07544 909500
 website: https://glassactservices.co.uk
 hours: ''
-image: ''
+image: /images/uploads/468395699_122145386408361100_1850772680739783382_n.jpg
 tags: []
 draft: false
 ---
