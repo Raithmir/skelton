@@ -48,18 +48,18 @@ Content lives in `content/` with 13 content types, each with custom layouts in `
 
 | Type | Directory | Key Fields | Template Features |
 |------|-----------|------------|-------------------|
-| **Events** | `content/events/` | `eventDate`, `eventTime`, `location` | FullCalendar integration, filters future events |
-| **Businesses** | `content/businesses/` | `category`, `address`, `phone` | Groups by category (Restaurant, Cafe, Shop, Trades, Flooring, Cleaning, Security, Legal, Healthcare, Garage, Other) |
+| **Events** | `content/events/` | `eventDate`, `eventTime`, `location` | Filters future events, detail page with add-to-calendar |
+| **Businesses** | `content/businesses/` | `category`, `address`, `phone` | Category filter buttons, groups by category |
 | **Services** | `content/services/` | `category`, `contact`, `email` | Groups by category |
 | **Notices** | `content/notices/` | `priority`, `expiryDate` | Priority color-coding, auto-expiry |
 | **Walks** | `content/walks/` | `distance`, `difficulty`, `duration` | Route metadata display |
 | **Contacts** | `content/contacts/` | `category`, `organization`, `contactPerson` | Groups by category (management, builders, council, utilities, emergency) |
 | **FAQs** | `content/faqs/` | `category`, `featured`, `weight` | Accordion-style, groups by category (snagging, parking, maintenance, utilities, management) |
 | **Broadband** | `content/broadband/` | `technology`, `maxSpeed`, `availability` | Groups by technology (FTTP, FTTC, Cable), comparison-focused |
-| **Amenities** | `content/amenities/` | `category`, `distance`, `postcode` | Groups by category (supermarket, restaurant, cafe, entertainment), distance badges |
+| **Amenities** | `content/amenities/` | `category`, `distance`, `postcode` | Category filter buttons, groups by category, distance badges |
 | **Transport** | `content/transport/` | `category`, `routeNumber`, `operator` | Groups by category (bus, train, park-and-ride), route-focused |
-| **Schools** | `content/schools/` | `category`, `ofstedRating`, `ageRange` | Groups by category (nursery, primary, secondary), Ofsted rating badges |
-| **Healthcare** | `content/healthcare/` | `category`, `acceptingPatients`, `nhsService` | Groups by category (gp, dentist, pharmacy, optician), "accepting patients" badges |
+| **Schools** | `content/schools/` | `category`, `ofstedRating`, `ageRange` | Category filter buttons, groups by category, Ofsted rating badges |
+| **Healthcare** | `content/healthcare/` | `category`, `acceptingPatients`, `nhsService` | Category filter buttons, groups by category, "accepting patients" badges |
 | **Bin Collection** | `content/bin-collection/` | `wasteType`, `nextCollection`, `color` | Color-coded by waste type, shows upcoming dates. One zone; black bin (general waste) and green bin (recycling) collected on alternate Tuesdays. |
 
 ### Single Page Content
@@ -115,9 +115,14 @@ This pattern is used in: businesses, contacts, amenities, transport, schools, he
 - `layouts/index.html` - Homepage with featured notices, events, businesses, and bin collection widget
 - `layouts/partials/menu.html` - Custom menu rendering with enable/disable filtering
 - `layouts/partials/widgets/bin-collection.html` - Homepage widget showing next 3 bin collections
-- `layouts/calendar.json` - Generates JSON feed for FullCalendar at `/events/calendar.json`
 - `layouts/{type}/list.html` - List page templates for each content type
-- `layouts/business/simple.html` - Custom detail page for businesses (shows image, address, phone, website, hours)
+- `layouts/business/simple.html` - Detail page for businesses (image, address, phone, website, hours, map)
+- `layouts/walk/simple.html` - Detail page for walks (difficulty/distance/duration badges, start point map, highlights, GPX download)
+- `layouts/amenity/simple.html` - Detail page for amenities (contact info, features, map)
+- `layouts/healthcare/simple.html` - Detail page for healthcare (badges, services, map)
+- `layouts/school/simple.html` - Detail page for schools (Ofsted badge, admissions, map)
+- `layouts/transport/simple.html` - Detail page for transport (route info, nearest stop, walking map)
+- `layouts/event/simple.html` - Detail page for events (metadata, Google Calendar link, .ics download, map)
 
 **Hugo layout resolution:** Single-page layouts are looked up by the `type` field in frontmatter (e.g. `type: business` → `layouts/business/`), NOT by the content directory name. List layouts use the content directory name. The Blowfish `simple` layout only renders `{{ .Content }}` — if frontmatter fields need to be shown on detail pages, a custom layout must be created in `layouts/{type}/simple.html`.
 
@@ -172,9 +177,9 @@ Custom layouts in `layouts/` override theme templates. The custom menu partial i
 
 ## External Dependencies
 
-- **FullCalendar v6.1.10** - CDN loaded in events list template for calendar view
 - **Decap CMS** - Admin interface at `/admin/`, uses GitHub OAuth for authentication
 - **Blowfish Theme** - Hugo module providing base styling and components
+- **Google Maps Embed API** - Used on detail pages for directions (origin: Beckside Crescent, Leeds)
 
 ## Site Maintenance
 
@@ -194,7 +199,9 @@ Content marked with "This is placeholder content. Information will be updated so
 ## Development Notes
 
 - Site uses Tailwind CSS via Blowfish theme
+- **Tailwind CSS purge:** Only utility classes used by the Blowfish theme are available in the compiled CSS. Many standard Tailwind classes (e.g. `mr-6`, `gap-6`, `gap-8`) are purged and will silently have no effect. When a Tailwind class doesn't work, use inline `style=""` attributes instead. Available classes can be checked in the compiled CSS files in `public/css/`.
 - Dark mode supported throughout via `dark:` class variants
 - Responsive design with mobile-first breakpoints: `md:`, `lg:`
 - SVG icons used for metadata (phone, email, location, etc.)
 - All layouts include empty state fallbacks for sections with no content
+- **Google Maps origin:** All detail page maps use `Beckside+Crescent,+Leeds` as the directions origin (not "Skelton Gate, LS9 0FN" which resolves to Skelton Crescent, off-estate)
