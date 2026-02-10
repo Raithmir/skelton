@@ -50,7 +50,7 @@
 
   <!-- Add to Calendar -->
   {{ if .Params.eventDate }}
-    <div class="mb-8 p-4 rounded-lg bg-neutral-100 dark:bg-neutral-800">
+    <div class="mb-8 p-4 rounded-lg bg-neutral-100 dark:bg-neutral-700">
       <h2 class="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">Add to Calendar</h2>
       <div class="flex flex-wrap gap-3">
         {{ $startDate := time.Format "20060102T150405Z" .Params.eventDate }}

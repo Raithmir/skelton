@@ -54,7 +54,7 @@
           {{ end }}
 
           {{ range first 3 $activeNotices }}
-            {{ $priorityClass := "bg-neutral-100 dark:bg-neutral-800 border-l-4 border-neutral-400" }}
+            {{ $priorityClass := "bg-neutral-100 dark:bg-neutral-700 border-l-4 border-neutral-400" }}
             {{ if eq (lower .Params.priority) "urgent" }}
               {{ $priorityClass = "bg-red-50 dark:bg-red-900/20 border-l-4 border-red-600" }}
             {{ else if eq (lower .Params.priority) "high" }}
@@ -117,7 +117,7 @@
           {{ $upcomingEvents = sort $upcomingEvents ".Params.eventDate" }}
 
           {{ range first 4 $upcomingEvents }}
-            <article class="rounded-lg bg-neutral-100 dark:bg-neutral-800 overflow-hidden transition-shadow hover:shadow-lg">
+            <article class="rounded-lg bg-neutral-100 dark:bg-neutral-700 overflow-hidden transition-shadow hover:shadow-lg">
               <div class="p-6">
                 <div class="flex items-start gap-4">
                   <div class="flex-shrink-0 text-center">
@@ -167,7 +167,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           {{ range first 6 (where (where site.RegularPages "Section" "businesses") ".Params.draft" "!=" true) }}
-            <article class="rounded-lg bg-neutral-100 dark:bg-neutral-800 p-4 hover:shadow-md transition-shadow">
+            <article class="rounded-lg bg-neutral-100 dark:bg-neutral-700 p-4 hover:shadow-md transition-shadow">
               <h3 class="font-semibold text-neutral-900 dark:text-neutral-100 mb-1">
                 <a href="{{ .Permalink }}" class="hover:text-primary-600 dark:hover:text-primary-400">
                   {{ .Title }}
@@ -189,7 +189,7 @@
     <aside class="lg:col-span-1 space-y-6">
 
       <!-- Quick Links Widget -->
-      <div class="rounded-lg bg-neutral-100 dark:bg-neutral-800 p-6">
+      <div class="rounded-lg bg-neutral-100 dark:bg-neutral-700 p-6">
         <h3 class="text-xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">Quick Links</h3>
         <nav class="space-y-3">
           {{ $sections := dict "events" "Events" "businesses" "Businesses" "amenities" "Amenities" "services" "Services" "healthcare" "Healthcare" "schools" "Schools" "transport" "Transport" "walks" "Walking Routes" "notices" "Notices" "faqs" "FAQs" "broadband" "Broadband" "bin-collection" "Bin Collection" "contacts" "Contacts" }}
@@ -211,7 +211,7 @@
       {{ partial "widgets/bin-collection.html" . }}
 
       <!-- Walking Routes Widget -->
-      <div class="rounded-lg bg-neutral-100 dark:bg-neutral-800 p-6">
+      <div class="rounded-lg bg-neutral-100 dark:bg-neutral-700 p-6">
         <h3 class="text-xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">Walking Routes</h3>
         <div class="space-y-3">
           {{ range first 3 (where site.RegularPages "Section" "walks") }}
