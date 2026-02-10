@@ -9,7 +9,7 @@ weight: 4
 tags:
   - maintenance
   - service-charge
-draft: false
+draft: true
 ---
 
 The estate management company is responsible for maintaining all communal areas, including:
