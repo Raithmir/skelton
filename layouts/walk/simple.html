@@ -101,7 +101,7 @@
       {{ if .Params.endPoint }}
         <!-- Linear walk: show route from start to end -->
         <h3 class="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Walk Route</h3>
-        <div class="rounded-lg overflow-hidden ring-1 ring-neutral-200 dark:ring-neutral-700 mb-4">
+        <div class="rounded-lg overflow-hidden ring-1 ring-neutral-200 dark:ring-neutral-700">
           <iframe
             class="w-full h-72 md:h-96"
             loading="lazy"
@@ -110,19 +110,19 @@
             allowfullscreen
           ></iframe>
         </div>
+      {{ else }}
+        <!-- Circular walk: show location of start point -->
+        <h3 class="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Start Location</h3>
+        <div class="rounded-lg overflow-hidden ring-1 ring-neutral-200 dark:ring-neutral-700">
+          <iframe
+            class="w-full h-72 md:h-96"
+            loading="lazy"
+            referrerpolicy="no-referrer"
+            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q={{ .Params.startPoint | urlquery }}"
+            allowfullscreen
+          ></iframe>
+        </div>
       {{ end }}
-
-      <!-- Getting there: directions from home to start point -->
-      <h3 class="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Getting There</h3>
-      <div class="rounded-lg overflow-hidden ring-1 ring-neutral-200 dark:ring-neutral-700">
-        <iframe
-          class="w-full h-72 md:h-96"
-          loading="lazy"
-          referrerpolicy="no-referrer"
-          src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&origin=Beckside+Crescent,+Leeds&destination={{ .Params.startPoint | urlquery }}&mode=walking"
-          allowfullscreen
-        ></iframe>
-      </div>
     </div>
   {{ end }}
 
