@@ -6,7 +6,7 @@ layout: simple
 distance: 3km
 difficulty: Easy
 duration: 45 min
-startPoint: Skelton Lake Services
+startPoint: Skelton Lake
 endPoint: ''
 tags:
   - easy
