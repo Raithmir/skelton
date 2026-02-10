@@ -3,7 +3,7 @@ title: St Catherine’s Carpets
 date: 2026-02-09T11:21:00
 type: business
 layout: simple
-category: Service
+category: Flooring
 address: 114 Crossgates Road,  Leeds, LS15 7NL
 phone: 07725 036253
 website: https://www.facebook.com/profile.php?id=61564368301999

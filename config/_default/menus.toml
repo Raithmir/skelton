@@ -97,6 +97,14 @@
   [main.params]
     enabled = true
 
+[[main]]
+  name = "Local Amenities"
+  pageRef = "/amenities"
+  parent = "directory"
+  weight = 4
+  [main.params]
+    enabled = true
+
 # Resources dropdown parent
 [[main]]
   name = "Resources"
@@ -114,18 +122,10 @@
     enabled = true
 
 [[main]]
-  name = "Local Amenities"
-  pageRef = "/amenities"
-  parent = "resources"
-  weight = 2
-  [main.params]
-    enabled = true
-
-[[main]]
   name = "Transport & Travel"
   pageRef = "/transport"
   parent = "resources"
-  weight = 3
+  weight = 2
   [main.params]
     enabled = true
 
@@ -133,7 +133,7 @@
   name = "Schools & Childcare"
   pageRef = "/schools"
   parent = "resources"
-  weight = 4
+  weight = 3
   [main.params]
     enabled = true
 
@@ -141,7 +141,7 @@
   name = "Healthcare"
   pageRef = "/healthcare"
   parent = "resources"
-  weight = 5
+  weight = 4
   [main.params]
     enabled = true
 
@@ -149,7 +149,7 @@
   name = "Broadband Providers"
   pageRef = "/broadband"
   parent = "resources"
-  weight = 6
+  weight = 5
   [main.params]
     enabled = true
 
@@ -157,7 +157,7 @@
   name = "Useful Links"
   pageRef = "/links"
   parent = "resources"
-  weight = 7
+  weight = 6
   [main.params]
     enabled = true
 
@@ -165,7 +165,7 @@
   name = "Bin Collection"
   pageRef = "/bin-collection"
   parent = "resources"
-  weight = 8
+  weight = 7
   [main.params]
     enabled = true
 
@@ -173,7 +173,7 @@
   name = "FAQs"
   pageRef = "/faqs"
   parent = "resources"
-  weight = 9
+  weight = 8
   [main.params]
     enabled = true
 

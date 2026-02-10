@@ -3,7 +3,7 @@ title: L.I Electrical Services LTD
 date: 2026-02-09T11:26:00
 type: business
 layout: simple
-category: Service
+category: Trades
 address: Leeds
 phone: 07725 206229
 website: https://www.facebook.com/lielectrical

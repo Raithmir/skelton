@@ -3,7 +3,7 @@ title: ESS Security
 date: 2026-02-09T11:29:00
 type: business
 layout: simple
-category: Service
+category: Security
 address: Unit 1, Fusion Court, Aberford Road, Garforth, LS25 2GH
 phone: 0113 287 4402
 website: https://ess-security-specialists.co.uk/

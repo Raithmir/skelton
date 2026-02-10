@@ -3,7 +3,7 @@ title: Ison Harrison
 date: 2026-02-09T14:38:00
 type: business
 layout: simple
-category: Service
+category: Legal
 address: 48 Austhorpe Road, Crossgates, Leeds, LS15 8DX.
 phone: 0113 232 6530
 website: https://www.isonharrison.co.uk/branches/crossgates-solicitors/

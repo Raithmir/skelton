@@ -3,7 +3,7 @@ title: F&S Carpets
 date: 2026-02-09T11:23:00
 type: business
 layout: simple
-category: Service
+category: Flooring
 address: 2 Sagar Street, Castleford, WF10 1AF
 phone: 01977 235086
 website: https://www.facebook.com/FSCarpets

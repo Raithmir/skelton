@@ -3,132 +3,93 @@
   <header class="mb-8">
     <h1 class="text-4xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">Bin Collection Schedule</h1>
     <p class="text-lg text-neutral-700 dark:text-neutral-300">
-      Waste collection days and information for Skelton Gate residents. Select your zone to view your schedule.
+      Waste collection days and information for Skelton Gate residents.
     </p>
   </header>
 
   {{ $collections := where .Pages ".Params.draft" "!=" true }}
-  {{ $collectionsByZone := $collections.GroupByParam "zone" }}
 
   {{ if gt (len $collections) 0 }}
-    <!-- Zone Navigation -->
-    <nav class="mb-8 p-4 rounded-lg bg-neutral-100 dark:bg-neutral-800">
-      <p class="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">Select your zone:</p>
-      <div class="flex flex-wrap gap-2">
-        {{ range $collectionsByZone }}
-          {{ $zone := default "General" .Key }}
-          {{ $zoneSlug := anchorize $zone }}
-          <a href="#{{ $zoneSlug }}" class="px-4 py-2 rounded-lg bg-primary-600 text-white hover:bg-primary-700 transition-colors text-sm font-medium">
-            {{ $zone }}
-          </a>
-        {{ end }}
-      </div>
-    </nav>
-
     <!-- Bin Types Legend -->
     <div class="mb-8 p-4 rounded-lg bg-neutral-100 dark:bg-neutral-800">
       <p class="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">Bin Types:</p>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="flex flex-wrap gap-6">
         <div class="flex items-center">
           <div class="w-4 h-4 rounded bg-neutral-800 dark:bg-neutral-300 mr-2"></div>
-          <span class="text-sm text-neutral-700 dark:text-neutral-300">General Waste</span>
-        </div>
-        <div class="flex items-center">
-          <div class="w-4 h-4 rounded bg-blue-600 mr-2"></div>
-          <span class="text-sm text-neutral-700 dark:text-neutral-300">Recycling</span>
+          <span class="text-sm text-neutral-700 dark:text-neutral-300">General Waste (Black bin)</span>
         </div>
         <div class="flex items-center">
           <div class="w-4 h-4 rounded bg-green-600 mr-2"></div>
-          <span class="text-sm text-neutral-700 dark:text-neutral-300">Garden Waste</span>
-        </div>
-        <div class="flex items-center">
-          <div class="w-4 h-4 rounded bg-amber-700 mr-2"></div>
-          <span class="text-sm text-neutral-700 dark:text-neutral-300">Food Waste</span>
+          <span class="text-sm text-neutral-700 dark:text-neutral-300">Recycling (Green bin)</span>
         </div>
       </div>
     </div>
 
-    <!-- Collections by Zone -->
-    <div class="space-y-12">
-      {{ range $collectionsByZone }}
-        {{ $zone := default "General" .Key }}
-        {{ $zoneSlug := anchorize $zone }}
-        <section id="{{ $zoneSlug }}">
-          <h2 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-6 pb-2 border-b-2 border-primary-600">
-            {{ $zone }}
-          </h2>
+    <!-- Collections -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {{ range $collections }}
+        {{ $colorClass := "border-neutral-800 dark:border-neutral-300" }}
+        {{ if eq .Params.color "green" }}
+          {{ $colorClass = "border-green-600" }}
+        {{ end }}
 
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {{ range .Pages }}
-              {{ $colorClass := "border-neutral-800 dark:border-neutral-300" }}
-              {{ if eq .Params.color "blue" }}
-                {{ $colorClass = "border-blue-600" }}
-              {{ else if eq .Params.color "green" }}
-                {{ $colorClass = "border-green-600" }}
-              {{ else if eq .Params.color "brown" }}
-                {{ $colorClass = "border-amber-700" }}
-              {{ end }}
+        <article class="rounded-lg bg-neutral-100 dark:bg-neutral-800 p-5 border-l-4 {{ $colorClass }} hover:shadow-lg transition-shadow">
+          <h3 class="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-2">
+            {{ .Title }}
+          </h3>
 
-              <article class="rounded-lg bg-neutral-100 dark:bg-neutral-800 p-5 border-l-4 {{ $colorClass }} hover:shadow-lg transition-shadow">
-                <h3 class="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-2">
-                  {{ .Title }}
-                </h3>
+          <div class="space-y-2 mb-4">
+            {{ if .Params.collectionDay }}
+              <div class="flex items-center text-sm">
+                <svg class="w-4 h-4 mr-2 text-neutral-600 dark:text-neutral-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                </svg>
+                <span class="text-neutral-700 dark:text-neutral-300">
+                  <strong>{{ .Params.collectionDay }}s</strong>
+                </span>
+              </div>
+            {{ end }}
 
-                <div class="space-y-2 mb-4">
-                  {{ if .Params.collectionDay }}
-                    <div class="flex items-center text-sm">
-                      <svg class="w-4 h-4 mr-2 text-neutral-600 dark:text-neutral-400" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
-                      </svg>
-                      <span class="text-neutral-700 dark:text-neutral-300">
-                        <strong>{{ .Params.collectionDay }}s</strong>
-                      </span>
-                    </div>
-                  {{ end }}
-
-                  {{ if .Params.collectionWeek }}
-                    <div class="flex items-center text-sm">
-                      <svg class="w-4 h-4 mr-2 text-neutral-600 dark:text-neutral-400" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
-                      </svg>
-                      <span class="text-neutral-700 dark:text-neutral-300">{{ .Params.collectionWeek }}</span>
-                    </div>
-                  {{ end }}
-                </div>
-
-                {{ if .Params.nextCollection }}
-                  {{ $nextDate := time .Params.nextCollection }}
-                  {{ $now := now }}
-                  {{ $daysUntil := div (sub $nextDate.Unix $now.Unix) 86400 }}
-
-                  <div class="p-3 rounded bg-primary-50 dark:bg-primary-900/20 mb-3">
-                    <p class="text-xs font-semibold text-primary-900 dark:text-primary-300 mb-1">Next Collection:</p>
-                    <p class="text-lg font-bold text-primary-600 dark:text-primary-400">
-                      {{ $nextDate.Format "Mon, 2 Jan" }}
-                    </p>
-                    {{ if le $daysUntil 3 }}
-                      <p class="text-xs text-primary-700 dark:text-primary-300 mt-1">
-                        {{ if eq $daysUntil 0 }}
-                          Today!
-                        {{ else if eq $daysUntil 1 }}
-                          Tomorrow
-                        {{ else }}
-                          In {{ $daysUntil }} days
-                        {{ end }}
-                      </p>
-                    {{ end }}
-                  </div>
-                {{ end }}
-
-                {{ if .Params.notes }}
-                  <p class="text-xs text-neutral-600 dark:text-neutral-400 italic">
-                    {{ .Params.notes }}
-                  </p>
-                {{ end }}
-              </article>
+            {{ if .Params.collectionWeek }}
+              <div class="flex items-center text-sm">
+                <svg class="w-4 h-4 mr-2 text-neutral-600 dark:text-neutral-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                </svg>
+                <span class="text-neutral-700 dark:text-neutral-300">{{ .Params.collectionWeek }}</span>
+              </div>
             {{ end }}
           </div>
-        </section>
+
+          {{ if .Params.nextCollection }}
+            {{ $nextDate := time .Params.nextCollection }}
+            {{ $now := now }}
+            {{ $daysUntil := div (sub $nextDate.Unix $now.Unix) 86400 }}
+
+            <div class="p-3 rounded bg-primary-50 dark:bg-primary-900/20 mb-3">
+              <p class="text-xs font-semibold text-primary-900 dark:text-primary-300 mb-1">Next Collection:</p>
+              <p class="text-lg font-bold text-primary-600 dark:text-primary-400">
+                {{ $nextDate.Format "Mon, 2 Jan" }}
+              </p>
+              {{ if le $daysUntil 3 }}
+                <p class="text-xs text-primary-700 dark:text-primary-300 mt-1">
+                  {{ if eq $daysUntil 0 }}
+                    Today!
+                  {{ else if eq $daysUntil 1 }}
+                    Tomorrow
+                  {{ else }}
+                    In {{ $daysUntil }} days
+                  {{ end }}
+                </p>
+              {{ end }}
+            </div>
+          {{ end }}
+
+          {{ if .Params.notes }}
+            <p class="text-xs text-neutral-600 dark:text-neutral-400 italic">
+              {{ .Params.notes }}
+            </p>
+          {{ end }}
+        </article>
       {{ end }}
     </div>
 

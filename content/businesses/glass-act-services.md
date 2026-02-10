@@ -3,7 +3,7 @@ title: Glass Act Services
 date: 2026-02-09T11:34:00
 type: business
 layout: simple
-category: Service
+category: Cleaning
 address: Rothwell, Leeds
 phone: 07544 909500
 website: https://glassactservices.co.uk

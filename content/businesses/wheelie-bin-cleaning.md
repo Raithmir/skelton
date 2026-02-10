@@ -3,7 +3,7 @@ title: Wheelie Bin Cleaning
 date: 2026-02-09T11:28:00
 type: business
 layout: simple
-category: Service
+category: Cleaning
 address: Leeds
 phone: 07768 862147
 website: ''
