@@ -1,24 +1,39 @@
 {{/* Bin Collection Widget for Homepage */}}
 
 {{ $now := now }}
+{{ $today := $now.Format "2006-01-02" }}
 {{ $binCollections := where .Site.RegularPages "Type" "bin-collection" }}
 {{ $binCollections := where $binCollections ".Params.draft" "!=" true }}
 
 {{ if gt (len $binCollections) 0 }}
-  {{/* Filter to upcoming collections and sort by date */}}
-  {{ $upcomingCollections := slice }}
+  {{/* For each bin type, calculate the next 3 upcoming collection dates */}}
+  {{ $upcoming := slice }}
+
   {{ range $binCollections }}
-    {{ if .Params.nextCollection }}
-      {{ $collectionDate := time .Params.nextCollection }}
-      {{ if ge $collectionDate.Unix $now.Unix }}
-        {{ $upcomingCollections = $upcomingCollections | append . }}
+    {{ if .Params.referenceDate }}
+      {{ $page := . }}
+      {{ $next := time .Params.referenceDate }}
+
+      {{/* Advance to the next upcoming date (not before today) */}}
+      {{ range seq 0 200 }}
+        {{ if lt ($next.Format "2006-01-02") $today }}
+          {{ $next = $next.Add 1209600000000000 }}
+        {{ end }}
+      {{ end }}
+
+      {{/* Collect next 3 occurrences for this bin type */}}
+      {{ $d := $next }}
+      {{ range seq 1 3 }}
+        {{ $upcoming = $upcoming | append (dict "page" $page "date" $d) }}
+        {{ $d = $d.Add 1209600000000000 }}
       {{ end }}
     {{ end }}
   {{ end }}
 
-  {{ $upcomingCollections = sort $upcomingCollections ".Params.nextCollection" }}
+  {{/* Sort all upcoming entries by date and take the next 3 overall */}}
+  {{ $upcoming = sort $upcoming "date.Unix" }}
 
-  {{ if gt (len $upcomingCollections) 0 }}
+  {{ if gt (len $upcoming) 0 }}
     <div class="rounded-lg bg-neutral-100 dark:bg-neutral-800 p-6 mb-6">
       <div class="flex items-center justify-between mb-4">
         <h2 class="text-xl font-bold text-neutral-900 dark:text-neutral-100 flex items-center">
@@ -30,39 +45,28 @@
       </div>
 
       <div class="space-y-3">
-        {{ range first 3 $upcomingCollections }}
-          {{ $collectionDate := time .Params.nextCollection }}
-          {{ $daysUntil := div (sub $collectionDate.Unix $now.Unix) 86400 }}
+        {{ range first 3 $upcoming }}
+          {{ $page := .page }}
+          {{ $date := .date }}
+          {{ $daysUntil := div (sub $date.Unix $now.Unix) 86400 }}
 
-          {{/* Color coding based on waste type */}}
           {{ $borderColor := "border-neutral-800 dark:border-neutral-300" }}
           {{ $bgColor := "bg-neutral-200 dark:bg-neutral-700" }}
-          {{ if eq .Params.color "blue" }}
-            {{ $borderColor = "border-blue-600" }}
-            {{ $bgColor = "bg-blue-100 dark:bg-blue-900/30" }}
-          {{ else if eq .Params.color "green" }}
+          {{ if eq $page.Params.color "green" }}
             {{ $borderColor = "border-green-600" }}
             {{ $bgColor = "bg-green-100 dark:bg-green-900/30" }}
-          {{ else if eq .Params.color "brown" }}
-            {{ $borderColor = "border-amber-700" }}
-            {{ $bgColor = "bg-amber-100 dark:bg-amber-900/30" }}
           {{ end }}
 
           <div class="p-3 rounded {{ $bgColor }} border-l-4 {{ $borderColor }}">
             <div class="flex items-start justify-between">
               <div class="flex-1">
                 <p class="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-                  {{ .Title }}
+                  {{ $page.Title }}
                 </p>
-                {{ if .Params.zone }}
-                  <p class="text-xs text-neutral-600 dark:text-neutral-400">
-                    {{ .Params.zone }}
-                  </p>
-                {{ end }}
               </div>
               <div class="text-right ml-2">
                 <p class="text-xs font-bold text-neutral-900 dark:text-neutral-100">
-                  {{ $collectionDate.Format "Mon, 2 Jan" }}
+                  {{ $date.Format "Mon, 2 Jan" }}
                 </p>
                 {{ if le $daysUntil 3 }}
                   <p class="text-xs text-neutral-600 dark:text-neutral-400">

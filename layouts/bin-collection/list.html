@@ -8,6 +8,8 @@
   </header>
 
   {{ $collections := where .Pages ".Params.draft" "!=" true }}
+  {{ $now := now }}
+  {{ $today := $now.Format "2006-01-02" }}
 
   {{ if gt (len $collections) 0 }}
     <!-- Bin Types Legend -->
@@ -60,26 +62,39 @@
             {{ end }}
           </div>
 
-          {{ if .Params.nextCollection }}
-            {{ $nextDate := time .Params.nextCollection }}
-            {{ $now := now }}
-            {{ $daysUntil := div (sub $nextDate.Unix $now.Unix) 86400 }}
+          {{ if .Params.referenceDate }}
+            {{ $next := time .Params.referenceDate }}
 
-            <div class="p-3 rounded bg-primary-50 dark:bg-primary-900/20 mb-3">
-              <p class="text-xs font-semibold text-primary-900 dark:text-primary-300 mb-1">Next Collection:</p>
-              <p class="text-lg font-bold text-primary-600 dark:text-primary-400">
-                {{ $nextDate.Format "Mon, 2 Jan" }}
-              </p>
-              {{ if le $daysUntil 3 }}
-                <p class="text-xs text-primary-700 dark:text-primary-300 mt-1">
-                  {{ if eq $daysUntil 0 }}
-                    Today!
-                  {{ else if eq $daysUntil 1 }}
-                    Tomorrow
-                  {{ else }}
-                    In {{ $daysUntil }} days
+            {{/* Advance to the next upcoming date (not before today) */}}
+            {{ range seq 0 200 }}
+              {{ if lt ($next.Format "2006-01-02") $today }}
+                {{ $next = $next.Add 1209600000000000 }}
+              {{ end }}
+            {{ end }}
+
+            {{/* Show next 3 upcoming dates */}}
+            <div class="mb-3">
+              <p class="text-xs font-semibold text-primary-900 dark:text-primary-300 mb-2">Upcoming collections:</p>
+              {{ $d := $next }}
+              {{ range seq 1 3 }}
+                {{ $daysUntil := div (sub $d.Unix $now.Unix) 86400 }}
+                <div class="flex items-center justify-between p-2 rounded bg-primary-50 dark:bg-primary-900/20 mb-1">
+                  <p class="text-sm font-bold text-primary-600 dark:text-primary-400">
+                    {{ $d.Format "Mon, 2 Jan" }}
+                  </p>
+                  {{ if le $daysUntil 3 }}
+                    <p class="text-xs text-primary-700 dark:text-primary-300">
+                      {{ if eq $daysUntil 0 }}
+                        Today!
+                      {{ else if eq $daysUntil 1 }}
+                        Tomorrow
+                      {{ else }}
+                        In {{ $daysUntil }} days
+                      {{ end }}
+                    </p>
                   {{ end }}
-                </p>
+                </div>
+                {{ $d = $d.Add 1209600000000000 }}
               {{ end }}
             </div>
           {{ end }}
