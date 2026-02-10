@@ -10,7 +10,7 @@ organizer: MINT FESTIVAL LTD
 featured: false
 tags:
   - music-festival
-draft: true
+draft: false
 ---
 
 Bank Holiday weekend, 2nd-3rd May.
