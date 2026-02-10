@@ -38,12 +38,6 @@
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {{ range .Pages }}
               <article class="rounded-lg bg-neutral-100 dark:bg-neutral-800 overflow-hidden hover:shadow-lg transition-shadow">
-                {{ if .Params.image }}
-                  <div class="w-full h-48 bg-white dark:bg-neutral-700 flex items-center justify-center p-4">
-                    <img src="{{ .Params.image | relURL }}" alt="{{ .Title }}" class="max-w-full max-h-full object-contain">
-                  </div>
-                {{ end }}
-
                 <div class="p-6">
                   <h3 class="text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-3">
                     <a href="{{ .Permalink }}" class="hover:text-primary-600 dark:hover:text-primary-400">
