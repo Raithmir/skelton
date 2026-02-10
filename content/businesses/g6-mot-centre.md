@@ -1,5 +1,5 @@
 ---
-title: G6 MOT CENTRE
+title: G6 MOT Centre
 date: 2026-02-09T16:42:00
 type: business
 layout: simple
@@ -12,3 +12,5 @@ image: ''
 tags: []
 draft: false
 ---
+
+Services, repairs, MOTs.
