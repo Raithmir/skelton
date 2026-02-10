@@ -203,41 +203,6 @@
       <!-- Bin Collection Widget -->
       {{ partial "widgets/bin-collection.html" . }}
 
-      <!-- Upcoming Events Mini-List -->
-      <div class="rounded-lg bg-neutral-100 dark:bg-neutral-800 p-6">
-        <h3 class="text-xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">Next Events</h3>
-        <div class="space-y-3">
-          {{ $events := where site.RegularPages "Section" "events" }}
-          {{ $events = where $events ".Params.draft" "!=" true }}
-          {{ $upcomingEvents := slice }}
-          {{ range $events }}
-            {{ if .Params.eventDate }}
-              {{ $eventDate := time.AsTime .Params.eventDate }}
-              {{ if ge $eventDate now }}
-                {{ $upcomingEvents = $upcomingEvents | append . }}
-              {{ end }}
-            {{ end }}
-          {{ end }}
-          {{ $upcomingEvents = sort $upcomingEvents ".Params.eventDate" }}
-
-          {{ range first 5 $upcomingEvents }}
-            <div class="border-l-2 border-primary-600 pl-3">
-              <a href="{{ .Permalink }}" class="block hover:text-primary-600 dark:hover:text-primary-400">
-                <p class="font-medium text-sm text-neutral-900 dark:text-neutral-100 line-clamp-2">{{ .Title }}</p>
-                <p class="text-xs text-neutral-600 dark:text-neutral-400 mt-1">
-                  {{ time.Format "Jan 2, 2006" .Params.eventDate }}
-                </p>
-              </a>
-            </div>
-          {{ else }}
-            <p class="text-sm text-neutral-600 dark:text-neutral-400">No upcoming events</p>
-          {{ end }}
-        </div>
-        <a href="/events/" class="block mt-4 text-sm text-primary-600 dark:text-primary-400 hover:underline">
-          View full calendar →
-        </a>
-      </div>
-
       <!-- Walking Routes Widget -->
       <div class="rounded-lg bg-neutral-100 dark:bg-neutral-800 p-6">
         <h3 class="text-xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">Walking Routes</h3>

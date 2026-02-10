@@ -317,7 +317,8 @@ collections:
          hint: "Day of the week bins are collected"}
       - {label: "Collection Week", name: "collectionWeek", widget: "string",
          hint: "e.g., 'Weekly', 'Fortnightly', 'Week 1', 'Week 2'"}
-      - {label: "Reference Date", name: "referenceDate", widget: "date",
+      - {label: "Reference Date", name: "referenceDate", widget: "datetime",
+         time_format: false,
          hint: "The seed date for calculating fortnightly collection dates. Set this to any recent collection Tuesday."}
       - {label: "Bin Color", name: "color", widget: "select",
          options: ["black", "blue", "green", "brown"],
