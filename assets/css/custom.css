@@ -1,6 +1,24 @@
 /* Custom CSS for Skelton Gate Community Site */
 /* Blowfish Theme Customizations */
 
+/* Gradients — defined here because Tailwind purges gradient classes not used by the theme */
+.hero-gradient {
+  background: linear-gradient(
+    to bottom right,
+    rgb(var(--color-primary-600)),
+    rgb(var(--color-primary-700)),
+    rgb(var(--color-primary-900))
+  );
+}
+
+.walk-placeholder-gradient {
+  background: linear-gradient(
+    to bottom right,
+    rgb(var(--color-primary-500)),
+    rgb(var(--color-primary-700))
+  );
+}
+
 /* Constrain header logo size */
 span.logo svg {
   width: 2.25rem;
