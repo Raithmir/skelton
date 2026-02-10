@@ -9,10 +9,10 @@ weight: 1
 tags:
   - snagging
   - warranty
-draft: false
+draft: true
 ---
 
-Contact your builder's customer care team as soon as possible after moving in. 
+Contact your builder's customer care team as soon as possible after moving in.
 
 - Your warranty covers defects for 2 years from purchase
 
