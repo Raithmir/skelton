@@ -4,23 +4,18 @@
 /* Hero section — defined here because Tailwind purges classes not used by the theme */
 .hero-gradient {
   background: rgb(var(--color-primary-50));
-  padding: 2rem;
+  padding: 1.25rem;
   border-radius: 0.75rem; /* rounded-xl equivalent */
 }
 
 @media (min-width: 768px) {
   .hero-gradient {
-    padding: 3rem;
+    padding: 2rem;
   }
 }
 
 .dark .hero-gradient {
-  background: linear-gradient(
-    to bottom right,
-    rgb(var(--color-primary-600)),
-    rgb(var(--color-primary-700)),
-    rgb(var(--color-primary-900))
-  );
+  background: rgb(var(--color-neutral-800));
 }
 
 .walk-placeholder-gradient {
