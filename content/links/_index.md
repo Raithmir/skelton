@@ -9,6 +9,14 @@ showReadingTime: false
 
 This page provides quick access to external websites and resources that may be useful for residents of Skelton Gate.
 
+## Facebook Group
+
+- [Skelton Gate - Greenlock Place/Skelton Lakes/Newsam Rise](https://www.facebook.com/groups/1421713288767947)
+
+## Neighbourhood Watch
+
+- [Skelton Gate Neighbourhood Watch](https://www.ourwatch.org.uk/scheme/182674/skelton-gate-neighbourhood-watch)
+
 ## Local Council Services
 
 - **Report a Problem:** [Report issues online](https://www.leeds.gov.uk/report-it)
