@@ -4,7 +4,8 @@ cd /var/www/community-site
 # Pull latest changes
 git pull origin main 2>&1
 
-# Build the site
+# Clean resource cache and build the site
+rm -rf resources
 hugo --minify --gc --cleanDestinationDir 2>&1
 
 # Reload nginx with sudo (now allowed without password)
