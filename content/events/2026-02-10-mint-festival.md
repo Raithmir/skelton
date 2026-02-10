@@ -1,5 +1,5 @@
 ---
-title: Mint Festival
+title: Mint Festival - Saturday
 date: 2026-02-10T13:26:00
 type: event
 layout: simple
