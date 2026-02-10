@@ -12,14 +12,16 @@
 
   {{ if gt (len $healthcare) 0 }}
     <nav class="mb-8 p-4 rounded-lg bg-neutral-100 dark:bg-neutral-800">
-      <p class="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">Jump to category:</p>
+      <p class="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">Filter by category:</p>
       <div class="flex flex-wrap gap-2">
+        <button onclick="filterCategory('all')" class="filter-btn px-3 py-2 rounded bg-primary-600 text-white hover:bg-primary-700 transition-colors text-sm font-medium">
+          All ({{ len $healthcare }})
+        </button>
         {{ range $healthcareByCategory }}
           {{ $category := default "Other" .Key | upper }}
-          {{ $categorySlug := anchorize $category }}
-          <a href="#{{ $categorySlug }}" class="px-3 py-2 rounded bg-primary-600 text-white hover:bg-primary-700 transition-colors text-sm font-medium">
+          <button onclick="filterCategory('{{ .Key | lower }}')" class="filter-btn px-3 py-2 rounded bg-neutral-200 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-300 dark:hover:bg-neutral-600 transition-colors text-sm font-medium">
             {{ $category }} ({{ len .Pages }})
-          </a>
+          </button>
         {{ end }}
       </div>
     </nav>
@@ -28,7 +30,7 @@
       {{ range $healthcareByCategory }}
         {{ $category := default "Other" .Key | upper }}
         {{ $categorySlug := anchorize $category }}
-        <section id="{{ $categorySlug }}">
+        <section id="{{ $categorySlug }}" class="category-section" data-category="{{ .Key | lower }}">
           <h2 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-6 pb-2 border-b-2 border-primary-600">
             {{ $category }}
           </h2>
@@ -38,7 +40,7 @@
               <article class="rounded-lg bg-neutral-100 dark:bg-neutral-800 p-6 hover:shadow-lg transition-shadow">
                 <div class="flex items-start justify-between mb-3">
                   <h3 class="text-xl font-semibold text-neutral-900 dark:text-neutral-100 flex-1">
-                    {{ .Title }}
+                    <a href="{{ .Permalink }}" class="hover:text-primary-600 dark:hover:text-primary-400">{{ .Title }}</a>
                   </h3>
                   {{ if and (eq .Params.category "gp") .Params.acceptingPatients }}
                     <span class="ml-2 px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 whitespace-nowrap">
@@ -127,6 +129,15 @@
                     </div>
                   </div>
                 {{ end }}
+
+                <div class="mt-4 pt-4 border-t border-neutral-300 dark:border-neutral-700">
+                  <a href="{{ .Permalink }}" class="text-primary-600 dark:text-primary-400 hover:underline text-sm font-medium inline-flex items-center">
+                    View details
+                    <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                    </svg>
+                  </a>
+                </div>
               </article>
             {{ end }}
           </div>
@@ -140,4 +151,24 @@
     </div>
   {{ end }}
 </article>
+
+<script>
+  function filterCategory(category) {
+    const sections = document.querySelectorAll('.category-section');
+    const buttons = document.querySelectorAll('.filter-btn');
+    buttons.forEach(btn => {
+      btn.classList.remove('bg-primary-600', 'text-white');
+      btn.classList.add('bg-neutral-200', 'dark:bg-neutral-700', 'text-neutral-700', 'dark:text-neutral-300');
+    });
+    event.target.classList.remove('bg-neutral-200', 'dark:bg-neutral-700', 'text-neutral-700', 'dark:text-neutral-300');
+    event.target.classList.add('bg-primary-600', 'text-white');
+    sections.forEach(section => {
+      if (category === 'all' || section.dataset.category === category) {
+        section.style.display = 'block';
+      } else {
+        section.style.display = 'none';
+      }
+    });
+  }
+</script>
 {{ end }}

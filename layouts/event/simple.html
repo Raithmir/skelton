@@ -1,0 +1,132 @@
+{{ define "main" }}
+<article class="max-w-full">
+  <header class="mb-6">
+    <a href="/events/" class="text-sm text-primary-600 dark:text-primary-400 hover:underline inline-flex items-center mb-4">
+      <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd"/>
+      </svg>
+      Community Events
+    </a>
+    <h1 class="text-4xl font-extrabold text-neutral-900 dark:text-neutral-100">
+      {{ .Title }}
+    </h1>
+  </header>
+
+  <!-- Event Metadata -->
+  <div class="mb-8 space-y-3 text-sm">
+    {{ if .Params.eventDate }}
+      <div class="flex items-center text-neutral-700 dark:text-neutral-300">
+        <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+        </svg>
+        <span class="font-medium">{{ time.Format "Monday, 2 January 2006" .Params.eventDate }}</span>
+      </div>
+    {{ end }}
+    {{ if .Params.eventTime }}
+      <div class="flex items-center text-neutral-700 dark:text-neutral-300">
+        <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+        </svg>
+        <span>{{ .Params.eventTime }}</span>
+      </div>
+    {{ end }}
+    {{ if .Params.location }}
+      <div class="flex items-center text-neutral-700 dark:text-neutral-300">
+        <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+        </svg>
+        <span>{{ .Params.location }}</span>
+      </div>
+    {{ end }}
+    {{ if .Params.organizer }}
+      <div class="flex items-center text-neutral-700 dark:text-neutral-300">
+        <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/>
+        </svg>
+        <span>{{ .Params.organizer }}</span>
+      </div>
+    {{ end }}
+  </div>
+
+  <!-- Add to Calendar -->
+  {{ if .Params.eventDate }}
+    <div class="mb-8 p-4 rounded-lg bg-neutral-100 dark:bg-neutral-800">
+      <h2 class="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">Add to Calendar</h2>
+      <div class="flex flex-wrap gap-3">
+        {{ $startDate := time.Format "20060102T150405Z" .Params.eventDate }}
+        {{ $endDate := (time.AsTime .Params.eventDate).Add (time.ParseDuration "2h") }}
+        {{ $endDateFmt := time.Format "20060102T150405Z" $endDate }}
+        <a
+          href="https://www.google.com/calendar/render?action=TEMPLATE&text={{ .Title | urlquery }}&dates={{ $startDate }}/{{ $endDateFmt }}{{ if .Params.location }}&location={{ .Params.location | urlquery }}{{ end }}"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center px-4 py-2 rounded-lg bg-primary-600 text-white hover:bg-primary-700 transition-colors text-sm font-medium"
+        >
+          <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+          </svg>
+          Google Calendar
+        </a>
+        <button
+          onclick="downloadICS()"
+          class="inline-flex items-center px-4 py-2 rounded-lg bg-neutral-200 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-300 dark:hover:bg-neutral-600 transition-colors text-sm font-medium"
+        >
+          <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
+          </svg>
+          Download .ics
+        </button>
+      </div>
+    </div>
+
+    <script>
+      function downloadICS() {
+        const title = {{ .Title | jsonify }};
+        const startDate = {{ time.Format "20060102T150405Z" .Params.eventDate | jsonify }};
+        const endDate = {{ time.Format "20060102T150405Z" ((time.AsTime .Params.eventDate).Add (time.ParseDuration "2h")) | jsonify }};
+        const location = {{ (default "" .Params.location) | jsonify }};
+        const description = {{ (.Summary | plainify) | jsonify }};
+        const url = {{ .Permalink | jsonify }};
+
+        const ics = [
+          'BEGIN:VCALENDAR',
+          'VERSION:2.0',
+          'PRODID:-//Skelton Gate//Events//EN',
+          'BEGIN:VEVENT',
+          'DTSTART:' + startDate,
+          'DTEND:' + endDate,
+          'SUMMARY:' + title,
+          'LOCATION:' + location,
+          'DESCRIPTION:' + description.substring(0, 200),
+          'URL:' + url,
+          'END:VEVENT',
+          'END:VCALENDAR'
+        ].join('\r\n');
+
+        const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = title.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '.ics';
+        link.click();
+        URL.revokeObjectURL(link.href);
+      }
+    </script>
+  {{ end }}
+
+  {{ if .Params.location }}
+    <div class="mb-8 rounded-lg overflow-hidden ring-1 ring-neutral-200 dark:ring-neutral-700">
+      <iframe
+        class="w-full h-72 md:h-96"
+        loading="lazy"
+        referrerpolicy="no-referrer"
+        src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&origin=Skelton+Gate,+LS9+0FN&destination={{ .Params.location | urlquery }}&mode=driving"
+        allowfullscreen
+      ></iframe>
+    </div>
+  {{ end }}
+
+  <section class="max-w-full prose dark:prose-invert">
+    {{ .Content }}
+  </section>
+</article>
+{{ end }}
