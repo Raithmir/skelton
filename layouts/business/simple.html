@@ -29,7 +29,7 @@
         <svg class="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
         </svg>
-        <span>{{ .Params.address }}</span>
+        <a href="https://www.google.com/maps/search/{{ .Params.address | urlquery }}" target="_blank" rel="noopener noreferrer" class="hover:text-primary-600 dark:hover:text-primary-400">{{ .Params.address }}</a>
       </div>
     {{ end }}
     {{ if .Params.phone }}
@@ -57,6 +57,18 @@
       </div>
     {{ end }}
   </div>
+
+  {{ if .Params.address }}
+    <div class="mb-8 rounded-lg overflow-hidden ring-1 ring-neutral-200 dark:ring-neutral-700">
+      <iframe
+        class="w-full h-72 md:h-96"
+        loading="lazy"
+        referrerpolicy="no-referrer"
+        src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&origin=Skelton+Gate,+LS9+0FN&destination={{ .Params.address | urlquery }}&mode=driving"
+        allowfullscreen
+      ></iframe>
+    </div>
+  {{ end }}
 
   <section class="max-w-full prose dark:prose-invert">
     {{ .Content }}

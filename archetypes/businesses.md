@@ -8,6 +8,7 @@ address: ""
 phone: ""
 website: ""
 hours: ""
+image: ""
 description: ""
 tags: []
 draft: false

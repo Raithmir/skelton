@@ -18,12 +18,13 @@ hugo --minify            # Production build to public/
 
 ## Navigation Structure
 
-The site uses a nested dropdown menu system with 4 main categories:
+The site uses a nested dropdown menu system with 5 main categories:
 
 - **About** - About Skelton Gate, Skelton Lake Services
 - **Community** - Events, Notices, Walking Routes
 - **Directory** - Local Amenities, Local Businesses, Local Services, Contacts
-- **Resources** - Welcome Pack, Transport, Schools, Healthcare, Broadband, Links, Bin Collection, FAQs
+- **Local Area** - Healthcare, Schools & Childcare, Transport & Travel, Broadband Providers
+- **Resources** - Welcome Pack, Bin Collection, Useful Links, FAQs
 
 ### Enabling/Disabling Sections
 

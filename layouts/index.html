@@ -2,13 +2,19 @@
 <div class="relative">
   <!-- Hero Section -->
   <section class="mb-10">
-    <div class="rounded-lg bg-primary-100 dark:bg-primary-900 p-8 md:p-12">
-      <h1 class="text-4xl md:text-5xl font-bold mb-4 text-neutral-900 dark:text-neutral-100">
-        Welcome to Skelton Gate Community
-      </h1>
-      <p class="text-xl text-neutral-700 dark:text-neutral-300 max-w-3xl">
-        Your local community hub for events, businesses, walking routes, and community notices in Skelton Gate.
-      </p>
+    <div class="rounded-2xl bg-gradient-to-br from-primary-600 via-primary-700 to-primary-900 p-8 md:p-12 text-white relative overflow-hidden">
+      <div class="absolute inset-0 opacity-10">
+        <div class="absolute -right-10 -top-10 w-64 h-64 rounded-full bg-white/20"></div>
+        <div class="absolute -left-10 -bottom-10 w-48 h-48 rounded-full bg-white/10"></div>
+      </div>
+      <div class="relative z-10">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">
+          Welcome to Skelton Gate
+        </h1>
+        <p class="text-xl text-white/80 max-w-3xl">
+          Your local community hub for events, businesses, walking routes, and community notices.
+        </p>
+      </div>
     </div>
   </section>
 
@@ -153,7 +159,7 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {{ range first 6 (where site.RegularPages "Section" "businesses") }}
+          {{ range first 6 (where (where site.RegularPages "Section" "businesses") ".Params.draft" "!=" true) }}
             <article class="rounded-lg bg-neutral-100 dark:bg-neutral-800 p-4 hover:shadow-md transition-shadow">
               <h3 class="font-semibold text-neutral-900 dark:text-neutral-100 mb-1">
                 <a href="{{ .Permalink }}" class="hover:text-primary-600 dark:hover:text-primary-400">
@@ -179,7 +185,7 @@
       <div class="rounded-lg bg-neutral-100 dark:bg-neutral-800 p-6">
         <h3 class="text-xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">Quick Links</h3>
         <nav class="space-y-3">
-          {{ $sections := dict "events" "Events" "businesses" "Businesses" "walks" "Walking Routes" "notices" "Notices" "services" "Services" }}
+          {{ $sections := dict "events" "Events" "businesses" "Businesses" "amenities" "Amenities" "services" "Services" "healthcare" "Healthcare" "schools" "Schools" "transport" "Transport" "walks" "Walking Routes" "notices" "Notices" "faqs" "FAQs" "broadband" "Broadband" "bin-collection" "Bin Collection" "contacts" "Contacts" }}
           {{ range $section, $title := $sections }}
             {{ $count := len (where site.RegularPages "Section" $section) }}
             <a href="/{{ $section }}/" class="flex items-center justify-between p-3 rounded hover:bg-primary-100 dark:hover:bg-primary-900 transition-colors group">

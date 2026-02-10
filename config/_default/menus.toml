@@ -105,11 +105,51 @@
   [main.params]
     enabled = true
 
+# Local Area dropdown parent
+[[main]]
+  name = "Local Area"
+  identifier = "local-area"
+  weight = 5
+  [main.params]
+    enabled = true
+
+[[main]]
+  name = "Healthcare"
+  pageRef = "/healthcare"
+  parent = "local-area"
+  weight = 1
+  [main.params]
+    enabled = true
+
+[[main]]
+  name = "Schools & Childcare"
+  pageRef = "/schools"
+  parent = "local-area"
+  weight = 2
+  [main.params]
+    enabled = true
+
+[[main]]
+  name = "Transport & Travel"
+  pageRef = "/transport"
+  parent = "local-area"
+  weight = 3
+  [main.params]
+    enabled = true
+
+[[main]]
+  name = "Broadband Providers"
+  pageRef = "/broadband"
+  parent = "local-area"
+  weight = 4
+  [main.params]
+    enabled = true
+
 # Resources dropdown parent
 [[main]]
   name = "Resources"
   identifier = "resources"
-  weight = 5
+  weight = 6
   [main.params]
     enabled = true
 
@@ -122,34 +162,10 @@
     enabled = true
 
 [[main]]
-  name = "Transport & Travel"
-  pageRef = "/transport"
+  name = "Bin Collection"
+  pageRef = "/bin-collection"
   parent = "resources"
   weight = 2
-  [main.params]
-    enabled = true
-
-[[main]]
-  name = "Schools & Childcare"
-  pageRef = "/schools"
-  parent = "resources"
-  weight = 3
-  [main.params]
-    enabled = true
-
-[[main]]
-  name = "Healthcare"
-  pageRef = "/healthcare"
-  parent = "resources"
-  weight = 4
-  [main.params]
-    enabled = true
-
-[[main]]
-  name = "Broadband Providers"
-  pageRef = "/broadband"
-  parent = "resources"
-  weight = 5
   [main.params]
     enabled = true
 
@@ -157,15 +173,7 @@
   name = "Useful Links"
   pageRef = "/links"
   parent = "resources"
-  weight = 6
-  [main.params]
-    enabled = true
-
-[[main]]
-  name = "Bin Collection"
-  pageRef = "/bin-collection"
-  parent = "resources"
-  weight = 7
+  weight = 3
   [main.params]
     enabled = true
 
@@ -173,7 +181,7 @@
   name = "FAQs"
   pageRef = "/faqs"
   parent = "resources"
-  weight = 8
+  weight = 4
   [main.params]
     enabled = true
 

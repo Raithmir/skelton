@@ -50,18 +50,18 @@
 }
 
 .fc .fc-button-primary {
-  background-color: rgb(14 165 233) !important; /* primary-600 */
-  border-color: rgb(14 165 233) !important;
+  background-color: rgb(37 99 235) !important; /* primary-600 */
+  border-color: rgb(37 99 235) !important;
 }
 
 .fc .fc-button-primary:hover {
-  background-color: rgb(2 132 199) !important; /* primary-700 */
-  border-color: rgb(2 132 199) !important;
+  background-color: rgb(29 78 216) !important; /* primary-700 */
+  border-color: rgb(29 78 216) !important;
 }
 
 .fc .fc-button-primary:disabled {
-  background-color: rgb(125 211 252) !important; /* primary-300 */
-  border-color: rgb(125 211 252) !important;
+  background-color: rgb(147 197 253) !important; /* primary-300 */
+  border-color: rgb(147 197 253) !important;
 }
 
 /* Dark mode FullCalendar adjustments */

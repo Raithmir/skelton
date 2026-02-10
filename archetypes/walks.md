@@ -8,6 +8,7 @@ difficulty: "easy" # easy, moderate, challenging
 duration: ""
 startPoint: ""
 gpxFile: ""
+image: ""
 description: ""
 highlights: []
 tags: []

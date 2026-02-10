@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: Raithmir/skelton # Change this
+  repo: Raithmir/skelton
   branch: main
   base_url: https://skeltongate.homes
   auth_endpoint: auth
@@ -317,8 +317,8 @@ collections:
          hint: "Day of the week bins are collected"}
       - {label: "Collection Week", name: "collectionWeek", widget: "string",
          hint: "e.g., 'Weekly', 'Fortnightly', 'Week 1', 'Week 2'"}
-      - {label: "Next Collection", name: "nextCollection", widget: "datetime",
-         hint: "⚠️ IMPORTANT: Update this date after each collection! This drives the homepage widget."}
+      - {label: "Reference Date", name: "referenceDate", widget: "date",
+         hint: "The seed date for calculating fortnightly collection dates. Set this to any recent collection Tuesday."}
       - {label: "Bin Color", name: "color", widget: "select",
          options: ["black", "blue", "green", "brown"],
          hint: "Color of the bin - used for visual coding on website"}
@@ -339,7 +339,7 @@ collections:
         fields:
           - {label: "Title", name: "title", widget: "string"}
           - {label: "Description", name: "description", widget: "string", required: false}
-          - {label: "Layout", name: "layout", widget: "string", default: "simple"}
+          - {label: "Layout", name: "layout", widget: "hidden", default: "simple"}
           - {label: "Show Date", name: "showDate", widget: "boolean", default: false}
           - {label: "Show Author", name: "showAuthor", widget: "boolean", default: false}
           - {label: "Show Reading Time", name: "showReadingTime", widget: "boolean", default: false}
@@ -359,7 +359,7 @@ collections:
         fields:
           - {label: "Title", name: "title", widget: "string"}
           - {label: "Description", name: "description", widget: "string", required: false}
-          - {label: "Layout", name: "layout", widget: "string", default: "simple"}
+          - {label: "Layout", name: "layout", widget: "hidden", default: "simple"}
           - {label: "Show Date", name: "showDate", widget: "boolean", default: false}
           - {label: "Show Author", name: "showAuthor", widget: "boolean", default: false}
           - {label: "Show Reading Time", name: "showReadingTime", widget: "boolean", default: false}
@@ -371,7 +371,7 @@ collections:
         fields:
           - {label: "Title", name: "title", widget: "string"}
           - {label: "Description", name: "description", widget: "string", required: false}
-          - {label: "Layout", name: "layout", widget: "string", default: "simple"}
+          - {label: "Layout", name: "layout", widget: "hidden", default: "simple"}
           - {label: "Show Date", name: "showDate", widget: "boolean", default: false}
           - {label: "Show Author", name: "showAuthor", widget: "boolean", default: false}
           - {label: "Show Reading Time", name: "showReadingTime", widget: "boolean", default: false}
@@ -391,7 +391,7 @@ collections:
         fields:
           - {label: "Title", name: "title", widget: "string"}
           - {label: "Description", name: "description", widget: "string", required: false}
-          - {label: "Layout", name: "layout", widget: "string", default: "simple"}
+          - {label: "Layout", name: "layout", widget: "hidden", default: "simple"}
           - {label: "Show Date", name: "showDate", widget: "boolean", default: false}
           - {label: "Show Author", name: "showAuthor", widget: "boolean", default: false}
           - {label: "Show Reading Time", name: "showReadingTime", widget: "boolean", default: false}
