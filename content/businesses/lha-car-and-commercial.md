@@ -1,5 +1,5 @@
 ---
-title: Lha Car And Commercial
+title: LHA Car And Commercial
 date: 2026-02-09T16:41:00
 type: business
 layout: simple
@@ -12,3 +12,5 @@ image: ''
 tags: []
 draft: false
 ---
+
+Servicing, repairs, MOT
