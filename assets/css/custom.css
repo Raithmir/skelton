@@ -1,6 +1,12 @@
 /* Custom CSS for Skelton Gate Community Site */
 /* Blowfish Theme Customizations */
 
+/* Constrain header logo size */
+span.logo svg {
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
 /* Priority Notice Color Coding */
 .notice-urgent {
   @apply bg-red-50 dark:bg-red-900/20 border-l-4 border-red-600;
