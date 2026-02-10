@@ -1,18 +1,21 @@
 ---
-title: "Where can visitors park when they visit me?"
+title: Where can visitors park when they visit me?
 date: 2026-02-03
-type: "faq"
-layout: "simple"
-category: "parking"
+type: faq
+layout: simple
+category: parking
 featured: false
 weight: 3
-tags: ["parking", "visitors"]
-draft: false
+tags:
+  - parking
+  - visitors
+draft: true
 ---
 
 Visitor parking is available in designated areas throughout the estate marked with "Visitor Parking" signs.
 
 **Visitor parking rules:**
+
 - Available on a first-come, first-served basis
 - No overnight parking restrictions currently in place
 - Do not use residents' allocated spaces
