@@ -13,7 +13,7 @@ Skelton Gate is a modern residential development located in East Leeds, offering
 
 ## History
 
-The Skelton Gate development planning began in the early 2010s as part of Leeds City Council's vision to create sustainable, connected communities on the outskirts of the city. The site was transformed from former industrial land into a thriving residential area.
+The Skelton Gate development planning began in the 2010s as part of Leeds City Council's vision to create sustainable, connected communities on the outskirts of the city. The site was transformed from former industrial land into a thriving residential area.
 
 ## Development
 
@@ -29,7 +29,7 @@ A future phase 3 is also planned.
 
 ## Current Phase
 
-The development is currently in its mature phase, with most properties now occupied. New residents continue to move into the remaining available plots, and the community continues to grow and establish itself.
+Phase 1 is currently in its mature phase, with many properties now occupied. New residents continue to move into the remaining available plots, and the community continues to grow and establish itself.
 
 Recent improvements include:
 
