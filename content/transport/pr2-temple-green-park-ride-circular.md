@@ -12,6 +12,7 @@ operatingHours: 06:45-19:45
 nearestStop: Beckside Crescent
 distance: ''
 website: https://www.wymetro.com/buses/parkandride/templegreen-pr/
+trackingUrl: https://bustimes.org/services/pr2-temple-green-park-ride-leeds-circular#map
 phone: ''
 description: |-
   From Skelton Lakes - Monday to Friday
