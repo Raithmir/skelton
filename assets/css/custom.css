@@ -46,52 +46,6 @@ span.logo svg {
   @apply bg-primary-600 text-white rounded-lg p-3 text-center min-w-[4rem];
 }
 
-/* FullCalendar Customizations */
-#calendar {
-  font-family: inherit;
-}
-
-.fc-theme-standard .fc-scrollgrid {
-  border-color: var(--tw-border-opacity);
-}
-
-.fc .fc-button-primary {
-  background-color: rgb(37 99 235) !important; /* primary-600 */
-  border-color: rgb(37 99 235) !important;
-}
-
-.fc .fc-button-primary:hover {
-  background-color: rgb(29 78 216) !important; /* primary-700 */
-  border-color: rgb(29 78 216) !important;
-}
-
-.fc .fc-button-primary:disabled {
-  background-color: rgb(147 197 253) !important; /* primary-300 */
-  border-color: rgb(147 197 253) !important;
-}
-
-/* Dark mode FullCalendar adjustments */
-.dark #calendar {
-  color: rgb(229 231 235); /* neutral-200 */
-}
-
-.dark .fc-theme-standard td,
-.dark .fc-theme-standard th {
-  border-color: rgb(64 64 64); /* neutral-700 */
-}
-
-.dark .fc .fc-col-header-cell-cushion {
-  color: rgb(229 231 235);
-}
-
-.dark .fc .fc-daygrid-day-number {
-  color: rgb(229 231 235);
-}
-
-.dark .fc .fc-list-event-title {
-  color: rgb(229 231 235);
-}
-
 /* Business/Service Contact Info Styling */
 .contact-info svg {
   @apply flex-shrink-0;
@@ -177,7 +131,6 @@ span.logo svg {
 
 /* Print styles */
 @media print {
-  #calendar,
   .no-print {
     display: none;
   }

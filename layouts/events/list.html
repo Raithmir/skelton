@@ -7,210 +7,133 @@
     </p>
   </header>
 
-  <!-- View Toggle -->
-  <div class="mb-8 flex gap-2">
-    <button id="btn-list-view" onclick="toggleView('list')" class="view-btn px-4 py-2 rounded bg-primary-600 text-white hover:bg-primary-700 transition-colors text-sm font-medium">
-      List View
-    </button>
-    <button id="btn-calendar-view" onclick="toggleView('calendar')" class="view-btn px-4 py-2 rounded bg-neutral-200 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-300 dark:hover:bg-neutral-600 transition-colors text-sm font-medium">
-      Calendar View
-    </button>
-  </div>
+  <!-- Upcoming Events List -->
+  <section class="mb-12">
+    <h2 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-6">Upcoming Events</h2>
 
-  <!-- List View -->
-  <div id="list-view">
-    <!-- Upcoming Events List -->
-    <section class="mb-12">
-      <h2 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-6">Upcoming Events</h2>
-
-      {{ $upcomingEvents := slice }}
-      {{ range .Pages }}
-        {{ if not .Draft }}
-          {{ if .Params.eventDate }}
-            {{ $eventDate := time.AsTime .Params.eventDate }}
-            {{ if ge $eventDate now }}
-              {{ $upcomingEvents = $upcomingEvents | append . }}
-            {{ end }}
+    {{ $upcomingEvents := slice }}
+    {{ range .Pages }}
+      {{ if not .Draft }}
+        {{ if .Params.eventDate }}
+          {{ $eventDate := time.AsTime .Params.eventDate }}
+          {{ if ge $eventDate now }}
+            {{ $upcomingEvents = $upcomingEvents | append . }}
           {{ end }}
         {{ end }}
       {{ end }}
-      {{ $upcomingEvents = sort $upcomingEvents ".Params.eventDate" }}
+    {{ end }}
+    {{ $upcomingEvents = sort $upcomingEvents ".Params.eventDate" }}
 
-      {{ if gt (len $upcomingEvents) 0 }}
-        <div class="space-y-6">
-          {{ range $upcomingEvents }}
-            <article class="rounded-lg bg-neutral-100 dark:bg-neutral-800 overflow-hidden hover:shadow-lg transition-shadow">
-              <div class="p-6 md:flex md:items-start md:gap-6">
-                <!-- Date Badge -->
-                <div class="flex-shrink-0 mb-4 md:mb-0">
-                  <div class="bg-primary-600 text-white rounded-lg p-4 text-center min-w-[6rem]">
-                    <div class="text-3xl font-bold">{{ time.Format "2" .Params.eventDate }}</div>
-                    <div class="text-sm uppercase">{{ time.Format "January" .Params.eventDate }}</div>
-                    <div class="text-sm">{{ time.Format "2006" .Params.eventDate }}</div>
-                  </div>
-                </div>
-
-                <!-- Event Details -->
-                <div class="flex-1">
-                  <h3 class="text-2xl font-semibold text-neutral-900 dark:text-neutral-100 mb-3">
-                    <a href="{{ .Permalink }}" class="hover:text-primary-600 dark:hover:text-primary-400">
-                      {{ .Title }}
-                    </a>
-                  </h3>
-
-                  <div class="space-y-2 mb-4">
-                    {{ if .Params.eventTime }}
-                      <div class="flex items-center text-neutral-700 dark:text-neutral-300">
-                        <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
-                        </svg>
-                        <span>{{ .Params.eventTime }}</span>
-                      </div>
-                    {{ end }}
-
-                    {{ if .Params.location }}
-                      <div class="flex items-center text-neutral-700 dark:text-neutral-300">
-                        <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                          <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
-                        </svg>
-                        <span>{{ .Params.location }}</span>
-                      </div>
-                    {{ end }}
-
-                    {{ if .Params.organizer }}
-                      <div class="flex items-center text-neutral-700 dark:text-neutral-300">
-                        <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/>
-                        </svg>
-                        <span>{{ .Params.organizer }}</span>
-                      </div>
-                    {{ end }}
-                  </div>
-
-                  <div class="prose dark:prose-invert max-w-none mb-4">
-                    {{ .Summary }}
-                  </div>
-
-                  <a href="{{ .Permalink }}" class="inline-flex items-center text-primary-600 dark:text-primary-400 hover:underline font-medium">
-                    Full details
-                    <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20">
-                      <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                    </svg>
-                  </a>
+    {{ if gt (len $upcomingEvents) 0 }}
+      <div class="space-y-6">
+        {{ range $upcomingEvents }}
+          <article class="rounded-lg bg-neutral-100 dark:bg-neutral-800 overflow-hidden hover:shadow-lg transition-shadow">
+            <div class="p-6 md:flex md:items-start md:gap-6">
+              <!-- Date Badge -->
+              <div class="flex-shrink-0 mb-4 md:mb-0">
+                <div class="bg-primary-600 text-white rounded-lg p-4 text-center min-w-[6rem]">
+                  <div class="text-3xl font-bold">{{ time.Format "2" .Params.eventDate }}</div>
+                  <div class="text-sm uppercase">{{ time.Format "January" .Params.eventDate }}</div>
+                  <div class="text-sm">{{ time.Format "2006" .Params.eventDate }}</div>
                 </div>
               </div>
-            </article>
-          {{ end }}
-        </div>
-      {{ else }}
-        <div class="rounded-lg bg-neutral-100 dark:bg-neutral-800 p-8 text-center">
-          <p class="text-neutral-600 dark:text-neutral-400 text-lg">No upcoming events scheduled at this time.</p>
-          <p class="text-neutral-500 dark:text-neutral-500 text-sm mt-2">Check back soon for new community events!</p>
-        </div>
-      {{ end }}
-    </section>
 
-    <!-- Past Events Section -->
-    <section>
-      <h2 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-6">Past Events</h2>
+              <!-- Event Details -->
+              <div class="flex-1">
+                <h3 class="text-2xl font-semibold text-neutral-900 dark:text-neutral-100 mb-3">
+                  <a href="{{ .Permalink }}" class="hover:text-primary-600 dark:hover:text-primary-400">
+                    {{ .Title }}
+                  </a>
+                </h3>
 
-      {{ $pastEvents := slice }}
-      {{ range .Pages }}
-        {{ if not .Draft }}
-          {{ if .Params.eventDate }}
-            {{ $eventDate := time.AsTime .Params.eventDate }}
-            {{ if lt $eventDate now }}
-              {{ $pastEvents = $pastEvents | append . }}
-            {{ end }}
+                <div class="space-y-2 mb-4">
+                  {{ if .Params.eventTime }}
+                    <div class="flex items-center text-neutral-700 dark:text-neutral-300">
+                      <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                      </svg>
+                      <span>{{ .Params.eventTime }}</span>
+                    </div>
+                  {{ end }}
+
+                  {{ if .Params.location }}
+                    <div class="flex items-center text-neutral-700 dark:text-neutral-300">
+                      <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                      </svg>
+                      <span>{{ .Params.location }}</span>
+                    </div>
+                  {{ end }}
+
+                  {{ if .Params.organizer }}
+                    <div class="flex items-center text-neutral-700 dark:text-neutral-300">
+                      <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/>
+                      </svg>
+                      <span>{{ .Params.organizer }}</span>
+                    </div>
+                  {{ end }}
+                </div>
+
+                <div class="prose dark:prose-invert max-w-none mb-4">
+                  {{ .Summary }}
+                </div>
+
+                <a href="{{ .Permalink }}" class="inline-flex items-center text-primary-600 dark:text-primary-400 hover:underline font-medium">
+                  Full details
+                  <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </article>
+        {{ end }}
+      </div>
+    {{ else }}
+      <div class="rounded-lg bg-neutral-100 dark:bg-neutral-800 p-8 text-center">
+        <p class="text-neutral-600 dark:text-neutral-400 text-lg">No upcoming events scheduled at this time.</p>
+        <p class="text-neutral-500 dark:text-neutral-500 text-sm mt-2">Check back soon for new community events!</p>
+      </div>
+    {{ end }}
+  </section>
+
+  <!-- Past Events Section -->
+  <section>
+    <h2 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-6">Past Events</h2>
+
+    {{ $pastEvents := slice }}
+    {{ range .Pages }}
+      {{ if not .Draft }}
+        {{ if .Params.eventDate }}
+          {{ $eventDate := time.AsTime .Params.eventDate }}
+          {{ if lt $eventDate now }}
+            {{ $pastEvents = $pastEvents | append . }}
           {{ end }}
         {{ end }}
       {{ end }}
-      {{ $pastEvents = sort $pastEvents ".Params.eventDate" "desc" }}
+    {{ end }}
+    {{ $pastEvents = sort $pastEvents ".Params.eventDate" "desc" }}
 
-      {{ if gt (len $pastEvents) 0 }}
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {{ range $pastEvents }}
-            <article class="rounded-lg bg-neutral-100 dark:bg-neutral-800 p-4 opacity-75 hover:opacity-100 transition-opacity">
-              <h3 class="font-semibold text-neutral-900 dark:text-neutral-100 mb-2">
-                <a href="{{ .Permalink }}" class="hover:text-primary-600 dark:hover:text-primary-400">
-                  {{ .Title }}
-                </a>
-              </h3>
-              <p class="text-sm text-neutral-600 dark:text-neutral-400">
-                {{ time.Format "January 2, 2006" .Params.eventDate }}
-              </p>
-            </article>
-          {{ end }}
-        </div>
-      {{ else }}
-        <p class="text-neutral-600 dark:text-neutral-400">No past events recorded.</p>
-      {{ end }}
-    </section>
-  </div>
-
-  <!-- Calendar View -->
-  <div id="calendar-view" style="display:none">
-    <div id="calendar" class="bg-white dark:bg-neutral-800 rounded-lg p-4"></div>
-  </div>
+    {{ if gt (len $pastEvents) 0 }}
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {{ range $pastEvents }}
+          <article class="rounded-lg bg-neutral-100 dark:bg-neutral-800 p-4 opacity-75 hover:opacity-100 transition-opacity">
+            <h3 class="font-semibold text-neutral-900 dark:text-neutral-100 mb-2">
+              <a href="{{ .Permalink }}" class="hover:text-primary-600 dark:hover:text-primary-400">
+                {{ .Title }}
+              </a>
+            </h3>
+            <p class="text-sm text-neutral-600 dark:text-neutral-400">
+              {{ time.Format "January 2, 2006" .Params.eventDate }}
+            </p>
+          </article>
+        {{ end }}
+      </div>
+    {{ else }}
+      <p class="text-neutral-600 dark:text-neutral-400">No past events recorded.</p>
+    {{ end }}
+  </section>
 </article>
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css">
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
-
-<script>
-  let calendarInitialized = false;
-  let calendar = null;
-
-  function toggleView(view) {
-    const listView = document.getElementById('list-view');
-    const calendarView = document.getElementById('calendar-view');
-    const btnList = document.getElementById('btn-list-view');
-    const btnCalendar = document.getElementById('btn-calendar-view');
-
-    if (view === 'calendar') {
-      listView.style.display = 'none';
-      calendarView.style.display = 'block';
-      btnList.classList.remove('bg-primary-600', 'text-white');
-      btnList.classList.add('bg-neutral-200', 'dark:bg-neutral-700', 'text-neutral-700', 'dark:text-neutral-300');
-      btnCalendar.classList.remove('bg-neutral-200', 'dark:bg-neutral-700', 'text-neutral-700', 'dark:text-neutral-300');
-      btnCalendar.classList.add('bg-primary-600', 'text-white');
-
-      if (!calendarInitialized) {
-        initCalendar();
-        calendarInitialized = true;
-      } else {
-        calendar.updateSize();
-      }
-    } else {
-      listView.style.display = 'block';
-      calendarView.style.display = 'none';
-      btnCalendar.classList.remove('bg-primary-600', 'text-white');
-      btnCalendar.classList.add('bg-neutral-200', 'dark:bg-neutral-700', 'text-neutral-700', 'dark:text-neutral-300');
-      btnList.classList.remove('bg-neutral-200', 'dark:bg-neutral-700', 'text-neutral-700', 'dark:text-neutral-300');
-      btnList.classList.add('bg-primary-600', 'text-white');
-    }
-  }
-
-  function initCalendar() {
-    const calendarEl = document.getElementById('calendar');
-    calendar = new FullCalendar.Calendar(calendarEl, {
-      initialView: 'dayGridMonth',
-      headerToolbar: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'dayGridMonth,listMonth'
-      },
-      events: '/events/calendar.json',
-      eventClick: function(info) {
-        info.jsEvent.preventDefault();
-        if (info.event.url) {
-          window.location.href = info.event.url;
-        }
-      },
-      height: 'auto'
-    });
-    calendar.render();
-  }
-</script>
 
 {{ end }}
