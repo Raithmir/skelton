@@ -25,7 +25,7 @@
     </div>
   </section>
 
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
     <!-- Main Content Area (Left 2 columns) -->
     <div class="lg:col-span-2 space-y-10">
 
@@ -102,7 +102,7 @@
           <a href="/events/" class="text-primary-600 dark:text-primary-400 hover:underline">View calendar →</a>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
           {{ $events := where site.RegularPages "Section" "events" }}
           {{ $events = where $events ".Params.draft" "!=" true }}
           {{ $upcomingEvents := slice }}
