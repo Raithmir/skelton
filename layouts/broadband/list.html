@@ -1,10 +1,20 @@
 {{ define "main" }}
 <article class="max-w-full">
   <header class="mb-8">
-    <h1 class="text-4xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">Broadband Providers</h1>
-    <p class="text-lg text-neutral-700 dark:text-neutral-300">
-      Compare broadband providers available at Skelton Gate. Most properties have access to full-fibre (FTTP) connections.
-    </p>
+    <div class="rounded-lg bg-neutral-50 dark:bg-neutral-800/60 border-b-4 border-primary-600 p-6 mb-2">
+      <div class="flex items-center gap-3 mb-2">
+        <svg class="w-8 h-8 text-primary-600 dark:text-primary-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+          <rect x="1" y="14" width="3" height="3" rx="1"/>
+          <rect x="6" y="10" width="3" height="7" rx="1"/>
+          <rect x="11" y="5" width="3" height="12" rx="1"/>
+          <rect x="16" y="1" width="3" height="16" rx="1"/>
+        </svg>
+        <h1 class="text-4xl font-bold text-neutral-900 dark:text-neutral-100">Broadband Providers</h1>
+      </div>
+      <p class="text-lg text-neutral-700 dark:text-neutral-300">
+        Compare broadband providers available at Skelton Gate. Most properties have access to full-fibre (FTTP) connections.
+      </p>
+    </div>
   </header>
 
   {{ $providers := where .Pages ".Params.draft" "!=" true }}
@@ -42,7 +52,7 @@
 
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {{ range .Pages }}
-              <article class="rounded-lg bg-neutral-100 dark:bg-neutral-800 p-6 hover:shadow-lg transition-shadow">
+              <article class="rounded-lg bg-neutral-100 dark:bg-neutral-800 p-6 hover:shadow-lg transition-shadow border-l-4 border-primary-600">
                 <h3 class="text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-3">
                   {{ .Title }}
                 </h3>

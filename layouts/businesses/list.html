@@ -1,10 +1,17 @@
 {{ define "main" }}
 <article class="max-w-full">
   <header class="mb-8">
-    <h1 class="text-4xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">Local Businesses</h1>
-    <p class="text-lg text-neutral-700 dark:text-neutral-300">
-      Supporting local businesses in the Skelton Gate community. Browse our directory by category.
-    </p>
+    <div class="rounded-lg bg-neutral-50 dark:bg-neutral-800/60 border-b-4 border-primary-600 p-6 mb-2">
+      <div class="flex items-center gap-3 mb-2">
+        <svg class="w-8 h-8 text-primary-600 dark:text-primary-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"/>
+        </svg>
+        <h1 class="text-4xl font-bold text-neutral-900 dark:text-neutral-100">Local Businesses</h1>
+      </div>
+      <p class="text-lg text-neutral-700 dark:text-neutral-300">
+        Supporting local businesses in the Skelton Gate community. Browse our directory by category.
+      </p>
+    </div>
   </header>
 
   {{ $businesses := where .Pages ".Params.draft" "!=" true }}
@@ -15,12 +22,12 @@
     <nav class="mb-8 p-4 rounded-lg bg-neutral-100 dark:bg-neutral-800">
       <p class="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">Filter by category:</p>
       <div class="flex flex-wrap gap-2">
-        <button onclick="filterCategory('all')" class="filter-btn px-3 py-2 rounded bg-primary-600 text-white hover:bg-primary-700 transition-colors text-sm font-medium">
+        <button onclick="filterCategory('all')" class="filter-btn px-3 py-2 rounded-full bg-primary-600 text-white hover:bg-primary-700 transition-colors text-sm font-medium">
           All ({{ len $businesses }})
         </button>
         {{ range $businessesByCategory }}
           {{ $category := default "Uncategorized" .Key | title }}
-          <button onclick="filterCategory('{{ .Key | lower }}')" class="filter-btn px-3 py-2 rounded bg-neutral-200 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-300 dark:hover:bg-neutral-600 transition-colors text-sm font-medium">
+          <button onclick="filterCategory('{{ .Key | lower }}')" class="filter-btn px-3 py-2 rounded-full bg-neutral-200 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-300 dark:hover:bg-neutral-600 transition-colors text-sm font-medium">
             {{ $category }} ({{ len .Pages }})
           </button>
         {{ end }}
@@ -39,7 +46,7 @@
 
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {{ range .Pages }}
-              <article class="rounded-lg bg-neutral-100 dark:bg-neutral-800 overflow-hidden hover:shadow-lg transition-shadow">
+              <article class="rounded-lg bg-neutral-100 dark:bg-neutral-800 overflow-hidden hover:shadow-lg transition-shadow border-l-4 border-primary-600">
                 <div class="p-6">
                   <h3 class="text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-3">
                     <a href="{{ .Permalink }}" class="hover:text-primary-600 dark:hover:text-primary-400">
