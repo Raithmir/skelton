@@ -8,6 +8,7 @@ autoSwitchAppearance = true # toggle dark mode based on time
 
 # Logo
 logo = "img/logo.svg"
+disableTextInHeader = true
 
 # Site features
 enableSearch = true
