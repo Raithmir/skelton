@@ -10,6 +10,7 @@
   {{ $collections := where .Pages ".Params.draft" "!=" true }}
   {{ $now := now }}
   {{ $today := $now.Format "2006-01-02" }}
+  {{ $fortnight := mul 14 24 3600 1000000000 }}{{/* 14 days in nanoseconds, as required by Go's time.Add */}}
 
   {{ if gt (len $collections) 0 }}
     <!-- Bin Types Legend -->
@@ -68,7 +69,7 @@
             {{/* Advance to the next upcoming date (not before today) */}}
             {{ range seq 0 200 }}
               {{ if lt ($next.Format "2006-01-02") $today }}
-                {{ $next = $next.Add 1209600000000000 }}
+                {{ $next = $next.Add $fortnight }}
               {{ end }}
             {{ end }}
 
@@ -94,7 +95,7 @@
                     </p>
                   {{ end }}
                 </div>
-                {{ $d = $d.Add 1209600000000000 }}
+                {{ $d = $d.Add $fortnight }}
               {{ end }}
             </div>
           {{ end }}
