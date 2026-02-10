@@ -15,7 +15,7 @@
 }
 
 .dark .hero-gradient {
-  background: rgb(var(--color-neutral-800));
+  background: rgb(var(--color-neutral-700));
 }
 
 .walk-placeholder-gradient {
