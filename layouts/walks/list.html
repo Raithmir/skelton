@@ -42,10 +42,30 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {{ range $walks }}
         <article class="walk-card rounded-lg bg-neutral-100 dark:bg-neutral-800 overflow-hidden hover:shadow-lg transition-shadow" data-difficulty="{{ .Params.difficulty | lower }}">
-          <!-- Featured Image -->
+          <!-- Featured Image or Map -->
           {{ if .Params.image }}
             <div class="aspect-video overflow-hidden">
               <img src="{{ .Params.image }}" alt="{{ .Title }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+            </div>
+          {{ else if .Params.startPoint }}
+            <div class="aspect-video overflow-hidden">
+              {{ if .Params.endPoint }}
+                <iframe
+                  class="w-full h-full"
+                  loading="lazy"
+                  referrerpolicy="no-referrer"
+                  src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&origin={{ .Params.startPoint | urlquery }}&destination={{ .Params.endPoint | urlquery }}&mode=walking"
+                  allowfullscreen
+                ></iframe>
+              {{ else }}
+                <iframe
+                  class="w-full h-full"
+                  loading="lazy"
+                  referrerpolicy="no-referrer"
+                  src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q={{ .Params.startPoint | urlquery }}"
+                  allowfullscreen
+                ></iframe>
+              {{ end }}
             </div>
           {{ else }}
             <div class="aspect-video bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center">
