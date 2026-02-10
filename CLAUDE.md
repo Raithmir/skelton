@@ -22,8 +22,8 @@ The site uses a nested dropdown menu system with 4 main categories:
 
 - **About** - About Skelton Gate, Skelton Lake Services
 - **Community** - Events, Notices, Walking Routes
-- **Directory** - Local Businesses, Local Services, Contacts
-- **Resources** - Welcome Pack, Local Amenities, Transport, Schools, Healthcare, Broadband, Links, Bin Collection, FAQs
+- **Directory** - Local Amenities, Local Businesses, Local Services, Contacts
+- **Resources** - Welcome Pack, Transport, Schools, Healthcare, Broadband, Links, Bin Collection, FAQs
 
 ### Enabling/Disabling Sections
 
@@ -48,7 +48,7 @@ Content lives in `content/` with 13 content types, each with custom layouts in `
 | Type | Directory | Key Fields | Template Features |
 |------|-----------|------------|-------------------|
 | **Events** | `content/events/` | `eventDate`, `eventTime`, `location` | FullCalendar integration, filters future events |
-| **Businesses** | `content/businesses/` | `category`, `address`, `phone` | Groups by category |
+| **Businesses** | `content/businesses/` | `category`, `address`, `phone` | Groups by category (Restaurant, Cafe, Shop, Trades, Flooring, Cleaning, Security, Legal, Healthcare, Garage, Other) |
 | **Services** | `content/services/` | `category`, `contact`, `email` | Groups by category |
 | **Notices** | `content/notices/` | `priority`, `expiryDate` | Priority color-coding, auto-expiry |
 | **Walks** | `content/walks/` | `distance`, `difficulty`, `duration` | Route metadata display |
@@ -59,7 +59,7 @@ Content lives in `content/` with 13 content types, each with custom layouts in `
 | **Transport** | `content/transport/` | `category`, `routeNumber`, `operator` | Groups by category (bus, train, park-and-ride), route-focused |
 | **Schools** | `content/schools/` | `category`, `ofstedRating`, `ageRange` | Groups by category (nursery, primary, secondary), Ofsted rating badges |
 | **Healthcare** | `content/healthcare/` | `category`, `acceptingPatients`, `nhsService` | Groups by category (gp, dentist, pharmacy, optician), "accepting patients" badges |
-| **Bin Collection** | `content/bin-collection/` | `zone`, `wasteType`, `nextCollection`, `color` | Groups by zone, color-coded by waste type, shows upcoming dates |
+| **Bin Collection** | `content/bin-collection/` | `wasteType`, `nextCollection`, `color` | Color-coded by waste type, shows upcoming dates. One zone; black bin (general waste) and green bin (recycling) collected on alternate Tuesdays. |
 
 ### Single Page Content
 
@@ -77,7 +77,7 @@ Content lives in `content/` with 13 content types, each with custom layouts in `
 hugo new content/events/2026-01-15-event-name.md
 hugo new content/contacts/contact-name.md
 hugo new content/amenities/amenity-name.md
-hugo new content/bin-collection/zone-a-general.md
+hugo new content/bin-collection/black-bin.md
 
 # Single pages (edit directly)
 # Edit content/about/_index.md, content/welcome-pack/_index.md, etc.
@@ -116,6 +116,9 @@ This pattern is used in: businesses, contacts, amenities, transport, schools, he
 - `layouts/partials/widgets/bin-collection.html` - Homepage widget showing next 3 bin collections
 - `layouts/calendar.json` - Generates JSON feed for FullCalendar at `/events/calendar.json`
 - `layouts/{type}/list.html` - List page templates for each content type
+- `layouts/business/simple.html` - Custom detail page for businesses (shows image, address, phone, website, hours)
+
+**Hugo layout resolution:** Single-page layouts are looked up by the `type` field in frontmatter (e.g. `type: business` → `layouts/business/`), NOT by the content directory name. List layouts use the content directory name. The Blowfish `simple` layout only renders `{{ .Content }}` — if frontmatter fields need to be shown on detail pages, a custom layout must be created in `layouts/{type}/simple.html`.
 
 ### Content Directories
 - `content/` - All markdown content files organized by type
@@ -176,7 +179,7 @@ Custom layouts in `layouts/` override theme templates. The custom menu partial i
 
 ### Regular Updates Needed
 
-1. **Bin Collection Dates** - Update `nextCollection` dates in bin-collection content when schedules change
+1. **Bin Collection Dates** - Update `nextCollection` dates in `content/bin-collection/black-bin.md` and `green-bin.md` when the fortnight rolls over. Black and green bins alternate weekly on Tuesdays.
 2. **Event Dates** - Add upcoming events, past events auto-hide from homepage
 3. **Contact Information** - Verify phone numbers, emails, addresses remain current
 4. **Amenity Hours** - Update opening hours, especially for seasonal changes
