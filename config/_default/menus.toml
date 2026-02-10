@@ -74,10 +74,18 @@
     enabled = true
 
 [[main]]
+  name = "Local Amenities"
+  pageRef = "/amenities"
+  parent = "directory"
+  weight = 1
+  [main.params]
+    enabled = true
+
+[[main]]
   name = "Local Businesses"
   pageRef = "/businesses"
   parent = "directory"
-  weight = 1
+  weight = 2
   [main.params]
     enabled = true
 
@@ -85,21 +93,13 @@
   name = "Local Services"
   pageRef = "/services"
   parent = "directory"
-  weight = 2
+  weight = 3
   [main.params]
     enabled = true
 
 [[main]]
   name = "Contacts"
   pageRef = "/contacts"
-  parent = "directory"
-  weight = 3
-  [main.params]
-    enabled = true
-
-[[main]]
-  name = "Local Amenities"
-  pageRef = "/amenities"
   parent = "directory"
   weight = 4
   [main.params]
