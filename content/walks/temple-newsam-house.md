@@ -6,7 +6,7 @@ layout: simple
 distance: 1km
 difficulty: Moderate
 duration: 30 minutes
-startPoint: Pontefract Lane
+startPoint: Beckside Crescent
 endPoint: Temple Newsam House
 highlights: []
 image: ''
