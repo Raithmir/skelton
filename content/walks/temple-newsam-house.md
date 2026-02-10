@@ -7,6 +7,7 @@ distance: 1km
 difficulty: Moderate
 duration: 30 minutes
 startPoint: Pontefract Lane
+endPoint: Temple Newsam House
 highlights: []
 image: ''
 gpxFile: ''
