@@ -3,7 +3,7 @@ title: Welcome to the Skelton Gate community website!
 date: 2026-02-10T13:49:00
 type: notice
 layout: simple
-priority: Normal
+priority: High
 category: informational
 expiryDate: ''
 tags: []
