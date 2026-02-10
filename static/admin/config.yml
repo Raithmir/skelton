@@ -67,6 +67,8 @@ collections:
          options: ["Easy", "Moderate", "Challenging"]}
       - {label: "Duration", name: "duration", widget: "string"}
       - {label: "Start Point", name: "startPoint", widget: "string"}
+      - {label: "End Point", name: "endPoint", widget: "string", required: false,
+         hint: "Leave blank for circular routes that return to the start"}
       - {label: "Description", name: "body", widget: "markdown"}
       - {label: "Highlights", name: "highlights", widget: "list", required: false}
       - {label: "Route Map", name: "image", widget: "image", required: false}
