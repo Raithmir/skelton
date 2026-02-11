@@ -5,6 +5,15 @@ layout: simple
 showDate: false
 showAuthor: false
 showReadingTime: false
+documents:
+  - file: /images/uploads/Avant-Greenlock-Place.pdf
+    title: Avant Brochure
+  - file: /images/uploads/Avant Options.pdf
+    title: Avant Options
+  - file: /images/uploads/Countryside-Newsam-Rise.pdf
+    title: Countryside Brochure
+  - file: /images/uploads/Evans-Skelton-Lakes.pdf
+    title: Evans Brochure
 ---
 
 {{< alert >}}
@@ -148,7 +157,7 @@ Skelton Gate has access to full-fibre broadband (FTTP):
 
 For answers to common questions about living at Skelton Gate, please visit our [FAQs](/faqs) page.
 
----
+***
 
 ## Need Help?
 
