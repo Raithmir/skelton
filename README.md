@@ -3,7 +3,6 @@
 Community website for the Skelton Gate housing estate, Leeds. Provides residents with local information including events, notices, businesses, amenities, healthcare, schools, transport, and practical resources.
 
 **Live site:** https://skeltongate.homes
-**CMS:** https://skeltongate.homes/admin/
 **Repository:** https://github.com/Raithmir/skelton
 
 ---
@@ -14,7 +13,7 @@ Community website for the Skelton Gate housing estate, Leeds. Provides residents
 |-----------|---------|
 | Static site generator | [Hugo](https://gohugo.io/) |
 | Theme | [Blowfish v2](https://blowfish.page/) (Hugo module) |
-| CMS | [Sveltia CMS](https://github.com/sveltia/sveltia-cms) at `/admin/` |
+| CMS | [Sveltia CMS](https://github.com/sveltia/sveltia-cms) |
 | CMS auth | GitHub OAuth (via `base_url: https://skeltongate.homes`) |
 | Maps | [Leaflet.js](https://leafletjs.com/) + OpenStreetMap / Nominatim geocoding |
 | Hosting | nginx on Linux VPS |
@@ -67,7 +66,7 @@ The CMS provides a web interface for editors who don't want to work directly wit
 
 ### Accessing the CMS
 
-1. Go to https://skeltongate.homes/admin/
+1. Go to the CMS login URL
 2. Click **Login with GitHub**
 3. Authorise the app — you must be a collaborator on the `Raithmir/skelton` repository
 

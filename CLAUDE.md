@@ -22,7 +22,7 @@ The site uses a nested dropdown menu system with 5 main categories:
 
 - **About** - About Skelton Gate, Skelton Lake Services
 - **Community** - Events, Notices, Walking Routes
-- **Directory** - Local Amenities, Local Businesses, Local Services, Contacts
+- **Directory** - Local Amenities, Local Businesses, Local Services, Contacts, Estate Map
 - **Local Area** - Healthcare, Schools & Childcare, Transport & Travel, Broadband Providers
 - **Resources** - Welcome Pack, Bin Collection, Useful Links, FAQs
 
@@ -60,7 +60,7 @@ Content lives in `content/` with 13 content types, each with custom layouts in `
 | **Transport** | `content/transport/` | `category`, `routeNumber`, `operator` | Groups by category (bus, train, park-and-ride), route-focused |
 | **Schools** | `content/schools/` | `category`, `ofstedRating`, `ageRange` | Category filter buttons, groups by category, Ofsted rating badges |
 | **Healthcare** | `content/healthcare/` | `category`, `acceptingPatients`, `nhsService` | Category filter buttons, groups by category, "accepting patients" badges |
-| **Bin Collection** | `content/bin-collection/` | `wasteType`, `nextCollection`, `color` | Color-coded by waste type, shows upcoming dates. One zone; black bin (general waste) and green bin (recycling) collected on alternate Tuesdays. |
+| **Bin Collection** | `content/bin-collection/` | `wasteType`, `referenceDate`, `color` | Color-coded by waste type, shows upcoming dates. One zone; black bin (general waste) and green bin (recycling) collected on alternate Tuesdays. |
 
 ### Single Page Content
 
@@ -107,15 +107,20 @@ This pattern is used in: businesses, contacts, amenities, transport, schools, he
 ## Key Files
 
 ### Configuration
-- `hugo.toml` - Site configuration, theme settings
+- `hugo.toml` - Site configuration, theme settings, output formats (HTML/RSS/JSON/ICS)
+- `config/_default/params.toml` - Theme params including `enableSearch = true`, `fuzzySearching = true`
 - `config/_default/menus.toml` - Navigation menu structure with enable/disable parameters
 - `static/admin/config.yml` - CMS field definitions and collections (13 collections total)
+- `data/geocache.json` - Pre-computed lat/lng for all content locations (used by Leaflet map)
+- `assets/css/custom.css` - Custom CSS: hero gradient, badge styles, print styles
 
 ### Layouts
 - `layouts/index.html` - Homepage with featured notices, events, businesses, and bin collection widget
 - `layouts/partials/menu.html` - Custom menu rendering with enable/disable filtering
 - `layouts/partials/widgets/bin-collection.html` - Homepage widget showing next 3 bin collections
+- `layouts/partials/documents.html` - Reusable downloads section (used on About, Welcome Pack, Useful Links)
 - `layouts/{type}/list.html` - List page templates for each content type
+- `layouts/map/list.html` - Interactive Leaflet.js map aggregating businesses, amenities, healthcare, schools
 - `layouts/business/simple.html` - Detail page for businesses (image, address, phone, website, hours, map)
 - `layouts/walk/simple.html` - Detail page for walks (difficulty/distance/duration badges, start point map, highlights, GPX download)
 - `layouts/amenity/simple.html` - Detail page for amenities (contact info, features, map)
@@ -134,7 +139,7 @@ This pattern is used in: businesses, contacts, amenities, transport, schools, he
 
 - **Events** use `eventDate` (ISO 8601 datetime) for scheduling, separate from `date` (creation date)
 - **Notices** with `expiryDate` in the past are automatically hidden
-- **Bin Collection** uses `nextCollection` (ISO 8601 date) for sorting and countdown display
+- **Bin Collection** uses `referenceDate` (ISO 8601 date) — the list template calculates upcoming fortnightly Tuesdays from this anchor date
 - **Healthcare** GPs use `acceptingPatients: true/false` for badge display
 - **Schools** use `ofstedRating` with color-coded badges (Outstanding=green, Good=blue, etc.)
 - All content types support `draft: true` to hide from listings
@@ -149,10 +154,10 @@ The homepage sidebar (`layouts/index.html`) includes:
 3. **Upcoming Events** - Next 5 events with dates
 
 The bin collection widget (`layouts/partials/widgets/bin-collection.html`):
-- Filters to upcoming collections only
-- Sorts by `nextCollection` date
+- Calculates upcoming fortnightly Tuesdays from each bin type's `referenceDate`
+- Shows next 3 upcoming collections across both bin types
 - Shows countdown for collections within 3 days ("Today!", "Tomorrow", "X days")
-- Color-coded by waste type (black, blue, green, brown)
+- Color-coded by waste type (black, green)
 
 ## Dummy Content
 
@@ -175,10 +180,28 @@ hugo mod tidy
 
 Custom layouts in `layouts/` override theme templates. The custom menu partial is required for the enable/disable functionality.
 
+## Already-Implemented Features
+
+Do NOT suggest these as ideas — they are already built:
+
+- **Search** — Fuse.js fuzzy search built into Blowfish (`enableSearch = true`). Search button in header on desktop and mobile. JSON index at `/index.json`.
+- **Bin collection calendar** — `.ics` feed at `/bin-collection/calendar.ics` via Hugo output format. Subscribe/download buttons on the bin collection list page.
+- **Events calendar** — `.ics` feed at `/events/calendar.ics`. Each event detail page also has an individual .ics download and Google Calendar link.
+- **Interactive estate map** — Leaflet.js map at `/map/` aggregating all businesses, amenities, healthcare, schools. Markers colour-coded by type. Geocoding via Nominatim with results cached in `data/geocache.json` and localStorage.
+- **Google Maps embeds** — Directions iframes on all 7 detail page types (event, business, amenity, healthcare, school, transport, walk).
+- **GPX route download** — On walk detail pages.
+- **FAQ attachments** — File attachments per FAQ entry.
+- **Documents/downloads section** — Reusable partial on About, Welcome Pack, Useful Links pages.
+- **Category filter buttons** — Client-side JS filtering on businesses, amenities, healthcare, schools.
+- **Print styles** — In `assets/css/custom.css`.
+
 ## External Dependencies
 
-- **Decap CMS** - Admin interface at `/admin/`, uses GitHub OAuth for authentication
+- **Sveltia CMS** (Decap-compatible) - Admin interface at `/admin/`, uses GitHub OAuth for authentication; loads latest version from unpkg
 - **Blowfish Theme** - Hugo module providing base styling and components
+- **Leaflet.js** v1.9.4 (CDN) - Interactive map on `/map/`
+- **Fuse.js** - Full-text fuzzy search (bundled with Blowfish theme)
+- **OpenStreetMap/Nominatim** - Geocoding for the estate map
 - **Google Maps Embed API** - Used on detail pages for directions (origin: Beckside Crescent, Leeds)
 
 ## Site Maintenance
@@ -191,6 +214,13 @@ Custom layouts in `layouts/` override theme templates. The custom menu partial i
 4. **Amenity Hours** - Update opening hours, especially for seasonal changes
 5. **School Information** - Update Ofsted ratings when reports are published
 6. **Transport Schedules** - Update frequencies and operating hours when timetables change
+
+### Utility Scripts
+
+The `scripts/` directory contains maintenance helpers:
+- `update-bin-dates.py` / `update-bin-dates.sh` - Advance bin collection `referenceDate` by N weeks
+- `check-bin-dates.py` - Verify current bin collection dates are still in the future
+- `geocode.py` - Query Nominatim to build/update `data/geocache.json` for the estate map
 
 ### Content Review
 
