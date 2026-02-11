@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Skelton Gate//Bin Collection//EN
+X-WR-CALNAME:Skelton Gate Bin Collection
+X-WR-TIMEZONE:Europe/London
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+{{ $now := now }}{{ $today := $now.Format "2006-01-02" }}{{ $fortnight := mul 14 24 3600 1000000000 }}{{ range .Pages }}{{ if not .Draft }}{{ if .Params.referenceDate }}{{ $title := .Title }}{{ $d := time .Params.referenceDate }}{{ range seq 0 200 }}{{ if lt ($d.Format "2006-01-02") $today }}{{ $d = $d.Add $fortnight }}{{ end }}{{ end }}{{ range seq 1 26 }}{{ $endDate := $d.AddDate 0 0 1 }}BEGIN:VEVENT
+UID:bin-{{ $title | urlize }}-{{ $d.Unix }}@skeltongate.homes
+DTSTAMP:{{ $now.UTC.Format "20060102T150405Z" }}
+DTSTART;VALUE=DATE:{{ $d.Format "20060102" }}
+DTEND;VALUE=DATE:{{ $endDate.Format "20060102" }}
+SUMMARY:{{ $title }} Collection
+END:VEVENT
+{{ $d = $d.Add $fortnight }}{{ end }}{{ end }}{{ end }}{{ end }}END:VCALENDAR

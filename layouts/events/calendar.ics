@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Skelton Gate//Community Events//EN
+X-WR-CALNAME:Skelton Gate Events
+X-WR-TIMEZONE:Europe/London
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+{{ range .Pages }}{{ if and (not .Draft) .Params.eventDate }}{{ $eventDate := time.AsTime .Params.eventDate }}{{ $endDate := $eventDate.Add (mul 2 3600 1000000000) }}BEGIN:VEVENT
+UID:{{ .File.UniqueID }}@skeltongate.homes
+DTSTAMP:{{ now.UTC.Format "20060102T150405Z" }}
+DTSTART:{{ $eventDate.Format "20060102T150405" }}
+DTEND:{{ $endDate.Format "20060102T150405" }}
+SUMMARY:{{ .Title }}
+{{ if .Params.location }}LOCATION:{{ .Params.location }}
+{{ end }}URL:{{ .Permalink }}
+END:VEVENT
+{{ end }}{{ end }}END:VCALENDAR

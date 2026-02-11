@@ -105,6 +105,14 @@
   [main.params]
     enabled = true
 
+[[main]]
+  name = "Estate Map"
+  pageRef = "/map"
+  parent = "directory"
+  weight = 5
+  [main.params]
+    enabled = true
+
 # Local Area dropdown parent
 [[main]]
   name = "Local Area"
