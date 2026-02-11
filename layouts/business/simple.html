@@ -15,6 +15,7 @@
         {{ .Params.category }}
       </span>
     {{ end }}
+    <p class="text-xs text-neutral-400 dark:text-neutral-500 mt-2">Updated {{ .Lastmod.Format "2 Jan 2006" }}</p>
   </header>
 
   {{ if .Params.image }}

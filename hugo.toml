@@ -2,6 +2,7 @@ baseURL = 'https://skeltongate.homes'
 languageCode = 'en-gb'
 title = 'Skelton Gate Community'
 buildDrafts = false
+enableGitInfo = true
 
 [module]
   [[module.imports]]
