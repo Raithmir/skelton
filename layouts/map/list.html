@@ -101,7 +101,7 @@
 
 <!-- Location data from Hugo -->
 <script>
-const LOCATIONS = {{ $locations | jsonify }};
+const LOCATIONS = {{ $locations | jsonify | safeJS }};
 </script>
 
 <!-- Leaflet JS + map init -->
