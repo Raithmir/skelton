@@ -36,7 +36,7 @@
     </nav>
 
     <!-- Providers by Technology -->
-    <div class="space-y-12">
+    <div class="space-y-10">
       {{ range $providersByTech }}
         {{ $tech := default "Other" .Key | upper }}
         {{ $techSlug := anchorize $tech }}

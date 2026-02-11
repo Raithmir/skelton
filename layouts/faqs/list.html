@@ -33,7 +33,7 @@
     </nav>
 
     <!-- FAQs by Category -->
-    <div class="space-y-12">
+    <div class="space-y-10">
       {{ range $faqsByCategory }}
         {{ $category := default "General" .Key | title }}
         {{ $categorySlug := anchorize $category }}

@@ -33,7 +33,7 @@
       </div>
     </nav>
 
-    <div class="space-y-12">
+    <div class="space-y-10">
       {{ range $schoolsByCategory }}
         {{ $category := default "Other" .Key | title }}
         {{ $categorySlug := anchorize $category }}

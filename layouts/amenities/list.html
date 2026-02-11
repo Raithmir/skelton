@@ -35,7 +35,7 @@
     </nav>
 
     <!-- Amenities by Category -->
-    <div class="space-y-12">
+    <div class="space-y-10">
       {{ range $amenitiesByCategory }}
         {{ $category := default "Other" .Key | title }}
         {{ $categorySlug := anchorize $category }}

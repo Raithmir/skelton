@@ -33,7 +33,7 @@
     </nav>
 
     <!-- Contacts by Category -->
-    <div class="space-y-12">
+    <div class="space-y-10">
       {{ range $contactsByCategory }}
         {{ $category := default "General" .Key | title }}
         {{ $categorySlug := anchorize $category }}
