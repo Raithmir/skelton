@@ -21,7 +21,7 @@ Phases 1a and 1b of the estate (438 homes) are being developed by several reputa
 
 - **Avant Homes**
 - **Evans Homes**
-- **Countryside Homes**
+- **Countryside Homes (Vistry)**
 
 Taylor Wimpey has submitted an application to develop phases 2a, 2b, 2c (an additional 370 homes).
 
