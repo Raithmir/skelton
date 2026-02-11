@@ -2,12 +2,15 @@
 
 {{/* Build location data from all relevant content types */}}
 {{ $locations := slice }}
+{{ $geocache := $.Site.Data.geocache | default dict }}
 
 {{ range where $.Site.RegularPages "Type" "business" }}
   {{ if not .Draft }}
     {{ $addr := .Params.address | default "" }}
     {{ if $addr }}
-      {{ $loc := dict "title" .Title "type" "business" "category" (.Params.category | default "") "query" (printf "%s, Leeds, UK" $addr) "url" .Permalink }}
+      {{ $query := printf "%s, Leeds, UK" $addr }}
+      {{ $loc := dict "title" .Title "type" "business" "category" (.Params.category | default "") "query" $query "url" .Permalink }}
+      {{ with index $geocache $query }}{{ $loc = merge $loc (dict "lat" .lat "lng" .lng) }}{{ end }}
       {{ $locations = $locations | append $loc }}
     {{ end }}
   {{ end }}
@@ -20,6 +23,7 @@
     {{ $query := cond (ne $pc "") (printf "%s %s, UK" $addr $pc) (printf "%s, Leeds, UK" $addr) }}
     {{ if $addr }}
       {{ $loc := dict "title" .Title "type" "amenity" "category" (.Params.category | default "") "query" $query "url" .Permalink }}
+      {{ with index $geocache $query }}{{ $loc = merge $loc (dict "lat" .lat "lng" .lng) }}{{ end }}
       {{ $locations = $locations | append $loc }}
     {{ end }}
   {{ end }}
@@ -32,6 +36,7 @@
     {{ $query := cond (ne $pc "") (printf "%s %s, UK" $addr $pc) (printf "%s, Leeds, UK" $addr) }}
     {{ if $addr }}
       {{ $loc := dict "title" .Title "type" "healthcare" "category" (.Params.category | default "") "query" $query "url" .Permalink }}
+      {{ with index $geocache $query }}{{ $loc = merge $loc (dict "lat" .lat "lng" .lng) }}{{ end }}
       {{ $locations = $locations | append $loc }}
     {{ end }}
   {{ end }}
@@ -44,6 +49,7 @@
     {{ $query := cond (ne $pc "") (printf "%s %s, UK" $addr $pc) (printf "%s, Leeds, UK" $addr) }}
     {{ if $addr }}
       {{ $loc := dict "title" .Title "type" "school" "category" (.Params.category | default "") "query" $query "url" .Permalink }}
+      {{ with index $geocache $query }}{{ $loc = merge $loc (dict "lat" .lat "lng" .lng) }}{{ end }}
       {{ $locations = $locations | append $loc }}
     {{ end }}
   {{ end }}
@@ -155,10 +161,14 @@ const LOCATIONS = {{ $locations | jsonify | safeJS }};
   const progressEl = document.getElementById('map-progress');
   const totalEl    = document.getElementById('map-total');
 
-  // Split into cached and uncached
+  // Split into pre-geocoded, localStorage-cached, and uncached
   const uncached = [];
   LOCATIONS.forEach(function(loc) {
-    if (cache[loc.query]) {
+    if (loc.lat && loc.lng) {
+      // Coordinates embedded at build time — instant, no API call needed
+      addMarker(loc, {lat: loc.lat, lng: loc.lng});
+      loaded++;
+    } else if (cache[loc.query]) {
       addMarker(loc, cache[loc.query]);
       loaded++;
     } else {
