@@ -21,7 +21,6 @@ This page provides quick access to external websites and resources that may be u
 
 - **Report a Problem:** [Report issues online](https://www.leeds.gov.uk/report-it)
 - **Council Tax:** [Manage your account](https://www.leeds.gov.uk/council-tax)
-- **Bin Collections:** [Check your collection day](https://www.leeds.gov.uk/bins-recycling)
 - **Planning Applications:** [Search planning portal](https://www.leeds.gov.uk/planning)
 
 ## Utilities
@@ -29,8 +28,7 @@ This page provides quick access to external websites and resources that may be u
 ### Water
 
 - **Independent Water Networks:** [www.iwnl.co.uk](https://www.iwnl.co.uk/)
-- **Phone:** 02920028711
-- **Emergencies:** 02920028711 (24/7)
+- **Phone:** 02920028711    (24/7)
 
 ### Energy
 
@@ -111,7 +109,6 @@ Avant homes are served by OFNL (see the Broadband Providers page for more info).
 
 - **Visit Leeds:** [www.visitleeds.co.uk](https://www.visitleeds.co.uk)
 - **What's On:** [www.leedsinspired.co.uk](https://www.leedsinspired.co.uk)
-- **Leeds Events:** Check local listings for activities
 
 ### Yorkshire & Regional
 
@@ -142,7 +139,7 @@ Avant homes are served by OFNL (see the Broadband Providers page for more info).
 ### Getting Involved
 
 - **Volunteering:** [www.leedsinvolvement.org.uk](https://www.leedsinvolvement.org.uk)
-- **Community Groups:** Check notices and social media
+- **Community Groups:** Check notices and the Facebook group
 
 ***
 
