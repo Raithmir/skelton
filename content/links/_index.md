@@ -40,6 +40,8 @@ This page provides quick access to external websites and resources that may be u
 
 ### Broadband
 
+Avant homes are served by OFNL (see the Broadband Providers page for more info). Evans and Countryside are served by BT/OpenReach providers.
+
 - **Ofcom Broadband Checker:** [checker.ofcom.org.uk](https://checker.ofcom.org.uk)
 - **Compare Providers:** See our [Broadband Providers](/broadband) page
 
