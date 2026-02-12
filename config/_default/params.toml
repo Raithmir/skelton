@@ -1,6 +1,9 @@
 # Blowfish Theme Configuration
 # https://blowfish.page/docs/configuration/
 
+# Social sharing
+images = ['/img/og-image.jpg']
+
 # Theme appearance
 colorScheme = "ocean"
 defaultAppearance = "light" # valid options: light or dark
