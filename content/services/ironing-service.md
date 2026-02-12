@@ -5,7 +5,7 @@ type: service
 layout: simple
 category: plumbing
 contact: Chris Moran
-phone: '0123456789'
+phone: ''
 email: kongpandh@icloud.com
 website: https://www.facebook.com/KongPlumbingandHeating
 tags:
