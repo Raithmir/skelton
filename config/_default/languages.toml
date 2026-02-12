@@ -14,7 +14,7 @@
   mainSections = ["events", "notices", "businesses", "walks", "services"]
   description = "Community website for Skelton Gate, featuring local events, businesses, walking routes, and community notices"
 
-[en.author]
+[en.params.author]
   name = "Skelton Gate Community"
   # email = ""
   # links = []
