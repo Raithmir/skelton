@@ -28,9 +28,9 @@ This page provides quick access to external websites and resources that may be u
 
 ### Water
 
-- **Yorkshire Water:** [www.yorkshirewater.com](https://www.yorkshirewater.com)
-- **Phone:** 0345 124 2424
-- **Emergencies:** 0345 124 2424 (24/7)
+- **Independent Water Networks:** [www.iwnl.co.uk](https://www.iwnl.co.uk/)
+- **Phone:** 02920028711
+- **Emergencies:** 02920028711 (24/7)
 
 ### Energy
 
