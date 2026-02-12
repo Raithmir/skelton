@@ -1,7 +1,7 @@
 baseURL = 'https://skeltongate.homes'
 languageCode = 'en-gb'
 title = 'Skelton Gate Community'
-images = ['/img/og-image.png']
+images = ['/img/og-image.jpg']
 buildDrafts = false
 enableGitInfo = true
 
