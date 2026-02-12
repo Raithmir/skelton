@@ -1,3 +1,16 @@
 {{ if eq .Section "map" }}
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 {{ end }}
+
+{{/* Explicit og:image for social sharing previews */}}
+{{ $ogImage := "" }}
+{{ with .Params.images }}
+  {{ $ogImage = index . 0 | absURL }}
+{{ else }}
+  {{ with $.Site.Params.images }}
+    {{ $ogImage = index . 0 | absURL }}
+  {{ end }}
+{{ end }}
+{{ with $ogImage }}
+<meta property="og:image" content="{{ . }}" />
+{{ end }}
