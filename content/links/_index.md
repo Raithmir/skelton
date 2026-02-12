@@ -69,8 +69,6 @@ Avant homes are served by OFNL (see the Broadband Providers page for more info).
 ### NHS Services
 
 - **NHS Website:** [www.nhs.uk](https://www.nhs.uk)
-- **Book Appointments:** [www.nhs.uk](https://www.nhs.uk)
-- **Order Prescriptions:** Via your GP surgery or pharmacy
 - **NHS App:** Download for easy access to services
 
 ## Transport
@@ -81,13 +79,6 @@ Avant homes are served by OFNL (see the Broadband Providers page for more info).
 - **Bus Times:** [www.firstbus.co.uk](https://www.firstbus.co.uk)
 - **Train Times:** [www.nationalrail.co.uk](https://www.nationalrail.co.uk)
 - **Journey Planning:** See our [Transport & Travel](/transport) page
-
-### Driving
-
-- **Traffic Updates:** [www.highways.england.gov.uk](https://www.highways.england.gov.uk)
-- **MOT Check:** [www.gov.uk/check-mot-status](https://www.gov.uk/check-mot-status)
-- **Vehicle Tax:** [www.gov.uk/vehicle-tax](https://www.gov.uk/vehicle-tax)
-- **DVLA:** [www.gov.uk/dvla](https://www.gov.uk/dvla)
 
 ## Education
 
@@ -113,7 +104,6 @@ Avant homes are served by OFNL (see the Broadband Providers page for more info).
 
 - **Gas Safe Register:** [www.gassaferegister.co.uk](https://www.gassaferegister.co.uk)
 - **Electrical Safety:** [www.electricalsafetyfirst.org.uk](https://www.electricalsafetyfirst.org.uk)
-- **Which? Home Guides:** [www.which.co.uk](https://www.which.co.uk)
 
 ## Regional Information
 
@@ -135,7 +125,6 @@ Avant homes are served by OFNL (see the Broadband Providers page for more info).
 
 - **Citizens Advice:** [www.citizensadvice.org.uk](https://www.citizensadvice.org.uk)
 - **Which?:** [www.which.co.uk](https://www.which.co.uk)
-- **Trading Standards:** Via Leeds City Council
 
 ### Financial
 
@@ -153,7 +142,7 @@ Avant homes are served by OFNL (see the Broadband Providers page for more info).
 ### Getting Involved
 
 - **Volunteering:** [www.leedsinvolvement.org.uk](https://www.leedsinvolvement.org.uk)
-- **Community Groups:** Check local noticeboards and social media
+- **Community Groups:** Check notices and social media
 
 ***
 
