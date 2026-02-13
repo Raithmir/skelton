@@ -10,6 +10,13 @@
     padding-left: 2rem !important; /* was lg:px-32 = 8rem */
     padding-right: 2rem !important;
   }
+
+  /* Header inner container uses the same values — match the body width */
+  header .max-w-7xl {
+    max-width: 90rem !important;
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+  }
 }
 
 /* Homepage two-column layout — defined here because Tailwind purges lg:grid-cols-3 / lg:col-span-* */
