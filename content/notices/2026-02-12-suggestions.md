@@ -13,6 +13,6 @@ draft: false
 - Live on the estate and want to add your business to the Local Services page?
 - Have an upcoming event you'd like to add?
 - Spotted something incorrect on the site?
-- Thought of something you think would be really useful to add?
+- Thought of something you think would be useful to add?
 
 Drop me an email at [admin@skeltongate.homes](mailto:admin@skeltongate.homes)
