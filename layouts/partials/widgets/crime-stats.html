@@ -86,10 +86,12 @@
         </div>`;
     }
 
-    html += `<div class="mt-3">
-      <a href="https://www.police.uk/pu/your-area/west-yorkshire-police/leeds-east/?tab=CrimeMap"
-         class="text-sm text-primary-600 dark:text-primary-400 hover:underline"
-         target="_blank" rel="noopener">View crime map →</a>
+    html += `<div class="mt-3 flex flex-wrap" style="gap:0.75rem">
+      <a href="/crime-map/"
+         class="text-sm text-primary-600 dark:text-primary-400 hover:underline">View crime map →</a>
+      <a href="https://www.police.uk/pu/your-area/west-yorkshire-police/leeds-east/"
+         class="text-sm text-neutral-500 dark:text-neutral-400 hover:underline"
+         target="_blank" rel="noopener">police.uk Leeds East ↗</a>
     </div>`;
 
     el.innerHTML = html;
@@ -102,7 +104,7 @@
     try {
       const datesResp = await fetch('https://data.police.uk/api/crimes-street-dates');
       const dates = await datesResp.json();
-      const month = dates[dates.length - 1].date;
+      const month = dates[0].date; // most recent
 
       const resp = await fetch(
         `https://data.police.uk/api/crimes-street/all-crime?lat=${LAT}&lng=${LNG}&date=${month}`

@@ -1,0 +1,259 @@
+{{ define "main" }}
+
+<article class="max-w-full">
+  <header class="mb-6">
+    <div class="rounded-lg bg-neutral-50 dark:bg-neutral-700 border-b-4 border-primary-600 p-6 mb-2">
+      <div class="flex items-center gap-3 mb-2">
+        <svg class="w-8 h-8 text-primary-600 dark:text-primary-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+        </svg>
+        <h1 class="text-4xl font-bold text-neutral-900 dark:text-neutral-100">Local Crime Map</h1>
+      </div>
+      <p class="text-lg text-neutral-700 dark:text-neutral-300">
+        Recorded crimes near Skelton Gate, colour-coded by category. Click a marker for details.
+      </p>
+      <p id="crime-map-period" class="text-sm text-neutral-500 dark:text-neutral-400 mt-1"></p>
+    </div>
+  </header>
+
+  <!-- Category filters -->
+  <div id="crime-filters" class="mb-4" style="display:none">
+    <p class="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2">Filter by category:</p>
+    <div id="filter-buttons" class="flex flex-wrap" style="gap:0.5rem"></div>
+  </div>
+
+  <!-- Loading / error -->
+  <div id="crime-map-loading" class="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
+    Loading crime data…
+  </div>
+  <div id="crime-map-error" class="mb-4 text-sm text-red-600 dark:text-red-400" style="display:none">
+    Crime data temporarily unavailable. Please try again later.
+  </div>
+
+  <!-- Map container -->
+  <div id="crime-map" style="height:560px;border-radius:0.5rem;overflow:hidden" class="mb-4"></div>
+
+  <!-- Attribution -->
+  <p class="text-xs text-neutral-500 dark:text-neutral-500">
+    Data: <a href="https://data.police.uk" class="underline hover:text-neutral-700" target="_blank" rel="noopener">data.police.uk</a>
+    · West Yorkshire Police
+    · <a href="https://www.police.uk/pu/your-area/west-yorkshire-police/leeds-east/?tab=CrimeMap" class="underline hover:text-neutral-700" target="_blank" rel="noopener">View on police.uk</a>
+  </p>
+</article>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+(function () {
+  const LAT = 53.772630;
+  const LNG = -1.458588;
+
+  const CACHE_KEY = 'crimeMapCache';
+  const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
+
+  const LABELS = {
+    'anti-social-behaviour':  'Anti-social behaviour',
+    'bicycle-theft':          'Bicycle theft',
+    'burglary':               'Burglary',
+    'criminal-damage-arson':  'Criminal damage & arson',
+    'drugs':                  'Drugs',
+    'other-crime':            'Other crime',
+    'other-theft':            'Other theft',
+    'possession-of-weapons':  'Possession of weapons',
+    'public-order':           'Public order',
+    'robbery':                'Robbery',
+    'shoplifting':            'Shoplifting',
+    'theft-from-the-person':  'Theft from person',
+    'vehicle-crime':          'Vehicle crime',
+    'violent-crime':          'Violence & sexual offences',
+  };
+
+  const COLORS = {
+    'anti-social-behaviour':  '#f97316',
+    'burglary':               '#991b1b',
+    'vehicle-crime':          '#dc2626',
+    'violent-crime':          '#b91c1c',
+    'criminal-damage-arson':  '#92400e',
+    'shoplifting':            '#7c3aed',
+    'other-theft':            '#db2777',
+    'bicycle-theft':          '#0d9488',
+    'theft-from-the-person':  '#ec4899',
+    'robbery':                '#ea580c',
+    'public-order':           '#4338ca',
+    'drugs':                  '#15803d',
+    'possession-of-weapons':  '#111827',
+    'other-crime':            '#6b7280',
+  };
+
+  function getColor(cat) {
+    return COLORS[cat] || '#6b7280';
+  }
+
+  function getLabel(cat) {
+    return LABELS[cat] || cat.replace(/-/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+  }
+
+  // Initialise map
+  const map = L.map('crime-map').setView([LAT, LNG], 14);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+  function makeIcon(color) {
+    const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="30" viewBox="0 0 24 36">' +
+      '<path d="M12 0C5.373 0 0 5.373 0 12c0 9 12 24 12 24s12-15 12-24C24 5.373 18.627 0 12 0z" fill="' + color + '" stroke="white" stroke-width="1.5"/>' +
+      '<circle cx="12" cy="12" r="5" fill="white"/>' +
+      '</svg>';
+    return L.divIcon({
+      html: svg,
+      className: '',
+      iconSize: [20, 30],
+      iconAnchor: [10, 30],
+      popupAnchor: [0, -30]
+    });
+  }
+
+  function escHtml(str) {
+    return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // Cache helpers
+  function getCached() {
+    try {
+      const raw = localStorage.getItem(CACHE_KEY);
+      if (!raw) return null;
+      const obj = JSON.parse(raw);
+      if (Date.now() - obj.ts < CACHE_TTL) return obj.data;
+    } catch (_) {}
+    return null;
+  }
+
+  function setCache(data) {
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data: data })); } catch (_) {}
+  }
+
+  // Marker layer groups keyed by category
+  const layerGroups = {};
+  const categoryCounts = {};
+  const filterState = {};
+
+  function renderMarkers(crimes) {
+    crimes.forEach(function (crime) {
+      const cat = crime.category;
+      const lat = parseFloat(crime.location.latitude);
+      const lng = parseFloat(crime.location.longitude);
+      if (isNaN(lat) || isNaN(lng)) return;
+
+      if (!layerGroups[cat]) {
+        layerGroups[cat] = L.layerGroup().addTo(map);
+        categoryCounts[cat] = 0;
+        filterState[cat] = true;
+      }
+
+      categoryCounts[cat]++;
+
+      const color = getColor(cat);
+      const marker = L.marker([lat, lng], { icon: makeIcon(color) });
+
+      const street = crime.location.street ? crime.location.street.name : '';
+      const outcome = crime.outcome_status ? crime.outcome_status.category : 'No outcome yet';
+
+      marker.bindPopup(
+        '<div style="min-width:160px">' +
+        '<p style="font-weight:600;margin:0 0 4px;font-size:0.85rem">' + escHtml(getLabel(cat)) + '</p>' +
+        (street ? '<p style="font-size:0.75rem;color:#6b7280;margin:0 0 4px">' + escHtml(street) + '</p>' : '') +
+        '<p style="font-size:0.75rem;color:#6b7280;margin:0">' + escHtml(outcome) + '</p>' +
+        '</div>'
+      );
+
+      layerGroups[cat].addLayer(marker);
+    });
+  }
+
+  function buildFilters() {
+    const filtersEl = document.getElementById('crime-filters');
+    const buttonsEl = document.getElementById('filter-buttons');
+
+    // Sort categories by count descending
+    const sorted = Object.keys(categoryCounts).sort(function (a, b) {
+      return categoryCounts[b] - categoryCounts[a];
+    });
+
+    sorted.forEach(function (cat) {
+      const color = getColor(cat);
+      const label = getLabel(cat);
+      const count = categoryCounts[cat];
+
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.dataset.cat = cat;
+      btn.style.cssText = 'display:inline-flex;align-items:center;padding:0.25rem 0.6rem;border-radius:9999px;border:2px solid ' + color + ';background:' + color + ';color:white;font-size:0.75rem;cursor:pointer;white-space:nowrap;';
+      btn.innerHTML =
+        '<span style="width:8px;height:8px;border-radius:50%;background:white;margin-right:5px;flex-shrink:0"></span>' +
+        escHtml(label) + ' <span style="margin-left:4px;opacity:0.85">(' + count + ')</span>';
+
+      btn.addEventListener('click', function () {
+        const c = btn.dataset.cat;
+        filterState[c] = !filterState[c];
+        if (filterState[c]) {
+          layerGroups[c].addTo(map);
+          btn.style.background = color;
+          btn.style.color = 'white';
+        } else {
+          map.removeLayer(layerGroups[c]);
+          btn.style.background = 'transparent';
+          btn.style.color = color;
+        }
+      });
+
+      buttonsEl.appendChild(btn);
+    });
+
+    filtersEl.style.display = 'block';
+  }
+
+  function formatMonth(dateStr) {
+    const parts = dateStr.split('-');
+    if (parts.length < 2) return dateStr;
+    return new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1).toLocaleString('en-GB', { month: 'long', year: 'numeric' });
+  }
+
+  async function load() {
+    const loadingEl = document.getElementById('crime-map-loading');
+    const errorEl   = document.getElementById('crime-map-error');
+
+    const hit = getCached();
+    if (hit) {
+      loadingEl.style.display = 'none';
+      document.getElementById('crime-map-period').textContent = 'Data for ' + formatMonth(hit.month);
+      renderMarkers(hit.crimes);
+      buildFilters();
+      return;
+    }
+
+    try {
+      const datesResp = await fetch('https://data.police.uk/api/crimes-street-dates');
+      const dates = await datesResp.json();
+      const month = dates[0].date; // most recent first
+
+      const crimesResp = await fetch(
+        'https://data.police.uk/api/crimes-street/all-crime?lat=' + LAT + '&lng=' + LNG + '&date=' + month
+      );
+      const crimes = await crimesResp.json();
+
+      setCache({ crimes: crimes, month: month });
+      loadingEl.style.display = 'none';
+      document.getElementById('crime-map-period').textContent = 'Data for ' + formatMonth(month);
+      renderMarkers(crimes);
+      buildFilters();
+    } catch (_) {
+      loadingEl.style.display = 'none';
+      errorEl.style.display = 'block';
+    }
+  }
+
+  load();
+})();
+</script>
+
+{{ end }}
