@@ -248,7 +248,9 @@
       {{ end }}
 
       <!-- Air Quality Widget -->
-      {{ partial "widgets/air-quality.html" . }}
+      {{ if ne site.Data.site_settings.showAirQuality false }}
+        {{ partial "widgets/air-quality.html" . }}
+      {{ end }}
 
     </aside>
   </div>

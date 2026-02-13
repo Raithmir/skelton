@@ -4,3 +4,4 @@ showBusinessesSection: true
 showBinWidget: true
 showWalksWidget: true
 showCrimeStats: true
+showAirQuality: true

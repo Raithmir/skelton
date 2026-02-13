@@ -470,3 +470,8 @@ collections:
             widget: "boolean"
             default: false
             hint: "Show the local crime statistics panel in the sidebar (data from data.police.uk, updated monthly)"
+          - label: "Show Air Quality Widget"
+            name: "showAirQuality"
+            widget: "boolean"
+            default: true
+            hint: "Show the air quality panel in the sidebar (DAQI 1-10 scale, data from Open-Meteo, updated hourly)"
