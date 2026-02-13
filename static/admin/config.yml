@@ -5,6 +5,8 @@ backend:
   base_url: https://skeltongate.homes
   auth_endpoint: auth
 
+show_preview_links: true
+
 media_folder: "static/images/uploads"
 public_folder: "/images/uploads"
 
@@ -433,12 +435,38 @@ collections:
   - name: "site_settings"
     label: "Site Settings"
     files:
-      - label: "Homepage Widgets"
+      - label: "Homepage"
         name: "homepage_widgets"
         file: "data/site-settings.yaml"
+        format: yaml
         fields:
+          - label: "Show Notices Section"
+            name: "showNoticesSection"
+            widget: "boolean"
+            default: true
+            hint: "Show the Important Notices section on the homepage"
+          - label: "Show Events Section"
+            name: "showEventsSection"
+            widget: "boolean"
+            default: true
+            hint: "Show the Upcoming Events section on the homepage"
+          - label: "Show Businesses Section"
+            name: "showBusinessesSection"
+            widget: "boolean"
+            default: true
+            hint: "Show the Local Businesses section on the homepage"
+          - label: "Show Bin Collection Widget"
+            name: "showBinWidget"
+            widget: "boolean"
+            default: true
+            hint: "Show the bin collection dates in the sidebar"
+          - label: "Show Walking Routes Widget"
+            name: "showWalksWidget"
+            widget: "boolean"
+            default: true
+            hint: "Show the walking routes list in the sidebar"
           - label: "Show Crime Statistics Widget"
             name: "showCrimeStats"
             widget: "boolean"
             default: false
-            hint: "Display the local crime statistics panel on the homepage sidebar (data from data.police.uk, updated monthly)"
+            hint: "Show the local crime statistics panel in the sidebar (data from data.police.uk, updated monthly)"

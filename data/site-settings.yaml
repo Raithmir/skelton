@@ -1,1 +1,6 @@
+showNoticesSection: true
+showEventsSection: true
+showBusinessesSection: true
+showBinWidget: true
+showWalksWidget: true
 showCrimeStats: false

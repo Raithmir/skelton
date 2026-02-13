@@ -30,6 +30,7 @@
     <div class="lg:col-span-2 space-y-10">
 
       <!-- Priority Notices Section -->
+      {{ if ne site.Data.site_settings.showNoticesSection false }}
       <section class="notices-section">
         <div class="flex items-center justify-between mb-6">
           <h2 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100">Important Notices</h2>
@@ -94,8 +95,10 @@
           {{ end }}
         </div>
       </section>
+      {{ end }}
 
       <!-- Upcoming Events Section -->
+      {{ if ne site.Data.site_settings.showEventsSection false }}
       <section class="events-section">
         <div class="flex items-center justify-between mb-6">
           <h2 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100">Upcoming Events</h2>
@@ -157,8 +160,10 @@
           {{ end }}
         </div>
       </section>
+      {{ end }}
 
       <!-- Local Businesses Section -->
+      {{ if ne site.Data.site_settings.showBusinessesSection false }}
       <section class="businesses-section">
         <div class="flex items-center justify-between mb-6">
           <h2 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100">Local Businesses</h2>
@@ -182,6 +187,7 @@
           {{ end }}
         </div>
       </section>
+      {{ end }}
 
     </div>
 
@@ -208,9 +214,12 @@
       </div>
 
       <!-- Bin Collection Widget -->
-      {{ partial "widgets/bin-collection.html" . }}
+      {{ if ne site.Data.site_settings.showBinWidget false }}
+        {{ partial "widgets/bin-collection.html" . }}
+      {{ end }}
 
       <!-- Walking Routes Widget -->
+      {{ if ne site.Data.site_settings.showWalksWidget false }}
       <div class="rounded-lg bg-neutral-100 dark:bg-neutral-700 p-6">
         <h3 class="text-xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">Walking Routes</h3>
         <div class="space-y-3">
@@ -231,6 +240,7 @@
           View all routes →
         </a>
       </div>
+      {{ end }}
 
       <!-- Crime Stats Widget -->
       {{ if site.Data.site_settings.showCrimeStats }}
