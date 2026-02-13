@@ -1,6 +1,17 @@
 /* Custom CSS for Skelton Gate Community Site */
 /* Blowfish Theme Customizations */
 
+/* Reduce Blowfish's excessive horizontal padding on wide screens.
+   The theme uses lg:px-32 (128px each side) which leaves the content occupying
+   less than half the viewport on wide monitors. Overriding to 2rem each side. */
+@media (min-width: 1024px) {
+  body {
+    max-width: 90rem !important;   /* was max-w-7xl = 80rem */
+    padding-left: 2rem !important; /* was lg:px-32 = 8rem */
+    padding-right: 2rem !important;
+  }
+}
+
 /* Homepage two-column layout — defined here because Tailwind purges lg:grid-cols-3 / lg:col-span-* */
 .homepage-grid {
   display: grid;
