@@ -1,0 +1,112 @@
+{{/* Air Quality Widget — data from Open-Meteo / DEFRA */}}
+<div class="rounded-lg bg-neutral-100 dark:bg-neutral-700 p-6">
+  <h2 class="text-xl font-bold text-neutral-900 dark:text-neutral-100 flex items-center mb-4">
+    <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
+    </svg>
+    Air Quality
+  </h2>
+
+  <div id="air-quality-content">
+    <p class="text-sm text-neutral-500 dark:text-neutral-400">Loading…</p>
+  </div>
+
+  <p class="text-xs text-neutral-400 dark:text-neutral-500 mt-4">
+    Source: <a href="https://open-meteo.com" class="underline" target="_blank" rel="noopener">Open-Meteo</a>
+    · Leeds area (DAQI scale)
+  </p>
+</div>
+
+<script>
+(function () {
+  const LAT = 53.78;
+  const LNG = -1.48;
+  const CACHE_KEY = 'airQualityCache';
+  const CACHE_TTL = 60 * 60 * 1000; // 1 hour
+
+  // Compute DAQI sub-index (1-10) for a pollutant value against its breakpoints
+  function pollutantIndex(val, breaks) {
+    for (let i = 0; i < breaks.length; i++) {
+      if (val <= breaks[i]) return i + 1;
+    }
+    return 10;
+  }
+
+  // DAQI = max sub-index across all pollutants
+  // Breakpoints from DEFRA: NO2, O3, PM10, PM2.5 (µg/m³) for DAQI 1-9 (10 = above highest)
+  function calcDaqi(no2, o3, pm10, pm25) {
+    const no2i  = pollutantIndex(no2,  [67, 134, 200, 267, 334, 400, 467, 534, 600]);
+    const o3i   = pollutantIndex(o3,   [33,  66, 100, 120, 140, 160, 187, 213, 240]);
+    const pm10i = pollutantIndex(pm10, [16,  33,  50,  58,  66,  75,  83,  91, 100]);
+    const pm25i = pollutantIndex(pm25, [11,  23,  35,  41,  47,  53,  58,  64,  70]);
+    return Math.max(no2i, o3i, pm10i, pm25i);
+  }
+
+  function daqiBand(d) {
+    if (d <= 3) return { label: 'Low',       color: '#16a34a' };
+    if (d <= 6) return { label: 'Moderate',  color: '#ca8a04' };
+    if (d <= 9) return { label: 'High',      color: '#ea580c' };
+    return             { label: 'Very High', color: '#dc2626' };
+  }
+
+  function cached() {
+    try {
+      const raw = localStorage.getItem(CACHE_KEY);
+      if (!raw) return null;
+      const { ts, data } = JSON.parse(raw);
+      if (Date.now() - ts < CACHE_TTL) return data;
+    } catch (_) {}
+    return null;
+  }
+
+  function saveCache(data) {
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data })); } catch (_) {}
+  }
+
+  function render(data) {
+    const el = document.getElementById('air-quality-content');
+    const { no2, o3, pm10, pm25, updated } = data;
+    const daqi = calcDaqi(no2, o3, pm10, pm25);
+    const band = daqiBand(daqi);
+    const time = new Date(updated).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+
+    el.innerHTML = `
+      <div class="flex items-center gap-3 mb-3">
+        <span style="background:${band.color};color:#fff;border-radius:9999px;min-width:2.5rem;height:2.5rem;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem">${daqi}</span>
+        <div>
+          <p class="font-semibold" style="color:${band.color}">${band.label}</p>
+          <p class="text-xs text-neutral-500 dark:text-neutral-400">DAQI 1–10 &middot; Updated ${time}</p>
+        </div>
+      </div>
+      <div class="text-sm" style="display:grid;grid-template-columns:1fr 1fr;gap:0.375rem 1rem">
+        <span class="text-neutral-600 dark:text-neutral-300">NO₂ <strong class="text-neutral-900 dark:text-neutral-100">${no2.toFixed(1)}</strong> µg/m³</span>
+        <span class="text-neutral-600 dark:text-neutral-300">O₃ <strong class="text-neutral-900 dark:text-neutral-100">${o3.toFixed(1)}</strong> µg/m³</span>
+        <span class="text-neutral-600 dark:text-neutral-300">PM10 <strong class="text-neutral-900 dark:text-neutral-100">${pm10.toFixed(1)}</strong> µg/m³</span>
+        <span class="text-neutral-600 dark:text-neutral-300">PM2.5 <strong class="text-neutral-900 dark:text-neutral-100">${pm25.toFixed(1)}</strong> µg/m³</span>
+      </div>`;
+  }
+
+  async function load() {
+    const hit = cached();
+    if (hit) { render(hit); return; }
+
+    try {
+      const resp = await fetch(
+        'https://air-quality-api.open-meteo.com/v1/air-quality' +
+        `?latitude=${LAT}&longitude=${LNG}` +
+        '&current=nitrogen_dioxide,ozone,pm10,pm2_5'
+      );
+      const json = await resp.json();
+      const c = json.current;
+      const data = { no2: c.nitrogen_dioxide, o3: c.ozone, pm10: c.pm10, pm25: c.pm2_5, updated: c.time };
+      saveCache(data);
+      render(data);
+    } catch (_) {
+      document.getElementById('air-quality-content').innerHTML =
+        '<p class="text-sm text-neutral-500 dark:text-neutral-400">Air quality data temporarily unavailable.</p>';
+    }
+  }
+
+  load();
+})();
+</script>
