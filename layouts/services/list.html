@@ -60,17 +60,6 @@
                   {{ .Title }}
                 </h3>
 
-                <!-- Description -->
-                {{ if .Params.description }}
-                  <p class="text-neutral-700 dark:text-neutral-300 text-sm mb-4 line-clamp-3">
-                    {{ .Params.description }}
-                  </p>
-                {{ else if .Summary }}
-                  <div class="prose dark:prose-invert prose-sm mb-4 line-clamp-3">
-                    {{ .Summary }}
-                  </div>
-                {{ end }}
-
                 <!-- Contact Information -->
                 <div class="space-y-2 mb-4">
                   {{ if .Params.contact }}
@@ -137,24 +126,22 @@
                   </div>
                 {{ end }}
 
-                <!-- Full Content (if short) or View More Link -->
+                <!-- Content preview -->
                 {{ if .Content }}
-                  {{ $wordCount := .WordCount }}
-                  {{ if lt $wordCount 100 }}
-                    <div class="prose dark:prose-invert prose-sm text-sm mb-4 pt-4 border-t border-neutral-300 dark:border-neutral-700">
-                      {{ .Content }}
-                    </div>
-                  {{ else }}
-                    <div class="mt-4 pt-4 border-t border-neutral-300 dark:border-neutral-700">
-                      <a href="{{ .Permalink }}" class="text-primary-600 dark:text-primary-400 hover:underline text-sm font-medium inline-flex items-center">
-                        View full details
-                        <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20">
-                          <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                        </svg>
-                      </a>
-                    </div>
-                  {{ end }}
+                  <div class="prose dark:prose-invert prose-sm text-sm mb-4 line-clamp-3">
+                    {{ .Summary }}
+                  </div>
                 {{ end }}
+
+                <!-- View full details link -->
+                <div class="mt-4 pt-4 border-t border-neutral-300 dark:border-neutral-700">
+                  <a href="{{ .Permalink }}" class="text-primary-600 dark:text-primary-400 hover:underline text-sm font-medium inline-flex items-center">
+                    View full details
+                    <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                    </svg>
+                  </a>
+                </div>
               </article>
             {{ end }}
           </div>
