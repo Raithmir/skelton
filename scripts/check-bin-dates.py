@@ -38,28 +38,40 @@ def parse_date(date_str):
 
     return None
 
+def next_fortnightly_date(reference_date, today):
+    """Advance reference_date by 14-day increments until it's >= today"""
+    d = reference_date
+    while d < today:
+        d += timedelta(days=14)
+    return d
+
+
 def check_bin_collections(content_dir='content/bin-collection'):
     """Check all bin collection dates and report status"""
-    now = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+    today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
     collections = []
 
     for file_path in Path(content_dir).glob('*.md'):
+        if file_path.name == '_index.md':
+            continue
         with open(file_path, 'r') as f:
             content = f.read()
 
-        zone_match = re.search(r'^zone:\s*["\']?([^"\']+)["\']?', content, re.MULTILINE)
+        title_match = re.search(r'^title:\s*["\']?([^"\']+)["\']?', content, re.MULTILINE)
         waste_match = re.search(r'^wasteType:\s*["\']?([^"\']+)["\']?', content, re.MULTILINE)
-        date_match = re.search(r'^nextCollection:\s*["\']?([^"\']+)["\']?', content, re.MULTILINE)
+        date_match = re.search(r'^referenceDate:\s*["\']?([^"\']+)["\']?', content, re.MULTILINE)
 
-        if zone_match and waste_match and date_match:
-            next_date = parse_date(date_match.group(1))
-            if next_date:
-                days_until = (next_date - now).days
+        if waste_match and date_match:
+            reference_date = parse_date(date_match.group(1))
+            if reference_date:
+                next_date = next_fortnightly_date(reference_date, today)
+                days_until = (next_date - today).days
                 collections.append({
-                    'zone': zone_match.group(1),
+                    'title': title_match.group(1) if title_match else file_path.stem,
                     'waste': waste_match.group(1),
                     'date': next_date,
-                    'days_until': days_until
+                    'days_until': days_until,
+                    'reference_date': reference_date,
                 })
 
     return sorted(collections, key=lambda x: x['days_until'])
@@ -75,61 +87,39 @@ def main():
         print(f"{RED}❌ No bin collection files found{RESET}\n")
         return 1
 
-    now = datetime.now()
-    past_count = 0
     soon_count = 0
     ok_count = 0
 
     for c in collections:
         days = c['days_until']
         date_str = c['date'].strftime('%a, %d %b %Y')
+        ref_str = c['reference_date'].strftime('%Y-%m-%d')
 
-        # Determine status
-        if days < 0:
-            status = f"{RED}⚠️  PAST DUE ({abs(days)} days ago){RESET}"
-            past_count += 1
-        elif days == 0:
+        if days == 0:
             status = f"{YELLOW}📅 TODAY{RESET}"
             soon_count += 1
         elif days == 1:
             status = f"{YELLOW}📅 TOMORROW{RESET}"
             soon_count += 1
-        elif days <= 3:
+        elif days <= 7:
             status = f"{YELLOW}📅 in {days} days{RESET}"
             soon_count += 1
-        elif days <= 7:
-            status = f"{GREEN}✅ in {days} days{RESET}"
-            ok_count += 1
         else:
             status = f"{GREEN}✅ in {days} days{RESET}"
             ok_count += 1
 
-        print(f"  {c['zone']:8s} - {c['waste']:10s}: {date_str:20s} {status}")
+        print(f"  {c['title']:20s} ({c['waste']:10s}): next {date_str:20s} {status}")
+        print(f"  {'':20s}  referenceDate: {ref_str}")
+        print()
 
-    print()
     print(f"{BOLD}Summary:{RESET}")
-
-    if past_count > 0:
-        print(f"  {RED}⚠️  {past_count} collection(s) NEED UPDATING (date passed){RESET}")
     if soon_count > 0:
-        print(f"  {YELLOW}📅 {soon_count} collection(s) coming up soon{RESET}")
+        print(f"  {YELLOW}📅 {soon_count} collection(s) coming up within a week{RESET}")
     if ok_count > 0:
         print(f"  {GREEN}✅ {ok_count} collection(s) scheduled{RESET}")
-
     print()
-
-    if past_count > 0:
-        print(f"{BOLD}Action needed:{RESET}")
-        print("  Update dates with: python3 scripts/update-bin-dates.py --days 7")
-        print()
-        return 1
-    elif soon_count > 0:
-        print(f"{BOLD}Reminder:{RESET}")
-        print("  Update dates after collection day to keep the homepage widget current")
-        print()
-    else:
-        print(f"{GREEN}All dates look good!{RESET}")
-        print()
+    print("Dates are calculated fortnightly from referenceDate — no manual updates needed.")
+    print()
 
     return 0
 

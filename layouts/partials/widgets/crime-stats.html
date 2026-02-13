@@ -1,0 +1,122 @@
+{{/* Crime Statistics Widget — data from data.police.uk */}}
+<div class="rounded-lg bg-neutral-100 dark:bg-neutral-700 p-6">
+  <h2 class="text-xl font-bold text-neutral-900 dark:text-neutral-100 flex items-center mb-4">
+    <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+    </svg>
+    Local Crime Stats
+  </h2>
+
+  <div id="crime-stats-content">
+    <p class="text-sm text-neutral-500 dark:text-neutral-400">Loading…</p>
+  </div>
+
+  <p class="text-xs text-neutral-400 dark:text-neutral-500 mt-4">
+    Source: <a href="https://data.police.uk" class="underline" target="_blank" rel="noopener">data.police.uk</a>
+    · West Yorkshire Police
+    · <span id="crime-stats-period"></span>
+  </p>
+</div>
+
+<script>
+(function () {
+  const LAT = 53.7804;
+  const LNG = -1.4726;
+
+  const LABELS = {
+    'anti-social-behaviour':  'Anti-social behaviour',
+    'bicycle-theft':          'Bicycle theft',
+    'burglary':               'Burglary',
+    'criminal-damage-arson':  'Criminal damage & arson',
+    'drugs':                  'Drugs',
+    'other-crime':            'Other crime',
+    'other-theft':            'Other theft',
+    'possession-of-weapons':  'Possession of weapons',
+    'public-order':           'Public order',
+    'robbery':                'Robbery',
+    'shoplifting':            'Shoplifting',
+    'theft-from-the-person':  'Theft from person',
+    'vehicle-crime':          'Vehicle crime',
+    'violent-crime':          'Violence & sexual offences',
+  };
+
+  const CACHE_KEY = 'crimeStatsCache';
+  const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
+
+  function cached() {
+    try {
+      const raw = localStorage.getItem(CACHE_KEY);
+      if (!raw) return null;
+      const { ts, data } = JSON.parse(raw);
+      if (Date.now() - ts < CACHE_TTL) return data;
+    } catch (_) {}
+    return null;
+  }
+
+  function cache(data) {
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data })); } catch (_) {}
+  }
+
+  function render(crimes, month) {
+    const el = document.getElementById('crime-stats-content');
+    const periodEl = document.getElementById('crime-stats-period');
+
+    const [y, m] = month.split('-');
+    periodEl.textContent = new Date(y, m - 1).toLocaleString('en-GB', { month: 'long', year: 'numeric' });
+
+    const counts = {};
+    for (const c of crimes) counts[c.category] = (counts[c.category] || 0) + 1;
+    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+    const total = crimes.length;
+
+    let html = `<p class="text-sm text-neutral-600 dark:text-neutral-300 mb-3">
+      <strong>${total} recorded crimes</strong> within ~1 mile of Skelton Gate
+    </p>`;
+
+    for (const [cat, count] of sorted) {
+      const label = LABELS[cat] || cat;
+      const pct = Math.round((count / total) * 100);
+      html += `
+        <div class="flex items-center justify-between text-sm mb-1">
+          <span class="text-neutral-700 dark:text-neutral-300">${label}</span>
+          <span class="font-semibold text-neutral-900 dark:text-neutral-100 ml-2">${count}</span>
+        </div>
+        <div class="w-full bg-neutral-200 dark:bg-neutral-600 rounded-full h-1 mb-2">
+          <div class="bg-primary-600 h-1 rounded-full" style="width:${pct}%"></div>
+        </div>`;
+    }
+
+    html += `<div class="mt-3">
+      <a href="https://www.police.uk/pu/your-area/west-yorkshire-police/"
+         class="text-sm text-primary-600 dark:text-primary-400 hover:underline"
+         target="_blank" rel="noopener">View on police.uk →</a>
+    </div>`;
+
+    el.innerHTML = html;
+  }
+
+  async function load() {
+    const hit = cached();
+    if (hit) { render(hit.crimes, hit.month); return; }
+
+    try {
+      const datesResp = await fetch('https://data.police.uk/api/crimes-street-dates');
+      const dates = await datesResp.json();
+      const month = dates[dates.length - 1].date;
+
+      const resp = await fetch(
+        `https://data.police.uk/api/crimes-street/all-crime?lat=${LAT}&lng=${LNG}&date=${month}`
+      );
+      const crimes = await resp.json();
+
+      cache({ crimes, month });
+      render(crimes, month);
+    } catch (_) {
+      document.getElementById('crime-stats-content').innerHTML =
+        '<p class="text-sm text-neutral-500 dark:text-neutral-400">Crime data temporarily unavailable.</p>';
+    }
+  }
+
+  load();
+})();
+</script>

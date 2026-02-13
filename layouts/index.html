@@ -232,6 +232,11 @@
         </a>
       </div>
 
+      <!-- Crime Stats Widget -->
+      {{ if site.Data.site_settings.showCrimeStats }}
+        {{ partial "widgets/crime-stats.html" . }}
+      {{ end }}
+
     </aside>
   </div>
 </div>
