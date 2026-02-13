@@ -1,6 +1,19 @@
 /* Custom CSS for Skelton Gate Community Site */
 /* Blowfish Theme Customizations */
 
+/* Homepage two-column layout — defined here because Tailwind purges lg:grid-cols-3 / lg:col-span-* */
+.homepage-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 1024px) {
+  .homepage-grid {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
 /* Hero section — defined here because Tailwind purges classes not used by the theme */
 .hero-gradient {
   background: rgb(var(--color-primary-50));

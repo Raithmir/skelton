@@ -25,9 +25,9 @@
     </div>
   </section>
 
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+  <div class="homepage-grid">
     <!-- Main Content Area (Left 2 columns) -->
-    <div class="lg:col-span-2 space-y-10">
+    <div class="space-y-10">
 
       <!-- Priority Notices Section -->
       {{ if ne site.Data.site_settings.showNoticesSection false }}
@@ -192,7 +192,7 @@
     </div>
 
     <!-- Sidebar (Right column) -->
-    <aside class="lg:col-span-1 space-y-6">
+    <aside class="space-y-6">
 
       <!-- Quick Links Widget -->
       <div class="rounded-lg bg-neutral-100 dark:bg-neutral-700 p-6">
