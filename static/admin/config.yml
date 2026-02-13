@@ -437,7 +437,7 @@ collections:
     files:
       - label: "Homepage"
         name: "homepage_widgets"
-        file: "data/site-settings.yaml"
+        file: "data/site_settings.yaml"
         format: yaml
         fields:
           - label: "Show Notices Section"
