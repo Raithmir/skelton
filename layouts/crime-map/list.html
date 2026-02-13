@@ -10,7 +10,7 @@
         <h1 class="text-4xl font-bold text-neutral-900 dark:text-neutral-100">Local Crime Map</h1>
       </div>
       <p class="text-lg text-neutral-700 dark:text-neutral-300">
-        Recorded crimes near Skelton Gate, colour-coded by category. Click a marker for details.
+        Recorded crimes near Skelton Gate, colour-coded by category. Click a cluster to expand, or a pin for details.
       </p>
       <p id="crime-map-period" class="text-sm text-neutral-500 dark:text-neutral-400 mt-1"></p>
     </div>
@@ -37,11 +37,12 @@
   <p class="text-xs text-neutral-500 dark:text-neutral-500">
     Data: <a href="https://data.police.uk" class="underline hover:text-neutral-700" target="_blank" rel="noopener">data.police.uk</a>
     · West Yorkshire Police
-    · <a href="https://www.police.uk/pu/your-area/west-yorkshire-police/leeds-east/?tab=CrimeMap" class="underline hover:text-neutral-700" target="_blank" rel="noopener">View on police.uk</a>
+    · <a href="https://www.police.uk/pu/your-area/west-yorkshire-police/leeds-east/" class="underline hover:text-neutral-700" target="_blank" rel="noopener">View on police.uk</a>
   </p>
 </article>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <script>
 (function () {
   const LAT = 53.772630;
@@ -84,9 +85,7 @@
     'other-crime':            '#6b7280',
   };
 
-  function getColor(cat) {
-    return COLORS[cat] || '#6b7280';
-  }
+  function getColor(cat) { return COLORS[cat] || '#6b7280'; }
 
   function getLabel(cat) {
     return LABELS[cat] || cat.replace(/-/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
@@ -99,18 +98,16 @@
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
 
+  // Single cluster group for all markers
+  const clusterGroup = L.markerClusterGroup({ chunkedLoading: true });
+  map.addLayer(clusterGroup);
+
   function makeIcon(color) {
     const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="30" viewBox="0 0 24 36">' +
       '<path d="M12 0C5.373 0 0 5.373 0 12c0 9 12 24 12 24s12-15 12-24C24 5.373 18.627 0 12 0z" fill="' + color + '" stroke="white" stroke-width="1.5"/>' +
       '<circle cx="12" cy="12" r="5" fill="white"/>' +
       '</svg>';
-    return L.divIcon({
-      html: svg,
-      className: '',
-      iconSize: [20, 30],
-      iconAnchor: [10, 30],
-      popupAnchor: [0, -30]
-    });
+    return L.divIcon({ html: svg, className: '', iconSize: [20, 30], iconAnchor: [10, 30], popupAnchor: [0, -30] });
   }
 
   function escHtml(str) {
@@ -132,8 +129,8 @@
     try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data: data })); } catch (_) {}
   }
 
-  // Marker layer groups keyed by category
-  const layerGroups = {};
+  // Markers stored per category for filter add/remove
+  const categoryMarkers = {};
   const categoryCounts = {};
   const filterState = {};
 
@@ -144,20 +141,14 @@
       const lng = parseFloat(crime.location.longitude);
       if (isNaN(lat) || isNaN(lng)) return;
 
-      if (!layerGroups[cat]) {
-        layerGroups[cat] = L.layerGroup().addTo(map);
-        categoryCounts[cat] = 0;
-        filterState[cat] = true;
-      }
+      categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+      filterState[cat] = true;
+      if (!categoryMarkers[cat]) categoryMarkers[cat] = [];
 
-      categoryCounts[cat]++;
-
-      const color = getColor(cat);
-      const marker = L.marker([lat, lng], { icon: makeIcon(color) });
+      const marker = L.marker([lat, lng], { icon: makeIcon(getColor(cat)) });
 
       const street = crime.location.street ? crime.location.street.name : '';
       const outcome = crime.outcome_status ? crime.outcome_status.category : 'No outcome yet';
-
       marker.bindPopup(
         '<div style="min-width:160px">' +
         '<p style="font-weight:600;margin:0 0 4px;font-size:0.85rem">' + escHtml(getLabel(cat)) + '</p>' +
@@ -166,15 +157,18 @@
         '</div>'
       );
 
-      layerGroups[cat].addLayer(marker);
+      categoryMarkers[cat].push(marker);
     });
+
+    // Add all markers to the cluster group at once (faster than one by one)
+    const allMarkers = [].concat.apply([], Object.values(categoryMarkers));
+    clusterGroup.addLayers(allMarkers);
   }
 
   function buildFilters() {
     const filtersEl = document.getElementById('crime-filters');
     const buttonsEl = document.getElementById('filter-buttons');
 
-    // Sort categories by count descending
     const sorted = Object.keys(categoryCounts).sort(function (a, b) {
       return categoryCounts[b] - categoryCounts[a];
     });
@@ -195,14 +189,13 @@
       btn.addEventListener('click', function () {
         const c = btn.dataset.cat;
         filterState[c] = !filterState[c];
-        if (filterState[c]) {
-          layerGroups[c].addTo(map);
-          btn.style.background = color;
-          btn.style.color = 'white';
+        const on = filterState[c];
+        btn.style.background = on ? color : 'transparent';
+        btn.style.color = on ? 'white' : color;
+        if (on) {
+          clusterGroup.addLayers(categoryMarkers[c]);
         } else {
-          map.removeLayer(layerGroups[c]);
-          btn.style.background = 'transparent';
-          btn.style.color = color;
+          clusterGroup.removeLayers(categoryMarkers[c]);
         }
       });
 
