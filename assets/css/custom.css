@@ -1,6 +1,12 @@
 /* Custom CSS for Skelton Gate Community Site */
 /* Blowfish Theme Customizations */
 
+/* Fix: Leaflet map panes/controls use z-index up to ~800; ensure the fixed
+   header always renders above them. The nav bar wrapper is div.fixed.inset-x-0. */
+.fixed.inset-x-0 {
+  z-index: 1000 !important;
+}
+
 /* Reduce Blowfish's excessive horizontal padding on wide screens.
    The theme uses lg:px-32 (128px each side) which leaves the content occupying
    less than half the viewport on wide monitors. Overriding to 2rem each side. */

@@ -176,6 +176,14 @@ When new location content is added, run the geocoding script to update the cache
 
 Locations not in the cache fall back to client-side Nominatim geocoding on the visitor's first view, then cache in their browser `localStorage`.
 
+### Crime Stats Widget & Crime Map
+
+The homepage sidebar includes a **Crime Stats widget** that fetches the most recent month of crime data from the [data.police.uk API](https://data.police.uk) and shows a breakdown by category for the area around Skelton Gate (~1 mile radius). Data is cached in `localStorage` for 24 hours.
+
+The widget links to the **Local Crime Map** at `/crime-map/` — an interactive Leaflet map with colour-coded markers for all 14 crime categories, marker clustering (click to expand), category filter toggles, and individual popups showing crime type, street, and outcome status.
+
+The crime map is not in the main navigation — it is accessed via the widget link only.
+
 ### Bin Collection Widget
 
 The homepage sidebar shows the next 3 upcoming collections with a countdown for collections within 3 days ("Today!", "Tomorrow", "In X days"). Automatically calculated from `referenceDate` in each bin content file.
@@ -267,6 +275,7 @@ Several sections contain placeholder data marked with *"This is placeholder cont
 │   ├── events/
 │   ├── faqs/
 │   ├── healthcare/
+│   ├── crime-map/       # Local crime map page
 │   ├── map/             # Estate map page
 │   ├── notices/
 │   ├── schools/
@@ -283,13 +292,16 @@ Several sections contain placeholder data marked with *"This is placeholder cont
 │   ├── bin-collection/
 │   │   ├── calendar.ics   # iCal feed template
 │   │   └── list.html
+│   ├── crime-map/
+│   │   └── list.html      # Crime map with Leaflet.js + markercluster
 │   ├── map/
 │   │   └── list.html      # Estate map with Leaflet.js
 │   ├── partials/
 │   │   ├── extend-head-uncached.html  # Injects Leaflet CSS into <head>
 │   │   ├── menu.html                  # Custom nav with enable/disable
 │   │   └── widgets/
-│   │       └── bin-collection.html    # Homepage bin widget
+│   │       ├── bin-collection.html    # Homepage bin widget
+│   │       └── crime-stats.html       # Homepage crime stats widget
 │   └── index.html       # Homepage
 ├── scripts/
 │   └── geocode.py       # Map location geocoding script

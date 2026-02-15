@@ -194,15 +194,19 @@ Do NOT suggest these as ideas — they are already built:
 - **Documents/downloads section** — Reusable partial on About, Welcome Pack, Useful Links pages.
 - **Category filter buttons** — Client-side JS filtering on businesses, amenities, healthcare, schools.
 - **Print styles** — In `assets/css/custom.css`.
+- **Crime stats widget** — Homepage sidebar widget fetching from data.police.uk API. Shows crime counts by category for the most recent available month (~1 mile radius). Links to `/crime-map/` and police.uk Leeds East.
+- **Local crime map** — Leaflet.js + Leaflet.markercluster at `/crime-map/`. Colour-coded markers (14 categories), category filter toggles, 24h localStorage cache (`crimeMapCache`). Linked from widget only (no nav entry). Data from data.police.uk `crimes-street/all-crime` endpoint.
 
 ## External Dependencies
 
 - **Sveltia CMS** (Decap-compatible) - Admin interface at `/admin/`, uses GitHub OAuth for authentication; loads latest version from unpkg
 - **Blowfish Theme** - Hugo module providing base styling and components
-- **Leaflet.js** v1.9.4 (CDN) - Interactive map on `/map/`
+- **Leaflet.js** v1.9.4 (CDN) - Interactive map on `/map/` and `/crime-map/`
+- **Leaflet.markercluster** v1.5.3 (CDN) - Marker clustering on `/crime-map/`
 - **Fuse.js** - Full-text fuzzy search (bundled with Blowfish theme)
 - **OpenStreetMap/Nominatim** - Geocoding for the estate map
 - **Google Maps Embed API** - Used on detail pages for directions (origin: Beckside Crescent, Leeds)
+- **data.police.uk API** - Crime data for homepage widget and `/crime-map/` (West Yorkshire Police, ~1 mile radius, most recent available month)
 
 ## Site Maintenance
 
