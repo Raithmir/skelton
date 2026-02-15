@@ -474,4 +474,4 @@ collections:
             name: "showAirQuality"
             widget: "boolean"
             default: true
-            hint: "Show the air quality panel in the sidebar (DAQI 1-10 scale, data from Open-Meteo, updated hourly)"
+            hint: "Show the weather & air quality panel in the sidebar (current conditions + DAQI scale, data from Open-Meteo, updated hourly)"

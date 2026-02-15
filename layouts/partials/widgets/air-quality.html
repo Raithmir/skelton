@@ -1,10 +1,10 @@
-{{/* Air Quality Widget — data from Open-Meteo / DEFRA */}}
+{{/* Weather & Air Quality Widget — data from Open-Meteo */}}
 <div class="rounded-lg bg-neutral-100 dark:bg-neutral-700 p-6">
   <h2 class="text-xl font-bold text-neutral-900 dark:text-neutral-100 flex items-center mb-4">
     <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
     </svg>
-    Air Quality
+    Weather &amp; Air Quality
   </h2>
 
   <div id="air-quality-content">
@@ -13,7 +13,7 @@
 
   <p class="text-xs text-neutral-400 dark:text-neutral-500 mt-4">
     Source: <a href="https://open-meteo.com" class="underline" target="_blank" rel="noopener">Open-Meteo</a>
-    · Leeds area (DAQI scale)
+    · Leeds area
   </p>
 </div>
 
@@ -21,12 +21,21 @@
 (function () {
   const LAT = 53.78;
   const LNG = -1.48;
-  const CACHE_KEY = 'airQualityCache';
+  const CACHE_KEY = 'weatherAirCache';
   const CACHE_TTL = 60 * 60 * 1000; // 1 hour
+
+  const AQ_URL = 'https://air-quality-api.open-meteo.com/v1/air-quality' +
+    '?latitude=' + LAT + '&longitude=' + LNG +
+    '&current=nitrogen_dioxide,ozone,pm10,pm2_5';
+
+  const WEATHER_URL = 'https://api.open-meteo.com/v1/forecast' +
+    '?latitude=' + LAT + '&longitude=' + LNG +
+    '&current=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m' +
+    '&temperature_unit=celsius&wind_speed_unit=mph';
 
   // Compute DAQI sub-index (1-10) for a pollutant value against its breakpoints
   function pollutantIndex(val, breaks) {
-    for (let i = 0; i < breaks.length; i++) {
+    for (var i = 0; i < breaks.length; i++) {
       if (val <= breaks[i]) return i + 1;
     }
     return 10;
@@ -35,10 +44,10 @@
   // DAQI = max sub-index across all pollutants
   // Breakpoints from DEFRA: NO2, O3, PM10, PM2.5 (µg/m³) for DAQI 1-9 (10 = above highest)
   function calcDaqi(no2, o3, pm10, pm25) {
-    const no2i  = pollutantIndex(no2,  [67, 134, 200, 267, 334, 400, 467, 534, 600]);
-    const o3i   = pollutantIndex(o3,   [33,  66, 100, 120, 140, 160, 187, 213, 240]);
-    const pm10i = pollutantIndex(pm10, [16,  33,  50,  58,  66,  75,  83,  91, 100]);
-    const pm25i = pollutantIndex(pm25, [11,  23,  35,  41,  47,  53,  58,  64,  70]);
+    var no2i  = pollutantIndex(no2,  [67, 134, 200, 267, 334, 400, 467, 534, 600]);
+    var o3i   = pollutantIndex(o3,   [33,  66, 100, 120, 140, 160, 187, 213, 240]);
+    var pm10i = pollutantIndex(pm10, [16,  33,  50,  58,  66,  75,  83,  91, 100]);
+    var pm25i = pollutantIndex(pm25, [11,  23,  35,  41,  47,  53,  58,  64,  70]);
     return Math.max(no2i, o3i, pm10i, pm25i);
   }
 
@@ -49,61 +58,139 @@
     return             { label: 'Very High', color: '#dc2626' };
   }
 
+  function weatherCodeToInfo(code) {
+    // WMO weather interpretation codes → label + inline SVG
+    var sunSvg = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+    var cloudSvg = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/></svg>';
+    var rainSvg = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/><line x1="8" y1="19" x2="6" y2="23"/><line x1="12" y1="19" x2="10" y2="23"/><line x1="16" y1="19" x2="14" y2="23"/></svg>';
+    var snowSvg = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/><line x1="8" y1="19" x2="8" y2="23"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="16" y1="19" x2="16" y2="23"/></svg>';
+    var thunderSvg = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>';
+    var fogSvg = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="21" y2="8"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="5" y1="16" x2="19" y2="16"/><line x1="3" y1="4" x2="21" y2="4"/></svg>';
+    var drizzleSvg = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/><line x1="8" y1="22" x2="8" y2="22.5"/><line x1="12" y1="22" x2="12" y2="22.5"/><line x1="16" y1="22" x2="16" y2="22.5"/></svg>';
+
+    if (code === 0)                          return { label: 'Clear sky',      svg: sunSvg };
+    if (code === 1)                          return { label: 'Mainly clear',   svg: sunSvg };
+    if (code === 2)                          return { label: 'Partly cloudy',  svg: cloudSvg };
+    if (code === 3)                          return { label: 'Overcast',       svg: cloudSvg };
+    if (code === 45 || code === 48)          return { label: 'Fog',            svg: fogSvg };
+    if (code >= 51 && code <= 55)            return { label: 'Drizzle',        svg: drizzleSvg };
+    if (code >= 56 && code <= 57)            return { label: 'Freezing drizzle', svg: drizzleSvg };
+    if (code >= 61 && code <= 65)            return { label: 'Rain',           svg: rainSvg };
+    if (code >= 66 && code <= 67)            return { label: 'Freezing rain',  svg: rainSvg };
+    if (code >= 71 && code <= 77)            return { label: 'Snow',           svg: snowSvg };
+    if (code === 80 || code === 81 || code === 82) return { label: 'Rain showers', svg: rainSvg };
+    if (code === 85 || code === 86)          return { label: 'Snow showers',   svg: snowSvg };
+    if (code >= 95)                          return { label: 'Thunderstorm',   svg: thunderSvg };
+    return { label: 'Cloudy', svg: cloudSvg };
+  }
+
   function cached() {
     try {
-      const raw = localStorage.getItem(CACHE_KEY);
+      var raw = localStorage.getItem(CACHE_KEY);
       if (!raw) return null;
-      const { ts, data } = JSON.parse(raw);
-      if (Date.now() - ts < CACHE_TTL) return data;
+      var parsed = JSON.parse(raw);
+      if (Date.now() - parsed.ts < CACHE_TTL) return parsed.data;
     } catch (_) {}
     return null;
   }
 
   function saveCache(data) {
-    try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data })); } catch (_) {}
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data: data })); } catch (_) {}
   }
 
   function render(data) {
-    const el = document.getElementById('air-quality-content');
-    const { no2, o3, pm10, pm25, updated } = data;
-    const daqi = calcDaqi(no2, o3, pm10, pm25);
-    const band = daqiBand(daqi);
-    const time = new Date(updated).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+    var el = document.getElementById('air-quality-content');
+    var html = '';
 
-    el.innerHTML = `
-      <div class="flex items-center gap-3 mb-3">
-        <span style="background:${band.color};color:#fff;border-radius:9999px;min-width:2.5rem;height:2.5rem;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem">${daqi}</span>
-        <div>
-          <p class="font-semibold" style="color:${band.color}">${band.label}</p>
-          <p class="text-xs text-neutral-500 dark:text-neutral-400">DAQI 1–10 &middot; Updated ${time}</p>
-        </div>
-      </div>
-      <div class="text-sm" style="display:grid;grid-template-columns:1fr 1fr;gap:0.375rem 1rem">
-        <span class="text-neutral-600 dark:text-neutral-300">NO₂ <strong class="text-neutral-900 dark:text-neutral-100">${no2.toFixed(1)}</strong> µg/m³</span>
-        <span class="text-neutral-600 dark:text-neutral-300">O₃ <strong class="text-neutral-900 dark:text-neutral-100">${o3.toFixed(1)}</strong> µg/m³</span>
-        <span class="text-neutral-600 dark:text-neutral-300">PM10 <strong class="text-neutral-900 dark:text-neutral-100">${pm10.toFixed(1)}</strong> µg/m³</span>
-        <span class="text-neutral-600 dark:text-neutral-300">PM2.5 <strong class="text-neutral-900 dark:text-neutral-100">${pm25.toFixed(1)}</strong> µg/m³</span>
-      </div>`;
+    // Weather section
+    if (data.weather) {
+      var w = data.weather;
+      var info = weatherCodeToInfo(w.code);
+      var temp = Math.round(w.temp);
+      var feels = Math.round(w.feels);
+      html += '<div style="display:flex;align-items:flex-start;gap:0.75rem;margin-bottom:0.5rem">' +
+        '<div style="flex-shrink:0">' + info.svg + '</div>' +
+        '<div>' +
+          '<p class="text-neutral-900 dark:text-neutral-100">' +
+            '<strong style="font-size:1.4rem">' + temp + '°C</strong>' +
+            '<span class="text-sm text-neutral-500 dark:text-neutral-400" style="margin-left:0.375rem">Feels like ' + feels + '°C</span>' +
+          '</p>' +
+          '<p class="text-sm text-neutral-700 dark:text-neutral-300">' + info.label + '</p>' +
+          '<p class="text-xs text-neutral-500 dark:text-neutral-400" style="margin-top:0.2rem">' +
+            'Wind ' + Math.round(w.wind) + ' mph &middot; Humidity ' + w.humidity + '%' +
+          '</p>' +
+          '<p class="text-xs text-neutral-500 dark:text-neutral-400">Precipitation ' + w.precip.toFixed(1) + ' mm</p>' +
+        '</div>' +
+      '</div>';
+    }
+
+    // Divider between weather and AQ sections
+    if (data.weather && data.aq) {
+      html += '<div class="border-t border-neutral-200 dark:border-neutral-600" style="margin:0.75rem 0"></div>';
+    }
+
+    // Air quality section
+    if (data.aq) {
+      var aq = data.aq;
+      var daqi = calcDaqi(aq.no2, aq.o3, aq.pm10, aq.pm25);
+      var band = daqiBand(daqi);
+      var time = new Date(aq.updated).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+      html += '<div class="flex items-center gap-3 mb-3">' +
+          '<span style="background:' + band.color + ';color:#fff;border-radius:9999px;min-width:2.5rem;height:2.5rem;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem">' + daqi + '</span>' +
+          '<div>' +
+            '<p class="font-semibold" style="color:' + band.color + '">' + band.label + '</p>' +
+            '<p class="text-xs text-neutral-500 dark:text-neutral-400">DAQI 1\u201310 &middot; Updated ' + time + '</p>' +
+          '</div>' +
+        '</div>' +
+        '<div class="text-sm" style="display:grid;grid-template-columns:1fr 1fr;gap:0.375rem 1rem">' +
+          '<span class="text-neutral-600 dark:text-neutral-300">NO\u2082 <strong class="text-neutral-900 dark:text-neutral-100">' + aq.no2.toFixed(1) + '</strong> \u00b5g/m\u00b3</span>' +
+          '<span class="text-neutral-600 dark:text-neutral-300">O\u2083 <strong class="text-neutral-900 dark:text-neutral-100">' + aq.o3.toFixed(1) + '</strong> \u00b5g/m\u00b3</span>' +
+          '<span class="text-neutral-600 dark:text-neutral-300">PM10 <strong class="text-neutral-900 dark:text-neutral-100">' + aq.pm10.toFixed(1) + '</strong> \u00b5g/m\u00b3</span>' +
+          '<span class="text-neutral-600 dark:text-neutral-300">PM2.5 <strong class="text-neutral-900 dark:text-neutral-100">' + aq.pm25.toFixed(1) + '</strong> \u00b5g/m\u00b3</span>' +
+        '</div>';
+    }
+
+    if (!html) {
+      html = '<p class="text-sm text-neutral-500 dark:text-neutral-400">Weather &amp; air quality data temporarily unavailable.</p>';
+    }
+
+    el.innerHTML = html;
   }
 
   async function load() {
-    const hit = cached();
+    var hit = cached();
     if (hit) { render(hit); return; }
 
-    try {
-      const resp = await fetch(
-        'https://air-quality-api.open-meteo.com/v1/air-quality' +
-        `?latitude=${LAT}&longitude=${LNG}` +
-        '&current=nitrogen_dioxide,ozone,pm10,pm2_5'
-      );
-      const json = await resp.json();
-      const c = json.current;
-      const data = { no2: c.nitrogen_dioxide, o3: c.ozone, pm10: c.pm10, pm25: c.pm2_5, updated: c.time };
+    var results = await Promise.allSettled([
+      fetch(AQ_URL).then(function(r) { return r.json(); }),
+      fetch(WEATHER_URL).then(function(r) { return r.json(); })
+    ]);
+
+    var data = {};
+
+    if (results[0].status === 'fulfilled') {
+      var c = results[0].value.current;
+      data.aq = { no2: c.nitrogen_dioxide, o3: c.ozone, pm10: c.pm10, pm25: c.pm2_5, updated: c.time };
+    }
+
+    if (results[1].status === 'fulfilled') {
+      var w = results[1].value.current;
+      data.weather = {
+        temp: w.temperature_2m,
+        feels: w.apparent_temperature,
+        humidity: w.relative_humidity_2m,
+        precip: w.precipitation,
+        code: w.weather_code,
+        wind: w.wind_speed_10m
+      };
+    }
+
+    if (data.aq || data.weather) {
       saveCache(data);
       render(data);
-    } catch (_) {
+    } else {
       document.getElementById('air-quality-content').innerHTML =
-        '<p class="text-sm text-neutral-500 dark:text-neutral-400">Air quality data temporarily unavailable.</p>';
+        '<p class="text-sm text-neutral-500 dark:text-neutral-400">Weather &amp; air quality data temporarily unavailable.</p>';
     }
   }
 
